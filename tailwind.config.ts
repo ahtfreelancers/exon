@@ -12,6 +12,11 @@ const config: Config = {
       'openSans': ['OpenSans Regular', 'sans-serif'],
       'helvetica': ['Helvetica Now Display', 'sans-serif'],
     },
+    variants: {
+      extend: {
+        textColor: ['hover'],
+      },
+    },
     extend: {
       colors: {
         primary: 'var(--primary-color)',

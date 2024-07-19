@@ -27,6 +27,10 @@ h2 {
   @apply font-berghan font-normal text-center sm:text-left text-[28px] lg:text-5xl spbp:text-[58px] xl:text-[78px] text-primary
 }
 
+h3 {
+  @apply font-bold text-[32px] font-helvetica;
+}
+
 button {
   @apply font-semibold font-openSans text-white bg-[#12A89D] text-2xl px-[77px] py-[23px] rounded-[72px];
 }
@@ -100,4 +104,12 @@ li {
 
 .hero-heading {
   @apply max-w-[150px] sm:max-w-full text-center;
+}
+
+.hover-container {
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.hover-container:hover h3 {
+  color: #12A89D;
 }
