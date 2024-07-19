@@ -7,12 +7,34 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontFamily: {
+      'berghan': ['Berghan Regular', 'sans-serif'],
+      'openSans': ['OpenSans Regular', 'sans-serif'],
+      'helvetica': ['Helvetica Now Display', 'sans-serif'],
+    },
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        primary: 'var(--primary-color)',
+        secondary: 'var(--secondary-color)',
+        background: 'var(--background-color)',
+        textSecondary: 'var(--text-secondary)',
       },
+      screens: {
+        'xsm': '430px',
+        'sm': '560px',
+        'md': '768px',
+        'laptop': '992px',
+        'lg': '1024px',
+        'spbp': '1200px',
+        'xl': '1440px',
+        '2xl': '1536px',
+        '3xl': '1700px',
+      },
+      backgroundImage: {
+        'heroBg': "url('/home/hero.png')",
+        'mobHeroBg': "url('/home/mobHero.png')",
+        'producthero': "url('/about/hero.png')",
+      }
     },
   },
   plugins: [],

@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./fonts.scss";
+
+
+// global.scss
+$primary-color: #162D3E;
+$secondary-color: #12A89D;
+$background-color: #F1F8FD;
+$text-secondary: #00000091;
+
+:root {
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --background-color: #{$background-color};
+  --text-secondary: #{$text-secondary};
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+h1,
+h2 {
+  @apply font-berghan font-normal text-center sm:text-left text-[28px] lg:text-5xl spbp:text-[58px] xl:text-[78px] text-primary
+}
+
+button {
+  @apply font-semibold font-openSans text-white bg-[#12A89D] text-2xl px-[77px] py-[23px] rounded-[72px];
+}
+
+h4 {
+  @apply text-left mb-[34px] sm:mb-[52px] font-bold text-sm sm:text-2xl;
+}
+
+h5 {
+  @apply text-sm lg:text-4xl text-[#FFFFFF91];
+}
+
+p {
+  @apply text-center sm:text-left text-[14px] lg:text-[18px] spbp:text-[24px] xl:text-[28px] font-helvetica font-medium;
+}
+
+li {
+  @apply cursor-pointer text-xs md:text-lg;
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+// * {
+//   font-family: 'Helvetica Now Display', serif;
+// }
+/* styles/globals.css */
+
+@import 'swiper/swiper-bundle.css';
+
+.slider-container {
+  width: 100%;
+  height: 100%;
+}
+
+.slider-container .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slider-container .swiper-slide .arrow {
+  margin-top: 20px;
+}
+
+.slider-container .swiper-slide img {
+  border-radius: 8px;
+}
+
+.slider-container .swiper-button-next,
+.slider-container .swiper-button-prev {
+  color: #000;
+}
+
+
+//hero
+.hero-banner {
+  @apply bg-contain h-[550px] sm:h-[946px] bg-no-repeat sm:my-5 w-full flex justify-start pt-[115px] items-center flex-col;
+}
+
+.hero-heading {
+  @apply max-w-[150px] sm:max-w-full text-center;
+}
