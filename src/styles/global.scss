@@ -24,7 +24,7 @@ html {
 
 h1,
 h2 {
-  @apply font-berghan font-normal text-center sm:text-left text-[28px] lg:text-5xl spbp:text-[58px] xl:text-[78px] text-primary
+  @apply font-berghan font-normal text-center sm:text-left text-[28px] lg:text-5xl spbp:text-[58px] 2xl:text-[78px] text-primary
 }
 
 h3 {
@@ -32,23 +32,23 @@ h3 {
 }
 
 button {
-  @apply font-semibold font-openSans text-white bg-[#12A89D] text-2xl px-[77px] py-[23px] rounded-[72px];
+  @apply font-semibold font-openSans text-white bg-[#12A89D] text-2xl px-14 2xl:px-[77px] py-4 2xl:py-6 rounded-[72px];
 }
 
 h4 {
-  @apply text-left mb-[34px] sm:mb-[52px] font-bold text-sm sm:text-2xl;
+  @apply font-bold text-sm sm:text-2xl;
 }
 
 h5 {
-  @apply text-sm lg:text-4xl text-[#FFFFFF91];
+  @apply text-sm lg:text-2xl spbp:text-3xl 2xl:text-4xl text-[#FFFFFF91];
 }
 
 p {
-  @apply text-center sm:text-left text-[14px] lg:text-[18px] spbp:text-[24px] xl:text-[28px] font-helvetica font-medium;
+  @apply text-center sm:text-left text-xs lg:text-lg 2xl:text-[28px] font-helvetica font-normal;
 }
 
 li {
-  @apply cursor-pointer text-xs md:text-lg;
+  @apply cursor-pointer text-xs md:text-sm spbp:text-base 2xl:text-lg;
 }
 
 :root {
@@ -77,6 +77,13 @@ li {
   height: 100%;
 }
 
+.swiper-button-prev:after,
+.swiper-rtl .swiper-button-next:after,
+.swiper-button-next:after,
+.swiper-rtl .swiper-button-prev:after {
+  @apply invisible
+}
+
 .slider-container .swiper-slide {
   display: flex;
   justify-content: center;
@@ -99,7 +106,7 @@ li {
 
 //hero
 .hero-banner {
-  @apply bg-contain h-[550px] sm:h-[946px] bg-no-repeat sm:my-5 w-full flex justify-start pt-[115px] items-center flex-col;
+  @apply bg-contain h-[550px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] bg-no-repeat sm:my-5 w-full flex justify-start pt-[115px] items-center flex-col;
 }
 
 .hero-heading {

@@ -79,7 +79,7 @@ export default function Navbar() {
                             />
                         </Link>
                     </div>
-                    <Menu onClick={() => showDrawer()} />
+                    <Menu className="text-white" onClick={() => showDrawer()} />
                 </nav>
                 <div>
                     <Drawer

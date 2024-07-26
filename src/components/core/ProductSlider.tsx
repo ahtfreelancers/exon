@@ -28,12 +28,22 @@ const ProductSlider = () => {
   }, [slides.length]);
 
   return (
-    <div className="bg-background py-[115px] px-12 rounded-[72px]">
+    <div className="bg-background py-12 px-12 rounded-[72px]">
       <Swiper
         ref={swiperRef}
         modules={[Navigation, Pagination, Scrollbar, A11y]}
         spaceBetween={12}
-        slidesPerView={4}
+        breakpoints={{
+          430: {
+            slidesPerView: 1.3,
+          },
+          768: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 4,
+          },
+        }}
         loop
         onSlideChange={() => {
           const heights = slideRefs.current.map(slide => slide.offsetHeight);
@@ -45,16 +55,16 @@ const ProductSlider = () => {
         }}
       >
         {slides.map((slide, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={index} >
             <div
               ref={(el) => setRef(el, index)}
               className="bg-white shadow px-10 py-12 rounded-[50px] text-center relative"
-              style={{ height: maxHeight ? `${maxHeight}px` : 'auto' }}
+              style={{ height: maxHeight ? `${maxHeight}px` : 'auto' }} data-aos="fade-up"
             >
               <h3 className="text-[28px] mb-4 font-bold font-helvetica">{slide.title}</h3>
               <h4 className="text-lg text-[#6D6D6D] font-semibold font-helvetica mb-14">{slide.description}</h4>
               <img src={slide.src} alt={`Product Image ${index + 1}`} className="mx-auto mb-4" />
-              <button className="mt-4 py-2 px-[52px] rounded-t-full absolute bottom-0 left-[26%]">Buy Now</button>
+              <button className="mt-4 py-2 px-[52px] rounded-t-full absolute bottom-0 left-[20%] 3xl:left-[26%]">Buy Now</button>
             </div>
           </SwiperSlide>
         ))}
