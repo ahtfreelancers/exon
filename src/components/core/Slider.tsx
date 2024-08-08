@@ -15,12 +15,12 @@ const Slider = () => {
 
   return (
     <div className="slider-container max-w-[980px] mx-auto ">
-      <div className='flex justify-between items-center mb-16'>
-        <h2 className="border-l-[10px] border-[#ddf1f0] pl-[10px] w-[400px]" data-aos="fade-right">
+      <div className='flex justify-center sm:justify-between items-center mb-16'>
+        <h2 className="sm:border-l-[10px] sm:border-[#ddf1f0] text-center sm:text-left sm:pl-[10px] w-[400px]" data-aos="fade-right">
           Explore
           all products
         </h2>
-        <h5>VIEW ALL</h5>
+        <h5 className=' hidden sm:flex'>VIEW ALL</h5>
       </div>
       <div className='px-36 relative'>
         <Swiper

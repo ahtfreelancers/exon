@@ -32,7 +32,7 @@ h3 {
 }
 
 button {
-  @apply font-semibold font-openSans text-white bg-[#12A89D] text-2xl px-14 2xl:px-[77px] py-4 2xl:py-6 rounded-[72px];
+  @apply font-semibold font-openSans text-white bg-[#12A89D] text-[10px] md:text-2xl px-12 md:px-14 2xl:px-[77px] py-2 md:py-4 2xl:py-6 rounded-[72px];
 }
 
 h4 {

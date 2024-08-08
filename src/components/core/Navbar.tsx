@@ -1,3 +1,4 @@
+"use client"
 import { Button, Drawer } from "antd";
 import { Menu, Search, X } from "lucide-react";
 import Image from "next/image";
@@ -79,7 +80,14 @@ export default function Navbar() {
                             />
                         </Link>
                     </div>
-                    <Menu className="text-white" onClick={() => showDrawer()} />
+                    <Image
+                        src="/icons/bar.png"
+                        alt="menu icon"
+                        className=""
+                        width={18}
+                        height={12}
+                        onClick={() => showDrawer()}
+                    />
                 </nav>
                 <div>
                     <Drawer

@@ -1,11 +1,13 @@
 "use client"
-import Footer from "@/components/core/Footer";
+import ContactUs from "@/components/core/ContactUs";
 import KindWords from "@/components/core/KindWords";
 import Navbar from "@/components/core/Navbar";
 import Slider from "@/components/core/Slider";
 import Image from "next/image";
 
 export default function Home() {
+
+
   return (
     <main className="relative">
       <div className="sm:bg-background p-[6px] sm:p-5">
@@ -15,7 +17,7 @@ export default function Home() {
             <h1 className="text-white mb-6" data-aos="fade-up">Challenging limitations</h1>
             <h5 className="mb-8 2xl:mb-[68px]" data-aos="fade-up">One device at a time</h5>
           </div>
-          <button className="hidden sm:inline" data-aos="fade-up">Know More</button>
+          <button data-aos="fade-up">Know More</button>
         </section>
       </div>
       <section className="sm:rounded-[72px] bg-white py-24">
@@ -29,10 +31,10 @@ export default function Home() {
             />
           </div>
           <div>
-            <h2 className="mb-14 sm:border-l-[10px] sm:border-[#12A89D] pl-[10px]" data-aos="fade-left">
+            <h2 className="mb-6 md:mb-14 sm:border-l-[10px] sm:border-[#12A89D] pl-[10px]" data-aos="fade-left">
               About Exon
             </h2>
-            <p className="font-helvetica text-textSecondary font-normal text-2xl" data-aos="fade-up">
+            <p className="font-helvetica text-textSecondary font-normal text-xs md:text-2xl" data-aos="fade-up">
               Exon Therapeutics LLP is committed to innovate the heart health technology at the forefront. We have created an ecosystem for invention and growth, all under one umbrella. In today’s times where
               health is always at an edge, it is necessary to prioritize the production of high-quality medical devices that are both accessible and affordable. Our topmost indulgence lies in making cutting
               edge cardiovascular devices that improve the quality of your life. We also provide flexible implantable cardiac devices and drug-eluting stents with longevity. We also assert to be your one-stop
@@ -58,17 +60,12 @@ export default function Home() {
             />
           </div>
         </div>
-        {/* <Slider /> */}
+        <Slider />
       </section>
       <section className="py-32 bg-primary">
         <KindWords />
       </section>
-      <section className="py-32 bg-white">
-        <h2 className="text-center mb-16" data-aos="fade-up">Contact Us</h2>
-        <div className="max-w-[1180px] px-40 py-12 bg-primary mx-auto rounded-[95px]">
-
-        </div>
-      </section>
+      <ContactUs />
     </main>
   );
 }
