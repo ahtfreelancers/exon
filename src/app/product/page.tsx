@@ -1,5 +1,6 @@
 "use client";
 
+import ContactUs from "@/components/core/ContactUs";
 import Navbar from "@/components/core/Navbar";
 import ProductSlider from "@/components/core/ProductSlider";
 import { Hexagon, Star, Triangle } from "lucide-react";
@@ -13,9 +14,9 @@ export default function Home() {
         <section className="bg-producthero hero-banner">
           <div className="hero-heading" data-aos="fade-up">
             <h1 className="text-white mb-6">Our Top Products</h1>
-            <h5 className="mb-[68px]">Dive into our range products</h5>
+            <h5 className="mb-8 2xl:mb-[68px]">Dive into our range products</h5>
           </div>
-          <button className="hidden sm:inline" data-aos="fade-up">Explore</button>
+          <button data-aos="fade-up">Explore</button>
 
         </section>
       </div>
@@ -69,6 +70,7 @@ export default function Home() {
       <section className="px-5">
         <ProductSlider />
       </section>
+      <ContactUs />
     </main>
   );
 }

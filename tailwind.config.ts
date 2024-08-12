@@ -37,6 +37,8 @@ const config: Config = {
       },
       backgroundImage: {
         'heroBg': "url('/home/hero.png')",
+        'aboutBg': "url('/about/about-banner.png')",
+        'solutionBg': "url('/about/solutions-about.png')",
         'mobHeroBg': "url('/home/mobHero.png')",
         'producthero': "url('/about/hero.png')",
       }

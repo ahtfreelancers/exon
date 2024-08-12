@@ -30,6 +30,17 @@ export default function Career() {
   return (
     <main className="relative bg-white">
       <Navbar />
+      <section className="px-16 mb-10">
+        <div className="py-5 md:py-16 3xl:py-[94px] bg-primary rounded-[10px] md:rounded-[52px] mt-[32px] flex justify-center">
+          <h2 className="text-white text-7xl">Carrer</h2>
+        </div>
+      </section>
+      <section className="bg-[#ebf8f7] py-20">
+        <div className="max-w-[900px] mx-auto">
+          <h2 className="text-center mb-8">Unlock new career opportunities at Exon</h2>
+          <p className="text-lg text-center">Pagedone embraces a youthful and flexible spirit, enabling us to swiftly adapt to market research, conditions, and customer demands through our advanced technology.</p>
+        </div>
+      </section>
       <section className="px-[254px] py-[150px]">
         <h2 className="mb-[134px] border-l-[10px] border-[#12A89D] pl-[10px]" data-aos="fade-right">
           Why join us
@@ -76,7 +87,7 @@ export default function Career() {
           </div>
         </div>
       </section>
-      <section className="px-64 py-[100px] bg-white">
+      <section className="px-32 3xl:px-64 py-[100px] bg-white">
         <h2 className="mb-32 border-l-[10px] border-[#12A89D] pl-[10px]" data-aos="fade-right">
           Open positions
         </h2>

@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
+import Link from 'next/link';
 
 const ProductSlider = () => {
   const slides = [
@@ -64,7 +65,9 @@ const ProductSlider = () => {
               <h3 className="text-[28px] mb-4 font-bold font-helvetica">{slide.title}</h3>
               <h4 className="text-lg text-[#6D6D6D] font-semibold font-helvetica mb-14">{slide.description}</h4>
               <img src={slide.src} alt={`Product Image ${index + 1}`} className="mx-auto mb-4" />
-              <button className="mt-4 py-2 px-[52px] rounded-t-full absolute bottom-0 left-[20%] 3xl:left-[26%]">Buy Now</button>
+              <Link href={'/product/1'}>
+                <button className="mt-4 py-2 px-[52px] rounded-t-full absolute bottom-0 left-[20%] 3xl:left-[26%]">Buy Now</button>
+              </Link>
             </div>
           </SwiperSlide>
         ))}

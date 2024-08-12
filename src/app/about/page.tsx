@@ -1,110 +1,126 @@
 "use client";
-
+import ContactUs from "@/components/core/ContactUs";
+import KindWords from "@/components/core/KindWords";
 import Navbar from "@/components/core/Navbar";
-import ProductSlider from "@/components/core/ProductSlider";
-import { Hexagon, Star, Triangle } from "lucide-react";
+import Slider from "@/components/core/Slider";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+
+const faqs = [
+  {
+    question: "What types of cardiovascular devices does Exon Therapeutics LLP offer?",
+    answer: "Exon Therapeutics LLP specializes in a range of cardiovascular devices, including implantable cardiac devices, drug-eluting stents, and semi-compliant and non-compliant balloon catheters for pre-dilation and post-dilation in cardiac procedures.",
+  },
+  {
+    question: "How does Exon Therapeutics LLP ensure the quality of its products?",
+    answer: "Exon Therapeutics LLP ensures the quality of its products through rigorous testing and adherence to international standards in the design and manufacturing processes.",
+  },
+  {
+    question: "Where are Exon Therapeutics LLP’s products available?",
+    answer: "Exon Therapeutics LLP’s products are available globally, with a strong distribution network in North America, Europe, and Asia.",
+  },
+  {
+    question: "How can I learn more about Exon Therapeutics LLP’s latest innovations?",
+    answer: "You can learn more about Exon Therapeutics LLP’s latest innovations by visiting our website, subscribing to our newsletter, or following us on social media.",
+  },
+];
 
 export default function About() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggleAccordion = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
   return (
-    <main className="relative bg-white">
-      <div className="relative bg-background p-5">
+    <main className="relative">
+      <div className="p-[6px] sm:p-5">
         <Navbar />
-        <section className="flex items-center gap-[105px] justify-center">
-          <div className="w-1/2 relative h-[940px]" data-aos="fade-right">
-            <Image
-              src="/about/productDetail.svg"
-              alt="Featured Product"
-              layout="fill"
-              objectFit="contain"
-            />
+        <section className="bg-mobHeroBg sm:bg-aboutBg hero-banner">
+          <div className="hero-heading">
+            <h1 className="text-white mb-6" data-aos="fade-up">So how did Exon come to be?</h1>
+            <h5 className="mb-8 2xl:mb-[68px] text-[28px]" data-aos="fade-up">Exon Therapeutics LLP was founded by healthcare</h5>
           </div>
-          <div className="w-1/2 pr-32" data-aos="fade-left">
-            <h3 className="text-3xl mb-4 font-helvetica font-bold">
-              Product Name
-            </h3>
-            <p className="text-2xl font-helvetica text-textSecondary font-normal">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien. Vestibulum malesuada orci sit amet pretium facilisis. In lobortis congue augue, a commodo libero tincidunt scelerisque.
-            </p>
-            &nbsp;
-            &nbsp;
-            &nbsp;
-            <p className="text-2xl font-helvetica text-textSecondary font-normal">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien. Vestibulum malesuada orci sit amet pretium facilisis. In lobortis congue augue, a commodo libero tincidunt scelerisque.
-            </p>
-          </div>
+          <button data-aos="fade-up">Meet our team</button>
         </section>
       </div>
-      <section className="py-[124px]">
-        <h2 className="text-center mb-[68px]" data-aos="fade-up">Technical Specification</h2>
-        <div className="max-w-[1024px] mb-[134px] mx-auto bg-background gap-x-[158px] gap-y-6 p-16 rounded-[66px] grid grid-cols-2 font-helvetica text-3xl font-medium text-[#5A5776]">
-          <h5 data-aos="fade-left" className="text-[#5A5776] text-2xl">Delivery System</h5>
-          <h5 data-aos="fade-left" className="text-[#5A5776] text-2xl">Over-The-Wire</h5>
-          <h5 data-aos="fade-left" className="text-[#5A5776] text-2xl">Balloon Compliance</h5>
-          <h5 data-aos="fade-left" className="text-[#5A5776] text-2xl">Semi-Compliant</h5>
-          <h5 data-aos="fade-left" className="text-[#5A5776] text-2xl">No. of Folds</h5>
-          <h5 data-aos="fade-left" className="text-[#5A5776] text-2xl">3 & 6</h5>
-          <h5 data-aos="fade-left" className="text-[#5A5776] text-2xl">Balloon Material</h5>
-          <h5 data-aos="fade-left" className="text-[#5A5776] text-2xl">Polyamide</h5>
-          <h5 data-aos="fade-left" className="text-[#5A5776] text-2xl">Guidewire Compatibility</h5>
-          <h5 data-aos="fade-left" className="text-[#5A5776] text-2xl">0.014″, 0.018″, 0.035″</h5>
+      <section className="bg-mobHeroBg sm:bg-solutionBg hero-banner !pt-0 flex !justify-center !items-center">
+        <div className="max-w-[900px]">
+          <h5 className="text-secondary text-sm mb-3 font-medium">PHARMACY SOLUTIONS</h5>
+          <h2 className="text-5xl text-center mb-10">"Building Connections with Customers: Uniting Vision and Design"</h2>
+          <p className="text-2xl text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text Lorem Ipsum is simply dummy text.</p>
         </div>
-        <div className="max-w-[1024px] mx-auto pb-[100px]">
-          <h2 className=" mb-[61px] border-l-[10px] border-[#12A89D] pl-[10px]" data-aos="fade-right">
-            Product Description
-          </h2>
-          <p className="text-2xl font-helvetica text-textSecondary" data-aos="fade-right">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien. Vestibulum malesuada orci sit amet pretium facilisis. In lobortis congue augue, a commodo libero tincidunt scelerisque.
-          </p>
-          &nbsp;
-          &nbsp;
-          &nbsp;
-          <p className="text-2xl mb-16 font-helvetica text-textSecondary" data-aos="fade-right">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien. Vestibulum malesuada orci sit amet pretium facilisis. In lobortis congue augue, a commodo libero tincidunt scelerisque.
-          </p>
-          <button className="px-[125px] py-[23px]" data-aos="fade-right">Enquiry Now</button>
-        </div>
-        <div>
-          <h2 className="text-center mb-[68px]" data-aos="fade-up">Guidewire Compatibility</h2>
-          <div className="max-w-[1024px] mx-auto" >
-            <div className="bg-background rounded-[66px] p-16" data-aos="fade-up">
-              <div  >
-                {/* <h3 className="text-2xl font-helvetica font-bold mb-4">Guiding Catheter Compatibility</h3> */}
-                <div className="grid grid-cols-2 gap-6 text-[#5A5776]" data-aos="fade-right">
-                  <p className="font-medium">0.014″</p>
-                  <p className="font-medium">0.018″</p>
-                  <p className="font-medium">0.035″</p>
-                  <p className="font-medium">5F</p>
-                  <p className="font-medium">5F, 6F and 7F</p>
-                  <p className="font-medium">7F, 8F and 9F</p>
+      </section>
+      <div className="px-36">
+        <h2 className="mb-[61px] border-l-[10px] border-[#12A89D] pl-[10px]" data-aos="fade-right">
+          Frequently asked questions
+        </h2>
+        <div className="grid grid-cols-12 justify-between items-center">
+          <div className="col-span-3">
+            <Image
+              src={"/about/faq.png"}
+              alt="tick"
+              className="mx-auto"
+              height={390}
+              width={268}
+            />
+          </div>
+          <div className="col-span-9">
+            <div className="space-y-4">
+              {faqs.map((faq, index) => (
+                <div key={index} className="rounded-xl">
+                  <button
+                    className={`flex justify-between items-center w-full px-6 py-6 text-left rounded-t-[7px] rounded-b-none focus:outline-none ${openIndex === index
+                      ? "bg-[#F9FAFB]"
+                      : "bg-white"
+                      }`}
+                    onClick={() => toggleAccordion(index)}
+                  >
+                    <span className="text-lg font-semibold text-gray-800">{faq.question}</span>
+                    <span className="text-2xl text-gray-400">
+                      {openIndex === index ? <ChevronUp /> : <ChevronDown />}
+                    </span>
+                  </button>
+                  <div
+                    className={`transition-[max-height] duration-500 ease-in-out overflow-hidden ${openIndex === index
+                      ? "max-h-[500px] "
+                      : "max-h-0 hidden"
+                      }`}
+                  >
+                    <div className="px-6 pb-6 text-gray-600 bg-gray-50 rounded-b-xl">
+                      {faq.answer}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className="bg-background rounded-[66px] p-16 mt-8" data-aos="fade-up">
-              <div  >
-                {/* <h3 className="text-2xl font-helvetica font-bold mb-4">Sheath Compatibility</h3> */}
-                <div className="grid grid-cols-2 gap-6 text-[#5A5776]" data-aos="fade-right">
-                  <p className="font-medium">0.014″</p>
-                  <p className="font-medium">0.018″</p>
-                  <p className="font-medium">0.035″</p>
-                  <p className="font-medium">4F</p>
-                  <p className="font-medium">4F to 5F</p>
-                  <p className="font-medium">5F to 7F</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
-      </section>
-      <section className="p-[6px] sm:p-5">
-        <ProductSlider />
-      </section>
-      <section className="py-[142px]">
-        <h2 className="text-center mb-[68px]" data-aos="fade-up">Contact Us</h2>
-        <div className="max-w-[1180px] px-[165px] py-12 bg-primary mx-auto rounded-[95px]">
-
+      </div>
+      <section className="px-24 mb-10">
+        <div className="py-5 md:py-16 3xl:py-[94px] bg-[#e0f4f2] rounded-[10px] md:rounded-[72px] mt-[32px] text-center">
+          <h2 className="text-5xl text-[#111827] text-center mb-7">Ready to Superpower Your Ideas?</h2>
+          <p className="text-center text-xl mb-6 mx-auto max-w-[1000px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</p>
+          <h5 className="mb-3 text-[#6B7280] text-center text-sm font-helvetica font-bold">Subscribe to Update</h5>
+          <div className="flex justify-center">
+            <form className="flex w-full max-w-[650px]">
+              <input
+                type="email"
+                placeholder="Enter email to Subscribe"
+                className="flex-1 py-4 px-5 rounded-l-full text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#12A89D] bg-white"
+              />
+              <button
+                type="submit"
+                className="bg-[#12A89D] text-white py-4 px-8 rounded-full text-xl hover:bg-[#0f9080] transition-all"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
         </div>
       </section>
+
     </main>
   );
 }
