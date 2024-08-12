@@ -28,7 +28,7 @@ export default function Home() {
             <span className="bg-white px-4 py-2 text-lg font-semibold border border-gray-300 rounded-full">Products</span>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[80px] max-w-[800px] spbp:max-w-[1200px] 2xl:max-w-[1440px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[80px] max-w-[800px] spbp:max-w-[1200px] 3xl:max-w-[1440px]">
           <div className="flex flex-col" data-aos="fade-up">
             <Star className="mb-3" />
             <h3 className="text-[28px] font-semibold mb-2">Feature</h3>

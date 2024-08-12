@@ -32,7 +32,7 @@ h3 {
 }
 
 button {
-  @apply font-semibold font-openSans text-white bg-[#12A89D] text-[10px] md:text-2xl px-12 md:px-14 2xl:px-[77px] py-2 md:py-4 2xl:py-6 rounded-[72px];
+  @apply font-semibold font-openSans text-white bg-[#12A89D] text-[10px] md:text-2xl px-12 md:px-14 3xl:px-[77px] py-2 md:py-4 3xl:py-6 rounded-[72px];
 }
 
 h4 {
@@ -108,6 +108,7 @@ li {
 .hero-banner {
   @apply bg-contain h-[550px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] bg-no-repeat sm:my-5 w-full flex justify-start pt-[115px] items-center flex-col;
 }
+
 .about-banner {
   @apply bg-contain h-[550px] sm:h-[700px] xl:h-[764px] 3xl:h-[764px] bg-no-repeat sm:my-5 w-full flex justify-start pt-[115px] items-center flex-col;
 }
@@ -122,4 +123,8 @@ li {
 
 .hover-container:hover h3 {
   color: #12A89D;
+}
+
+.contact-form {
+  @apply px-4 py-2 border border-gray-300 bg-[#F1F8FD] text-[#7FA8C7] placeholder-[#7FA8C7] font-bold rounded-md
 }

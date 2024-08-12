@@ -47,9 +47,9 @@ export default function About() {
       </div>
       <section className="bg-mobHeroBg sm:bg-solutionBg hero-banner !pt-0 flex !justify-center !items-center">
         <div className="max-w-[900px]">
-          <h5 className="text-secondary text-sm mb-3 font-medium">PHARMACY SOLUTIONS</h5>
-          <h2 className="text-5xl text-center mb-10">"Building Connections with Customers: Uniting Vision and Design"</h2>
-          <p className="text-2xl text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text Lorem Ipsum is simply dummy text.</p>
+          <h5 className="text-secondary text-sm mb-3 font-medium" data-aos="fade-up">PHARMACY SOLUTIONS</h5>
+          <h2 className="text-5xl text-center mb-10" data-aos="fade-up">"Building Connections with Customers: Uniting Vision and Design"</h2>
+          <p className="text-2xl text-center" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text Lorem Ipsum is simply dummy text.</p>
         </div>
       </section>
       <div className="px-36">
@@ -69,7 +69,7 @@ export default function About() {
           <div className="col-span-9">
             <div className="space-y-4">
               {faqs.map((faq, index) => (
-                <div key={index} className="rounded-xl">
+                <div key={index} className="rounded-xl" data-aos="fade-up">
                   <button
                     className={`flex justify-between items-center w-full px-6 py-6 text-left rounded-t-[7px] rounded-b-none focus:outline-none ${openIndex === index
                       ? "bg-[#F9FAFB]"
@@ -100,10 +100,10 @@ export default function About() {
       </div>
       <section className="px-24 mb-10">
         <div className="py-5 md:py-16 3xl:py-[94px] bg-[#e0f4f2] rounded-[10px] md:rounded-[72px] mt-[32px] text-center">
-          <h2 className="text-5xl text-[#111827] text-center mb-7">Ready to Superpower Your Ideas?</h2>
-          <p className="text-center text-xl mb-6 mx-auto max-w-[1000px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</p>
-          <h5 className="mb-3 text-[#6B7280] text-center text-sm font-helvetica font-bold">Subscribe to Update</h5>
-          <div className="flex justify-center">
+          <h2 className="text-5xl text-[#111827] text-center mb-7" data-aos="fade-up">Ready to Superpower Your Ideas?</h2>
+          <p className="text-center text-xl mb-6 mx-auto max-w-[1000px]" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</p>
+          <h5 className="mb-3 text-[#6B7280] text-center text-sm font-helvetica font-bold" data-aos="fade-up">Subscribe to Update</h5>
+          <div className="flex justify-center" data-aos="fade-up">
             <form className="flex w-full max-w-[650px]">
               <input
                 type="email"

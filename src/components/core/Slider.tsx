@@ -16,7 +16,7 @@ const Slider = () => {
   return (
     <div className="slider-container max-w-[980px] mx-auto ">
       <div className='flex justify-center sm:justify-between items-center mb-16'>
-        <h2 className="sm:border-l-[10px] sm:border-[#ddf1f0] text-center sm:text-left sm:pl-[10px] w-[400px]" data-aos="fade-right">
+        <h2 className="sm:border-l-[10px] sm:border-[#12A89D] text-center sm:text-left sm:pl-[10px] w-[400px]" data-aos="fade-right">
           Explore
           all products
         </h2>

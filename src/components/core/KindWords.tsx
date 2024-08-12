@@ -61,7 +61,7 @@ const KindWords = () => {
                 </div>
                 <p className="text-xs 2xl:text-sm leading-5 mb-4">{slide.feedback}</p>
                 <h3 className="font-helvetica text-sm 2xl:text-lg font-bold">{slide.name}</h3>
-                <p className="text-left sm:text-center font-medium text-[11px] 2xl:text-sm">{slide.position}</p>
+                <p className="text-left font-medium text-[11px] 2xl:text-sm">{slide.position}</p>
               </div>
             </SwiperSlide>
           ))}

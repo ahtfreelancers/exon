@@ -30,39 +30,47 @@ export default function Career() {
   return (
     <main className="relative bg-white">
       <Navbar />
-      <section className="px-16 mb-10">
-        <div className="py-5 md:py-16 3xl:py-[94px] bg-primary rounded-[10px] md:rounded-[52px] mt-[32px] flex justify-center">
-          <h2 className="text-white text-7xl">Carrer</h2>
+      <section className="px-2 md:px-16 mb-10">
+        <div className="py-20 md:py-16 3xl:py-[94px] bg-primary rounded-[28px] md:rounded-[52px] mt-1 md:mt-8 flex justify-center">
+          <h2 className="text-white text-3xl md:text-4xl spbp:text-7xl">Carrer</h2>
         </div>
       </section>
       <section className="bg-[#ebf8f7] py-20">
-        <div className="max-w-[900px] mx-auto">
-          <h2 className="text-center mb-8">Unlock new career opportunities at Exon</h2>
+        <div className="max-w-[350px] md:max-w-[668px] spbp:max-w-[768px] 3xl:max-w-[900px] mx-auto">
+          <div className="relative">
+            <div className="absolute top-[5%] left-[20%] transform -translate-x-1/2 -translate-y-1/2 rotate-[-15deg]">
+              <span className="bg-[#ebf8f7] px-4 text-lg font-semibold text-[#059669] rounded-full">Careers at Exon</span>
+            </div>
+            <h2 className="text-center mb-8">Unlock new career opportunities at Exon</h2>
+            <div className="absolute bottom-[35%] right-[-5%] transform -translate-x-1/2 -translate-y-1/2 rotate-[-15deg]">
+              <span className="bg-[#ebf8f7] px-4 text-lg font-semibold text-[#059669] rounded-full">Careers at Exon</span>
+            </div>
+          </div>
           <p className="text-lg text-center">Pagedone embraces a youthful and flexible spirit, enabling us to swiftly adapt to market research, conditions, and customer demands through our advanced technology.</p>
         </div>
       </section>
-      <section className="px-[254px] py-[150px]">
-        <h2 className="mb-[134px] border-l-[10px] border-[#12A89D] pl-[10px]" data-aos="fade-right">
+      <section className="px-5 md:px-20 spbp:px-36 3xl:px-[254px] py-8 md:py-14 xl:py-24 2xl:py-36">
+        <h2 className="mb-6 md:mb-[134px] md:border-l-[10px] md:border-[#12A89D] md:pl-[10px]" data-aos="fade-right">
           Why join us
         </h2>
-        <div className="grid grid-cols-2 gap-[40px]" data-aos="fade-up">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px]" data-aos="fade-up">
           {benefits.map((benefit) => (
-            <div key={benefit.id} className="flex gap-[27px] font-bold text-[32px]">
+            <div key={benefit.id} className="flex gap-5 md:gap-[27px] font-bold text-[32px]">
               <Image
                 src="/icons/tick.png"
                 alt="tick"
                 height={50}
                 width={50}
-                className="size-12"
+                className="size-7 md:size-12"
               />
-              <h3>{benefit.title}</h3>
+              <h3 className="text-xl md:text-3xl">{benefit.title}</h3>
             </div>
           ))}
         </div>
       </section>
       <section className=" py-[100px] bg-primary">
         <div className="max-w-[1250px] mx-auto">
-          <h2 className="mb-32 border-l-[10px] border-[#12A89D] text-white pl-[10px]" data-aos="fade-right">
+          <h2 className="mb-6 md:mb-32 md:border-l-[10px] md:border-[#12A89D] text-white md:pl-[10px]" data-aos="fade-right">
             Recruitment process
           </h2>
           <div className="grid grid-cols-3 gap-5" data-aos="fade-up">
@@ -87,16 +95,16 @@ export default function Career() {
           </div>
         </div>
       </section>
-      <section className="px-32 3xl:px-64 py-[100px] bg-white">
-        <h2 className="mb-32 border-l-[10px] border-[#12A89D] pl-[10px]" data-aos="fade-right">
+      <section className="px-5 md:px-32 3xl:px-64 py-8 md:py-14 xl:py-24 bg-white">
+        <h2 className="mb-6 md:mb-32 md:border-l-[10px] md:border-[#12A89D] md:pl-[10px]" data-aos="fade-right">
           Open positions
         </h2>
-        <div className="grid grid-cols-2 gap-5" data-aos="fade-up">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5" data-aos="fade-up">
           {positions.map((step) => (
-            <div className="bg-[#f3f4f5] p-12 rounded-[34px] flex justify-between items-center">
+            <div className="bg-[#f3f4f5] p-6 md:p-12 rounded-[34px] flex justify-between items-center">
               <div>
-                <h3>{step.title}</h3>
-                <p className="text-[#4B4B4B] text-xl font-medium">{step.description}</p>
+                <h3 className="text-xl">{step.title}</h3>
+                <p className="text-[#4B4B4B] text-sm md:text-xl font-medium">{step.description}</p>
               </div>
               <div>
                 <button className="px-14 py-3 hover:bg-transparent hover:text-[#12A89D] hover:border hover:border-[#12A89D] transition-colors duration-300 ease-in-out">Apply Now</button>

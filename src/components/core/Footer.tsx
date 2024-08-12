@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
     return (
@@ -16,32 +17,28 @@ export default function Footer() {
                             </div>
                             <div>
                                 <h4 className="text-left mb-6 sm:mb- 3xl:mb-12">Trust & Legal</h4>
-                                <ul className="mt-2 space-y-2">
-                                    <li>
+                                <div className="mt-2 space-y-2 flex flex-col">
+                                    <Link href={'/terms-condition'}>
                                         Terms & Conditions
-                                    </li>
-                                    <li>
+                                    </Link>
+                                    <Link href={'/privacy-policy'}>
                                         Privacy Policy
-                                    </li>
-                                    <li>
+                                    </Link>
+                                    <Link href={''}>
                                         FAQ
-                                    </li>
-                                </ul>
+                                    </Link>
+                                </div>
                             </div>
                             <div>
                                 <h4 className="text-left mb-6 sm:mb- 3xl:mb-12">Contact</h4>
-                                <ul className="mt-2 space-y-2">
-                                    <li>
-                                        <a href="#" className=" hover:text-primary">
-                                            Help
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" className=" hover:text-primary">
-                                            Support
-                                        </a>
-                                    </li>
-                                </ul>
+                                <div className="mt-2 space-y-2 flex flex-col">
+                                    <Link href={'/conatact'}>
+                                        Help
+                                    </Link>
+                                    <Link href={'/contact'}>
+                                        Support
+                                    </Link>
+                                </div>
                             </div>
                             <div>
                                 <h4 className="text-left mb-6 sm:mb- 3xl:mb-12">Social Media</h4>

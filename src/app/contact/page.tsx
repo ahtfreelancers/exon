@@ -5,10 +5,10 @@ import Image from "next/image";
 
 export default function Contact() {
   return (
-    <main className="relative bg-[#e9f2f8] p-5 h-screen ">
+    <main className="relative bg-[#e9f2f8] p-5 min-h-screen ">
       <Navbar />
       <section className="flex justify-center items-center pt-[150px]">
-        <div className="flex max-w-[1440px]  items-center bg-white h-[470px] rounded-[236px] p-10">
+        <div className="flex max-w-[1200px] 3xl:max-w-[1440px] items-center bg-white h-[550px] rounded-[236px] p-10">
           <div className="w-1/2 flex justify-center relative left-[-100px]">
             <div className="rounded-full overflow-hidden">
               <Image
@@ -31,15 +31,15 @@ export default function Contact() {
                 <input
                   type="text"
                   placeholder="Name"
-                  className="w-1/2 px-4 py-2 border border-gray-300 rounded-md"
+                  className="w-1/2 contact-form"
                 />
                 <input
                   type="email"
                   placeholder="Email"
-                  className="w-1/2 px-4 py-2 border border-gray-300 rounded-md"
+                  className="w-1/2 contact-form"
                 />
               </div>
-              <select className="w-full px-4 py-2 border border-gray-300 rounded-md mb-4">
+              <select className="w-full contact-form mb-4">
                 <option value="">Your Interest</option>
                 <option value="option1">Option 1</option>
                 <option value="option2">Option 2</option>
@@ -47,7 +47,7 @@ export default function Contact() {
               </select>
               <textarea
                 placeholder="Message"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md mb-[94px]"
+                className="w-full contact-form mb-[94px]"
               // rows="4"
               />
               <button className="px-[133px] py-4 ">Send</button>
