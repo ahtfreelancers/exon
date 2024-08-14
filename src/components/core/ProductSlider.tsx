@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
@@ -13,9 +13,9 @@ const ProductSlider = () => {
     { src: '/about/product4.svg', description: 'Description text', title: 'PRODUCT NAME DEMO' },
   ];
 
-  const [maxHeight, setMaxHeight] = useState(0);
+  const [maxHeight, setMaxHeight] = useState(538);
   const slideRefs = useRef<HTMLDivElement[]>([]);
-  const swiperRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
 
   const setRef = (el: HTMLDivElement | null, index: number) => {
     if (el) {
@@ -23,40 +23,54 @@ const ProductSlider = () => {
     }
   };
 
-  useLayoutEffect(() => {
-    const heights = slideRefs.current.map(slide => slide.offsetHeight);
+  const calculateMaxHeight = () => {
+    const heights = slideRefs.current.map(slide => slide?.offsetHeight || 0);
     setMaxHeight(Math.max(...heights));
-  }, [slides.length]);
+  };
+
+  useEffect(() => {
+    if (mounted) {
+      calculateMaxHeight();
+    } else {
+      setMounted(true);
+    }
+  }, [mounted, slides.length]);
+
+  useEffect(() => {
+    if (mounted) {
+      calculateMaxHeight();
+      window.addEventListener('resize', calculateMaxHeight);
+      return () => {
+        window.removeEventListener('resize', calculateMaxHeight);
+      };
+    }
+  }, [mounted]);
 
   return (
-    <div className="bg-background py-12 px-12 rounded-[72px]">
+    <div className="bg-background py-12 md:px-12 rounded-[72px]">
       <Swiper
-        ref={swiperRef}
         modules={[Navigation, Pagination, Scrollbar, A11y]}
         spaceBetween={12}
         breakpoints={{
-          430: {
+          320: {
             slidesPerView: 1.3,
+            centeredSlides: true
           },
           768: {
             slidesPerView: 2,
           },
           1024: {
+            slidesPerView: 3,
+          },
+          1440: {
             slidesPerView: 4,
           },
         }}
         loop
-        onSlideChange={() => {
-          const heights = slideRefs.current.map(slide => slide.offsetHeight);
-          setMaxHeight(Math.max(...heights));
-        }}
-        onSwiper={() => {
-          const heights = slideRefs.current.map(slide => slide.offsetHeight);
-          setMaxHeight(Math.max(...heights));
-        }}
+        onSlideChange={calculateMaxHeight}
       >
         {slides.map((slide, index) => (
-          <SwiperSlide key={index} >
+          <SwiperSlide key={index}>
             <div
               ref={(el) => setRef(el, index)}
               className="bg-white shadow px-10 py-12 rounded-[50px] text-center relative"
@@ -66,7 +80,11 @@ const ProductSlider = () => {
               <h4 className="text-lg text-[#6D6D6D] font-semibold font-helvetica mb-14">{slide.description}</h4>
               <img src={slide.src} alt={`Product Image ${index + 1}`} className="mx-auto mb-4" />
               <Link href={'/product/1'}>
-                <button className="mt-4 py-2 px-[52px] rounded-t-full absolute bottom-0 left-[20%] 3xl:left-[26%]">Buy Now</button>
+                <button
+                  className="mt-4 py-2 px-6 sm:px-10 md:px-6 lg:px-5 3xl:px-[42px] rounded-t-full absolute bottom-0 left-1/2 transform -translate-x-1/2"
+                >
+                  Buy Now
+                </button>
               </Link>
             </div>
           </SwiperSlide>

@@ -47,7 +47,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="hidden md:flex rounded-[39px] bg-white px-[77px] sticky top-[20px] right-[20px] left-[20px] z-10">
+            <nav className="hidden lg:flex rounded-[39px] bg-white px-[77px] sticky top-[20px] right-[20px] left-[20px] z-10">
                 <div className="container mx-auto flex items-center justify-between py-4">
                     <div className="flex items-center ">
                         <Image src="/home/logo.svg" alt="Logo" width={96} height={96} />
@@ -69,9 +69,9 @@ export default function Navbar() {
                     </div>
                 </div>
             </nav>
-            <div className="md:hidden fixed right-6 top-6">
+            <div className="lg:hidden fixed right-6 top-6">
                 <nav className={`flex justify-between items-center transition-all duration-300 sm:py-5 ${navBg ? 'fade-in' : ''}`}>
-                    <div className={`relative w-[25%] md:w-[15%] aspect-w-[175] aspect-h-[20] md:aspect-h-[8] ${navBg ? 'text-[#1E205E]' : 'text-white'}`}>
+                    <div className={`relative w-[25%] lg:w-[15%] aspect-w-[175] aspect-h-[20] lg:aspect-h-[8] z-[999999] ${navBg ? 'text-[#1E205E]' : 'text-white'}`}>
                         <Link href="/">
                             <Image
                                 src={`home/mpScrollLogo.svg`}

@@ -17,7 +17,6 @@ export default function Home() {
             <h5 className="mb-8 2xl:mb-[68px]">Dive into our range products</h5>
           </div>
           <button data-aos="fade-up">Explore</button>
-
         </section>
       </div>
       <section className="py-[122px] flex flex-col bg-white items-center justify-center">
@@ -28,29 +27,29 @@ export default function Home() {
             <span className="bg-white px-4 py-2 text-lg font-semibold border border-gray-300 rounded-full">Products</span>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[80px] max-w-[800px] spbp:max-w-[1200px] 3xl:max-w-[1440px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[80px] px-12 spbp:max-w-[1200px] 3xl:max-w-[1440px]">
           <div className="flex flex-col" data-aos="fade-up">
             <Star className="mb-3" />
             <h3 className="text-[28px] font-semibold mb-2">Feature</h3>
-            <p className="text-[#6D6D6D] text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien.</p>
+            <p className="text-[#6D6D6D] text-lg text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien.</p>
           </div>
           <div className="flex flex-col" data-aos="fade-up">
             <Triangle className="mb-3" />
             <h3 className="text-[28px] font-semibold mb-2">Feature</h3>
-            <p className="text-[#6D6D6D] text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien.</p>
+            <p className="text-[#6D6D6D] text-lg text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien.</p>
           </div>
           <div className="flex flex-col" data-aos="fade-up">
             <Hexagon className="mb-3" />
             <h3 className="text-[28px] font-semibold mb-2">Feature</h3>
-            <p className="text-[#6D6D6D] text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien.</p>
+            <p className="text-[#6D6D6D] text-lg text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien.</p>
           </div>
         </div>
       </section>
-      <section className="px-5">
+      <section className="md:px-5">
         <ProductSlider />
       </section>
-      <section className="flex items-center justify-center gap-20 px-[100px] bg-white py-[100px]">
-        <div className="w-1/2 relative h-[680px]" data-aos="fade-right">
+      <section className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-20 px-8 md:px-[100px] bg-white py-[100px]">
+        <div className="relative h-[300px] md:h-[680px]" data-aos="fade-right">
           <Image
             src="/about/featured.png"
             alt="Featured Product"
@@ -58,16 +57,16 @@ export default function Home() {
             objectFit="contain"
           />
         </div>
-        <div className="w-1/2" data-aos="fade-left">
-          <h2 className="mb-4 border-l-[10px] border-[#12A89D] pl-[10px]">
+        <div className="" data-aos="fade-left">
+          <h2 className="mb-4 md:border-l-[10px] md:border-[#12A89D] md:pl-[10px]">
             Featured Product
           </h2>
-          <p className="text-2xl font-helvetica text-textSecondary">
+          <p className="text-base text-left md:text-2xl font-helvetica text-textSecondary">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien. Vestibulum malesuada orci sit amet pretium facilisis. In lobortis congue augue, a commodo libero tincidunt scelerisque.
           </p>
         </div>
       </section>
-      <section className="px-5">
+      <section className="md:px-5">
         <ProductSlider />
       </section>
       <ContactUs />

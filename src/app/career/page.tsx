@@ -1,8 +1,12 @@
 "use client";
 
 import Navbar from "@/components/core/Navbar";
-import Image from "next/image";
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
+import Image from 'next/image';
+import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
+import 'swiper/css/navigation';
+import { useLayoutEffect, useRef, useState } from "react";
 const benefits = [
   { id: 1, title: "Work on global projects" },
   { id: 2, title: "Progressive work culture" },
@@ -16,6 +20,7 @@ const recruitmentSteps = [
   { id: 1, title: "Initial Interview", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", icon: "/icons/interview.png" },
   { id: 2, title: "Technical Round", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", icon: "/icons/technical.png" },
   { id: 3, title: "Final HR discussion", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", icon: "/icons/hr.png" },
+  { id: 3, title: "Final HR discussion", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", icon: "/icons/hr.png" },
 ];
 const positions = [
   { id: 1, title: "Specialist Surgeon", description: "3-5+ Year | Surat | Full Time" },
@@ -27,6 +32,19 @@ const positions = [
 ];
 
 export default function Career() {
+  const [maxHeight, setMaxHeight] = useState(0);
+  const slideRefs = useRef<HTMLDivElement[]>([]);
+
+  const setRef = (el: HTMLDivElement | null, index: number) => {
+    if (el) {
+      slideRefs.current[index] = el;
+    }
+  };
+
+  useLayoutEffect(() => {
+    const heights = slideRefs.current.map(slide => slide.offsetHeight);
+    setMaxHeight(Math.max(...heights));
+  }, [recruitmentSteps.length]);
   return (
     <main className="relative bg-white">
       <Navbar />
@@ -68,30 +86,66 @@ export default function Career() {
           ))}
         </div>
       </section>
-      <section className=" py-[100px] bg-primary">
-        <div className="max-w-[1250px] mx-auto">
+      <section className="py-[100px] bg-primary">
+        <div className="px-5 spbp:px-0 spbp:max-w-[1000px] xl:max-w-[1200px] 3xl:max-w-[1400px] mx-auto">
           <h2 className="mb-6 md:mb-32 md:border-l-[10px] md:border-[#12A89D] text-white md:pl-[10px]" data-aos="fade-right">
             Recruitment process
           </h2>
-          <div className="grid grid-cols-3 gap-5" data-aos="fade-up">
-            {recruitmentSteps.map((step) => (
-              <div
-                key={step.id}
-                className="hover-container bg-[#223848] flex flex-col text-white text-center border-[#666666] border py-[100px] px-5 md:px-7 spbp:px-14 3xl:px-[85px] rounded-[60px] hover:border-[#FFFFFF66] hover:border-opacity-40 transition-colors duration-300 ease-in-out"
+          <div data-aos="fade-up">
+            <div className="relative">
+              <Swiper
+                modules={[Navigation, Pagination, Scrollbar, A11y]}
+                spaceBetween={30}
+                slidesPerView={3}
+                navigation={{
+                  nextEl: ".swiper-button-next",
+                  prevEl: ".swiper-button-prev",
+                }}
+                breakpoints={{
+                  320: {
+                    slidesPerView: 1,
+                    centeredSlides: true
+                  },
+                  768: {
+                    slidesPerView: 2,
+                  },
+                  1024: {
+                    slidesPerView: 3,
+                  }
+                }}
+                loop
+                onSlideChange={() => {
+                  const heights = slideRefs.current.map(slide => slide.offsetHeight);
+                  setMaxHeight(Math.max(...heights));
+                }}
+                onSwiper={() => {
+                  const heights = slideRefs.current.map(slide => slide.offsetHeight);
+                  setMaxHeight(Math.max(...heights));
+                }}
               >
-                <Image
-                  src={step.icon}
-                  alt="tick"
-                  className="mx-auto"
-                  height={90}
-                  width={90}
-                />
-                <h3 className="text-3xl mb-3 transition-colors text-center mt-10 duration-300 ease-in-out">{step.title}</h3>
-                <p className="text-[#939393] text-[17px] font-helvetica text-center">
-                  {step.description}
-                </p>
-              </div>
-            ))}
+                {recruitmentSteps.map((step, index) => (
+                  <SwiperSlide key={index}>
+                    <div
+                      ref={(el) => setRef(el, index)}
+                      className="hover-container bg-[#223848] flex flex-col text-white text-center border-[#666666] border py-[100px] px-5 md:px-7 spbp:px-14 3xl:px-[85px] rounded-[60px] hover:border-[#FFFFFF66] hover:border-opacity-40 transition-colors duration-300 ease-in-out"
+                      style={{ height: maxHeight ? `${maxHeight}px` : "auto" }}
+                    >
+                      <Image
+                        src={step.icon}
+                        alt="tick"
+                        className="mx-auto"
+                        height={90}
+                        width={90}
+                      />
+                      <h3 className="text-3xl mb-3 transition-colors text-center mt-10 duration-300 ease-in-out">{step.title}</h3>
+                      <p className="text-[#939393] text-[17px] font-helvetica text-center">
+                        {step.description}
+                      </p>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
           </div>
         </div>
       </section>
@@ -99,12 +153,12 @@ export default function Career() {
         <h2 className="mb-6 md:mb-32 md:border-l-[10px] md:border-[#12A89D] md:pl-[10px]" data-aos="fade-right">
           Open positions
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5" data-aos="fade-up">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5" data-aos="fade-up">
           {positions.map((step) => (
             <div className="bg-[#f3f4f5] p-6 md:p-12 rounded-[34px] flex justify-between items-center">
               <div>
                 <h3 className="text-xl">{step.title}</h3>
-                <p className="text-[#4B4B4B] text-sm md:text-xl font-medium">{step.description}</p>
+                <p className="text-[#4B4B4B] text-left text-sm md:text-xl font-medium">{step.description}</p>
               </div>
               <div>
                 <button className="px-14 py-3 hover:bg-transparent hover:text-[#12A89D] hover:border hover:border-[#12A89D] transition-colors duration-300 ease-in-out">Apply Now</button>

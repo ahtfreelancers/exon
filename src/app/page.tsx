@@ -31,7 +31,7 @@ export default function Home() {
             />
           </div>
           <div>
-            <h2 className="mb-6 md:mb-14 sm:border-l-[10px] sm:border-[#12A89D] pl-[10px]" data-aos="fade-left">
+            <h2 className="mb-6 md:mb-14 md:border-l-[10px] md:border-[#12A89D] pl-[10px] text-center md:text-left" data-aos="fade-left">
               About Exon
             </h2>
             <p className="font-helvetica text-textSecondary font-normal text-xs md:text-2xl" data-aos="fade-up">

@@ -28,8 +28,8 @@ const KindWords = () => {
 
   return (
     <div className="md:pl-14 lg:pl-28 spbp:pl-44 2xl:pl-60">
-      <p className='mb-2 text-[#D7F9F7A3] font-normal' data-aos="fade-right">What Client say</p>
-      <h2 className='text-white mb-10' data-aos="fade-right">Kind Words</h2>
+      <p className='mb-2 text-[#D7F9F7A3] text-center md:text-left font-normal' data-aos="fade-right">What Client say</p>
+      <h2 className='text-white mb-10 text-center md:text-left' data-aos="fade-right">Kind Words</h2>
       <div className='pl-10 md:pl-0'>
         <Swiper
           modules={[Navigation, Pagination, Scrollbar, A11y]}

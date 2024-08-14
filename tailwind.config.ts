@@ -40,6 +40,7 @@ const config: Config = {
         'aboutBg': "url('/about/about-banner.png')",
         'solutionBg': "url('/about/solutions-about.png')",
         'mobHeroBg': "url('/home/mobHero.png')",
+        'mobaboutBg': "url('/about/mob-banner.png')",
         'producthero': "url('/about/hero.png')",
       }
     },
