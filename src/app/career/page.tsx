@@ -68,7 +68,7 @@ export default function Career() {
         </div>
       </section>
       <section className="px-5 md:px-20 spbp:px-36 3xl:px-[254px] py-8 md:py-14 xl:py-24 2xl:py-36">
-        <h2 className="mb-6 md:mb-[134px] md:border-l-[10px] md:border-[#12A89D] md:pl-[10px]" data-aos="fade-right">
+        <h2 className="mb-6 md:mb-[134px] borderText" data-aos="fade-right">
           Why join us
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px]" data-aos="fade-up">
@@ -88,7 +88,7 @@ export default function Career() {
       </section>
       <section className="py-[100px] bg-primary">
         <div className="px-5 spbp:px-0 spbp:max-w-[1000px] xl:max-w-[1200px] 3xl:max-w-[1400px] mx-auto">
-          <h2 className="mb-6 md:mb-32 md:border-l-[10px] md:border-[#12A89D] text-white md:pl-[10px]" data-aos="fade-right">
+          <h2 className="mb-6 md:mb-32 borderText text-white" data-aos="fade-right">
             Recruitment process
           </h2>
           <div data-aos="fade-up">
@@ -150,7 +150,7 @@ export default function Career() {
         </div>
       </section>
       <section className="px-5 md:px-32 3xl:px-64 py-8 md:py-14 xl:py-24 bg-white">
-        <h2 className="mb-6 md:mb-32 md:border-l-[10px] md:border-[#12A89D] md:pl-[10px]" data-aos="fade-right">
+        <h2 className="mb-6 md:mb-32 borderText" data-aos="fade-right">
           Open positions
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5" data-aos="fade-up">

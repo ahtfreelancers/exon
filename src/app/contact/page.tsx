@@ -5,20 +5,20 @@ import Image from "next/image";
 
 export default function Contact() {
   return (
-    <main className="lg:relative bg-[#e9f2f8] p-5 min-h-screen overflow-auto">
+    <main className="lg:relative bg-[#e9f2f8] p-5 min-h-screen">
       <Navbar />
-      <section className="mx-auto lg:flex justify-center items-center pt-[150px] mt-[100px]">
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:max-w-[1000px] spbp:max-w-[1200px] 3xl:max-w-[1440px] items-center bg-white min-h-[550px] xl:h-[550px] rounded-b-[180px] lg:rounded-[200px] 3xl:rounded-[236px] p-10">
-          <div className="flex rounded-full overflow-hidden justify-center lg:relative left-[-100px]">
+      <section className="mx-auto lg:flex justify-center items-center pt-[80px] mt-[100px] lg:mt-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:max-w-[1000px] spbp:max-w-[1200px] 3xl:max-w-[1440px] bg-white min-h-[550px] lg:min-h-0 xl:h-[520px] rounded-b-[180px] lg:rounded-[200px] 3xl:rounded-[236px] p-10">
+          <div className="flex rounded-full justify-center lg:relative left-[-100px]">
             <Image
               src="/contact/contact.svg"
               alt="Contact"
               width={660}
               height={660}
-              className="size-[300px] lg:size-[480px] absolute lg:relative top-[100px] lg:top-auto spbp:size-[530px] xl:size-[590px] 3xl:size-[660px] object-cover"
+              className="size-[300px] lg:size-[480px] absolute lg:relative top-[100px] lg:top-auto 2xl:top-[-73px] spbp:size-[530px] xl:size-[520px] 3xl:size-[600px] object-cover"
             />
           </div>
-          <div className="lg:pr-10 lg:pt-[32px] xl:pt-[62px] mt-[180px] lg:mt-0">
+          <div className="lg:pr-10 lg:pt-[32px] xl:pt-[62px] 3xl:pt-0 mt-[180px] lg:mt-0">
             <h2 className="text-2xl font-normal text-center mb-8">
               Take your thing to the next level
               <br />

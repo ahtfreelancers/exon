@@ -58,7 +58,7 @@ export default function Home() {
           />
         </div>
         <div className="" data-aos="fade-left">
-          <h2 className="mb-4 md:border-l-[10px] md:border-[#12A89D] md:pl-[10px]">
+          <h2 className="mb-4 borderText">
             Featured Product
           </h2>
           <p className="text-base text-left md:text-2xl font-helvetica text-textSecondary">

@@ -60,7 +60,6 @@ export default function Navbar() {
                         ))}
                     </div>
                     <div className="flex items-center space-x-4">
-                        <Search />
                         <Link href={'/contact'}>
                             <button className=" px-8 py-3 rounded-[60px]">
                                 Contact

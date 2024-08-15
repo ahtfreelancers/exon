@@ -53,7 +53,7 @@ export default function About() {
         </div>
       </section>
       <div className="px-14 md:px-20 xl:px-36 py-8 md:py-32 2xl:py-64">
-        <h2 className="mb-10 md:mb-[61px] md:border-l-[10px] md:border-[#12A89D] md:pl-[10px]" data-aos="fade-right">
+        <h2 className="mb-10 md:mb-[61px] borderText" data-aos="fade-right">
           Frequently asked questions
         </h2>
         <div className="grid grid-cols-12 justify-between items-center">

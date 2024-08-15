@@ -128,3 +128,7 @@ li {
 .contact-form {
   @apply px-4 py-2 border border-gray-300 bg-[#F1F8FD] text-[#7FA8C7] placeholder-[#7FA8C7] font-bold rounded-md
 }
+
+.borderText {
+  @apply md:border-l-[10px] md:border-[#12A89D] md:pl-[10px] text-center md:text-left
+}
