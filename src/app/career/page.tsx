@@ -54,14 +54,14 @@ export default function Career() {
         </div>
       </section>
       <section className="bg-[#ebf8f7] py-20">
-        <div className="max-w-[350px] md:max-w-[668px] spbp:max-w-[768px] 3xl:max-w-[900px] mx-auto">
+        <div className="max-w-[350px] lg:max-w-[668px] spbp:max-w-[768px] 3xl:max-w-[900px] mx-auto">
           <div className="relative">
             <div className="absolute top-[5%] left-[20%] transform -translate-x-1/2 -translate-y-1/2 rotate-[-15deg]">
-              <span className="bg-[#ebf8f7] px-4 text-lg font-semibold text-[#059669] rounded-full">Careers at Exon</span>
+              <span className="bg-[#ebf8f7] px-4 text-sm md:text-lg font-semibold text-[#059669] rounded-full">Careers at Exon</span>
             </div>
             <h2 className="text-center mb-8">Unlock new career opportunities at Exon</h2>
-            <div className="absolute bottom-[35%] right-[-5%] transform -translate-x-1/2 -translate-y-1/2 rotate-[-15deg]">
-              <span className="bg-[#ebf8f7] px-4 text-lg font-semibold text-[#059669] rounded-full">Careers at Exon</span>
+            <div className="absolute bottom-[35%] right-[-20%] md:right-[-38%] lg:right-[-5%] transform -translate-x-1/2 -translate-y-1/2 rotate-[-15deg]">
+              <span className="bg-[#ebf8f7] px-4 text-sm md:text-lg font-semibold text-[#059669] rounded-full">Careers at Exon</span>
             </div>
           </div>
           <p className="text-lg text-center">Pagedone embraces a youthful and flexible spirit, enabling us to swiftly adapt to market research, conditions, and customer demands through our advanced technology.</p>

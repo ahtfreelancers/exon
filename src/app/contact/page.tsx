@@ -5,41 +5,39 @@ import Image from "next/image";
 
 export default function Contact() {
   return (
-    <main className="relative bg-[#e9f2f8] p-5 min-h-screen ">
+    <main className="lg:relative bg-[#e9f2f8] p-5 min-h-screen overflow-auto">
       <Navbar />
-      <section className="flex justify-center items-center pt-[150px]">
-        <div className="flex max-w-[1200px] 3xl:max-w-[1440px] items-center bg-white h-[550px] rounded-[236px] p-10">
-          <div className="w-1/2 flex justify-center relative left-[-100px]">
-            <div className="rounded-full overflow-hidden">
-              <Image
-                src="/contact/contact.svg"
-                alt="Contact"
-                width={660}
-                height={660}
-                className="object-cover"
-              />
-            </div>
+      <section className="mx-auto lg:flex justify-center items-center pt-[150px] mt-[100px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:max-w-[1000px] spbp:max-w-[1200px] 3xl:max-w-[1440px] items-center bg-white min-h-[550px] xl:h-[550px] rounded-b-[180px] lg:rounded-[200px] 3xl:rounded-[236px] p-10">
+          <div className="flex rounded-full overflow-hidden justify-center lg:relative left-[-100px]">
+            <Image
+              src="/contact/contact.svg"
+              alt="Contact"
+              width={660}
+              height={660}
+              className="size-[300px] lg:size-[480px] absolute lg:relative top-[100px] lg:top-auto spbp:size-[530px] xl:size-[590px] 3xl:size-[660px] object-cover"
+            />
           </div>
-          <div className="w-1/2 pr-10 pt-[62px]">
+          <div className="lg:pr-10 lg:pt-[32px] xl:pt-[62px] mt-[180px] lg:mt-0">
             <h2 className="text-2xl font-normal text-center mb-8">
               Take your thing to the next level
               <br />
               Get in touch 👋
             </h2>
-            <form>
-              <div className="flex gap-[20px] mb-4">
+            <form className="text-center">
+              <div className="grid grid-cols-12 gap-[20px] mb-4">
                 <input
                   type="text"
                   placeholder="Name"
-                  className="w-1/2 contact-form"
+                  className="col-span-12 lg:col-span-6 contact-form"
                 />
                 <input
                   type="email"
                   placeholder="Email"
-                  className="w-1/2 contact-form"
+                  className="col-span-12 lg:col-span-6 contact-form"
                 />
               </div>
-              <select className="w-full contact-form mb-4">
+              <select className="col-span-12 w-full contact-form mb-4">
                 <option value="">Your Interest</option>
                 <option value="option1">Option 1</option>
                 <option value="option2">Option 2</option>
@@ -47,10 +45,10 @@ export default function Contact() {
               </select>
               <textarea
                 placeholder="Message"
-                className="w-full contact-form mb-[94px]"
+                className="col-span-12  w-full contact-form mb-[54px] xl:mb-[94px]"
               // rows="4"
               />
-              <button className="px-[133px] py-4 ">Send</button>
+              <button className="px-[80px] lg:px-[133px] py-4 ">Send</button>
             </form>
           </div>
         </div>
