@@ -48,8 +48,8 @@ export default function About() {
       <section className="sm:bg-solutionBg hero-banner px-8 !pt-0 flex !justify-center !items-center">
         <div className="max-w-[900px]">
           <h5 className="text-secondary text-xs md:text-sm mb-3 font-medium" data-aos="fade-up">PHARMACY SOLUTIONS</h5>
-          <h2 className="text-2xl md:text-5xl text-center mb-10" data-aos="fade-up">"Building Connections with Customers: Uniting Vision and Design"</h2>
-          <p className="text-xs md:text-2xl text-center" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text Lorem Ipsum is simply dummy text.</p>
+          <h2 className="text-2xl md:text-5xl text-center mb-10" data-aos="fade-up">&quot;Building Connections with Customers: Uniting Vision and Design&quot;</h2>
+          <p className="text-xs md:text-2xl text-center" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text Lorem Ipsum is simply dummy text.</p>
         </div>
       </section>
       <div className="px-14 md:px-20 xl:px-36 py-8 md:py-32 2xl:py-64">
@@ -101,7 +101,7 @@ export default function About() {
       <section className="px-5 md:px-24 mb-10">
         <div className="py-5 md:py-16 3xl:py-[94px] bg-[#e0f4f2] rounded-[10px] md:rounded-[72px] mt-[32px] text-center px-6 md:px-0">
           <h2 className="text-[28px] md:text-5xl text-[#111827] text-center mb-7" data-aos="fade-up">Ready to Superpower Your Ideas?</h2>
-          <p className="text-center text-base md:text-xl mb-6 mx-auto max-w-[1000px]" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.</p>
+          <p className="text-center text-base md:text-xl mb-6 mx-auto max-w-[1000px]" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard.</p>
           <h5 className="mb-3 text-[#6B7280] text-center text-sm font-helvetica font-bold" data-aos="fade-up">Subscribe to Update</h5>
           <form className="w-[80%] mx-auto flex sm:inline lg:max-w-[650px]" data-aos="fade-up">
             <input

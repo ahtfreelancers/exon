@@ -154,8 +154,8 @@ export default function Career() {
           Open positions
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5" data-aos="fade-up">
-          {positions.map((step) => (
-            <div className="bg-[#f3f4f5] p-6 md:p-12 rounded-[34px] flex justify-between items-center">
+          {positions.map((step,index) => (
+            <div className="bg-[#f3f4f5] p-6 md:p-12 rounded-[34px] flex justify-between items-center" key={index}>
               <div>
                 <h3 className="text-xl">{step.title}</h3>
                 <p className="text-[#4B4B4B] text-left text-sm md:text-xl font-medium">{step.description}</p>
