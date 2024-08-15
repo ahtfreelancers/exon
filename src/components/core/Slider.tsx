@@ -16,7 +16,7 @@ const Slider = () => {
   ];
 
   return (
-    <div className="slider-container md:max-w-[800px] lg:max-w-[800px] xl:max-w-[1200px] mx-auto ">
+    <div className="slider-container md:max-w-[800px] lg:max-w-[900px] xl:max-w-[1200px] mx-auto px-5">
       <div className='flex justify-center md:justify-between items-center mb-16'>
         <h2 className="borderText w-[400px]" data-aos="fade-right">
           Explore
@@ -24,8 +24,8 @@ const Slider = () => {
         </h2>
         <h5 className=' hidden md:flex'>VIEW ALL</h5>
       </div>
-      <div className='px-36 relative flex items-center'>
-        <div className="swiper-btn-prev">
+      <div className='relative flex items-center'>
+        <div className="swiper-btn-prev hidden md:inline-block">
           <PrevArrow />
         </div>
         <Swiper
@@ -39,8 +39,9 @@ const Slider = () => {
           loop
           breakpoints={{
             // For mobile screens
-            640: {
-              slidesPerView: 1,
+            320: {
+              slidesPerView: 1.7,
+              centeredSlides: true,
               spaceBetween: 20,
             },
             // For tablet screens
@@ -55,9 +56,6 @@ const Slider = () => {
             },
           }}
         >
-          <div className="swiper-button-prev">
-            <Image src="/icons/left.png" alt="Previous" width={38} height={38} className='!absolute z-50 left-[-60px]' />
-          </div>
           {slides.map((slide) => (
             <SwiperSlide key={slide.id}>
               <div className="rounded-lg flex flex-col items-start justify-center">
@@ -70,11 +68,8 @@ const Slider = () => {
               </div>
             </SwiperSlide>
           ))}
-          <div className="swiper-button-next absolute z-50">
-            <Image src="/icons/right.png" alt="Next" width={38} height={38} />
-          </div>
         </Swiper>
-        <div className="swiper-btn-next">
+        <div className="swiper-btn-next hidden md:inline-block">
           <NextArrow />
         </div>
       </div>

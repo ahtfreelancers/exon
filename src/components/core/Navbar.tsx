@@ -10,8 +10,8 @@ const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/product", label: "Product" },
-    { href: "/downloads", label: "Downloads" },
-    { href: "/career", label: "Career" }
+    { href: "/career", label: "Career" },
+    { href: "/contact", label: "Contact" }
 ];
 const menuItem = [
     {
@@ -70,7 +70,7 @@ export default function Navbar() {
             </nav>
             <div className="lg:hidden fixed right-6 top-6">
                 <nav className={`flex justify-between items-center transition-all duration-300 sm:py-5 ${navBg ? 'fade-in' : ''}`}>
-                    <div className={`relative w-[25%] lg:w-[15%] aspect-w-[175] aspect-h-[20] lg:aspect-h-[8] z-[999999] ${navBg ? 'text-[#1E205E]' : 'text-white'}`}>
+                    <div className={`relative w-[25%] lg:w-[15%] aspect-w-[175] aspect-h-[20] lg:aspect-h-[8] z-[99999999] ${navBg ? 'text-[#1E205E]' : 'text-white'}`}>
                         <Link href="/">
                             <Image
                                 src={`home/mpScrollLogo.svg`}

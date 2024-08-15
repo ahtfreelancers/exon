@@ -132,3 +132,7 @@ li {
 .borderText {
   @apply md:border-l-[10px] md:border-[#12A89D] md:pl-[10px] text-center md:text-left
 }
+
+.swiper-wrapper {
+  @apply md:max-w-[500px] lg:max-w-[600px]
+}

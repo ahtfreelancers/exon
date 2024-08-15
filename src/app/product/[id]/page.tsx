@@ -99,12 +99,12 @@ export default function About() {
                             objectFit="contain"
                         />
                     </div>
-                    <div className="pr-32" data-aos="fade-left">
+                    <div className="3xl:pr-32" data-aos="fade-left">
                         <h3 className="text-3xl mb-4 font-helvetica font-bold">
                             {productName}
                         </h3>
                         {description.map((para, index) => (
-                            <p key={index} className="text-2xl font-helvetica text-[#5A5776BD] font-normal mb-4">
+                            <p key={index} className="text-base md:text-2xl font-helvetica text-[#5A5776BD] font-normal mb-4">
                                 {para}
                             </p>
                         ))}

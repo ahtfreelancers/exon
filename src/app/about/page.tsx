@@ -118,7 +118,6 @@ export default function About() {
           </form>
         </div>
       </section>
-
     </main>
   );
 }
