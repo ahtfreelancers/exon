@@ -3,22 +3,45 @@ import ContactUs from "@/components/core/ContactUs";
 import KindWords from "@/components/core/KindWords";
 import Navbar from "@/components/core/Navbar";
 import Slider from "@/components/core/Slider";
+import { useScreens } from "@/hooks/useScreens";
 import Image from "next/image";
 
 export default function Home() {
-
+  const { md }: any = useScreens()
 
   return (
     <main className="relative">
-      <div className="sm:bg-background p-[6px] sm:p-5">
+      <div className="sm:bg-background p-1 md:p-[6px]">
         <Navbar />
-        <section className="bg-mobHeroBg sm:bg-heroBg hero-banner">
-          <div className="hero-heading">
-            <h1 className="text-white mb-6" data-aos="fade-up">Challenging limitations</h1>
-            <h5 className="mb-8 2xl:mb-[68px]" data-aos="fade-up">One device at a time</h5>
+        <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px]">
+          {md ? (
+            <Image
+              src="/home/hero.png"
+              priority
+              fill
+              alt="Picture of the author"
+            />
+          ) : (
+            <Image
+              src="/home/mobHero.png"
+              priority
+              fill
+              alt="Picture of the author"
+            />
+          )}
+          <div className="absolute top-20 left-2/4 -translate-x-2/4">
+            <div className="hero-heading">
+              <h1 className="text-white mb-6" data-aos="fade-up">Challenging limitations</h1>
+              <h5 className="mb-8 2xl:mb-[68px]" data-aos="fade-up">One device at a time</h5>
+            </div>
+            <div className="flex justify-center">
+              <button data-aos="fade-up">Know More</button>
+            </div>
           </div>
-          <button data-aos="fade-up">Know More</button>
-        </section>
+        </div>
+        {/* <section className="bg-mobHeroBg sm:bg-heroBg hero-banner">
+          
+        </section> */}
       </div>
       <section className="sm:rounded-[72px] bg-white py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] items-center justify-center px-12 spbp:px-24 3xl:px-36 py-12 2xl:py-24">

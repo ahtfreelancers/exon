@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
 import 'swiper/css/navigation';
 import { ArrowRight } from 'lucide-react';
+import PrevArrow from '@/asset/icons/PrevArrow';
+import NextArrow from '@/asset/icons/NextArrow';
 
 const Slider = () => {
   const slides = [
@@ -22,16 +24,36 @@ const Slider = () => {
         </h2>
         <h5 className=' hidden md:flex'>VIEW ALL</h5>
       </div>
-      <div className='px-36 relative'>
+      <div className='px-36 relative flex items-center'>
+        <div className="swiper-btn-prev">
+          <PrevArrow />
+        </div>
         <Swiper
           modules={[Navigation, Pagination, Scrollbar, A11y]}
-          spaceBetween={30}
-          slidesPerView={3}
+          spaceBetween={20}
+          slidesPerView={1}
           navigation={{
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
+            nextEl: '.swiper-btn-next',
+            prevEl: '.swiper-btn-prev',
           }}
           loop
+          breakpoints={{
+            // For mobile screens
+            640: {
+              slidesPerView: 1,
+              spaceBetween: 20,
+            },
+            // For tablet screens
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 25,
+            },
+            // For larger screens
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 30,
+            },
+          }}
         >
           <div className="swiper-button-prev">
             <Image src="/icons/left.png" alt="Previous" width={38} height={38} className='!absolute z-50 left-[-60px]' />
@@ -52,6 +74,9 @@ const Slider = () => {
             <Image src="/icons/right.png" alt="Next" width={38} height={38} />
           </div>
         </Swiper>
+        <div className="swiper-btn-next">
+          <NextArrow />
+        </div>
       </div>
     </div>
   );
