@@ -1,6 +1,6 @@
 "use client"
 import { Button, Drawer } from "antd";
-import { Menu, Search, X } from "lucide-react";
+import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
@@ -47,7 +47,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="hidden lg:flex rounded-[39px] bg-white px-[77px] sticky top-[20px] right-[20px] left-[20px] z-10">
+            <nav className="hidden laptop:flex rounded-[39px] bg-white px-[77px] sticky top-[20px] right-[20px] left-[20px] z-10">
                 <div className="container mx-auto flex items-center justify-between py-4">
                     <div className="flex items-center ">
                         <Image src="/home/logo.svg" alt="Logo" width={96} height={96} />
@@ -68,16 +68,10 @@ export default function Navbar() {
                     </div>
                 </div>
             </nav>
-            <div className="lg:hidden fixed right-6 top-6">
-                <nav className={`flex justify-between items-center transition-all duration-300 sm:py-5 ${navBg ? 'fade-in' : ''}`}>
-                    <div className={`relative w-[25%] lg:w-[15%] aspect-w-[175] aspect-h-[20] lg:aspect-h-[8] z-[99999999] ${navBg ? 'text-[#1E205E]' : 'text-white'}`}>
-                        <Link href="/">
-                            <Image
-                                src={`home/mpScrollLogo.svg`}
-                                fill
-                                alt={'Main Logo'}
-                            />
-                        </Link>
+            <div className="laptop:hidden w-full px-8 absolute top-6 sm:top-0 z-[99]">
+                <nav className={`w-full flex justify-between items-center transition-all duration-300 sm:py-5 ${navBg ? 'fade-in' : ''}`}>
+                    <div className="flex items-center ">
+                        <Image src="/home/mobile-logo.svg" alt="Logo" width={96} height={96} />
                     </div>
                     <Image
                         src="/icons/bar.png"
