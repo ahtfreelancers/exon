@@ -43,7 +43,7 @@ export default function Home() {
           
         </section> */}
       </div>
-      <section className="sm:rounded-[72px] bg-white py-24">
+    <section className="sm:rounded-[72px] bg-white py-24 homeslider">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] items-center justify-center px-12 spbp:px-24 3xl:px-36 py-12 2xl:py-24">
           <div className="relative h-[440px] sm:h-[590px] 2xl:h-[700px]" data-aos="fade-right">
             <Image

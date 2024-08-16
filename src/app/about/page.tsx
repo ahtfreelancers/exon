@@ -3,6 +3,7 @@ import ContactUs from "@/components/core/ContactUs";
 import KindWords from "@/components/core/KindWords";
 import Navbar from "@/components/core/Navbar";
 import Slider from "@/components/core/Slider";
+import TeamSlider from "@/components/core/TeamSlider";
 import { useScreens } from "@/hooks/useScreens";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
@@ -69,7 +70,7 @@ export default function About() {
           
         </section> */}
       </div>
-      <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 md:mt-10">
+      <div className="relative h-[450px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 md:mt-10">
         {md ? (
           <Image
             src="/about/solutions-about.png"
@@ -85,15 +86,42 @@ export default function About() {
             alt="Picture of the author"
           />
         )}
-        <div className="absolute top-[40%] left-2/4 -translate-x-2/4">
-          <div className="max-w-[900px]">
+        <div className="absolute top-[30%] w-full md:top-[40%] left-2/4 -translate-x-2/4">
+          <div className="max-w-[300px] mx-auto md:max-w-[900px]">
             <h5 className="text-secondary text-xs sm:text-sm mb-3 font-medium" data-aos="fade-up">PHARMACY SOLUTIONS</h5>
             <h2 className="text-2xl sm:text-2xl spbp:text-5xl text-center mb-10" data-aos="fade-up">&quot;Building Connections with Customers: Uniting Vision and Design&quot;</h2>
             <p className="text-xs sm:text-lg spbp:text-2xl text-center" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text Lorem Ipsum is simply dummy text.</p>
           </div>
         </div>
       </div>
-      <div className="px-14 md:px-20 xl:px-36 py-8 md:py-32 2xl:py-64">
+      <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 md:mt-10 mb-14 w-full">
+        {md ? (
+          <>
+            <Image
+              src="/about/team-about.png"
+              priority
+              fill
+              alt="Picture of the author"
+            />
+            <div className="absolute top-20 left-2/4 -translate-x-2/4 md:w-full">
+              <div className="hero-heading mb-20">
+                <h2 className="text-white mb-6 text-center" data-aos="fade-up">Meet our <span className="text-secondary">special </span>team</h2>
+              </div>
+              <TeamSlider />
+            </div>
+          </>
+
+        ) : (
+          <div className="bg-white min-h-[430px]">
+            <div className="w-full">
+              <h2 className="text-black w-full md:text-white mb-6 text-center" data-aos="fade-up">Meet our <span className="text-secondary">special </span>team</h2>
+            </div>
+            <TeamSlider />
+          </div>
+        )}
+
+      </div>
+      <div className="px-14 md:px-20 xl:px-36 py-8 md:py-32 2xl:py-64 mt-28 md:mt-20">
         <h2 className="mb-10 md:mb-[61px] borderText" data-aos="fade-right">
           Frequently asked questions
         </h2>
