@@ -3,21 +3,46 @@
 import ContactUs from "@/components/core/ContactUs";
 import Navbar from "@/components/core/Navbar";
 import ProductSlider from "@/components/core/ProductSlider";
+import { useScreens } from "@/hooks/useScreens";
 import { Hexagon, Star, Triangle } from "lucide-react";
 import Image from "next/image";
 
-export default function Home() {
+export default function Product() {
+  const { md }: any = useScreens()
+
   return (
     <main className="relative">
-      <div className="bg-background p-5">
+      <div className="sm:bg-background p-1 md:p-[6px]">
         <Navbar />
-        <section className="bg-producthero hero-banner">
-          <div className="hero-heading" data-aos="fade-up">
-            <h1 className="text-white mb-6">Our Top Products</h1>
-            <h5 className="mb-8 2xl:mb-[68px]">Dive into our range products</h5>
+        <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 md:mt-10">
+          {md ? (
+            <Image
+              src="/about/hero.png"
+              priority
+              fill
+              alt="Picture of the author"
+            />
+          ) : (
+            <Image
+              src="/about/mobproduct.png"
+              priority
+              fill
+              alt="Picture of the author"
+            />
+          )}
+          <div className="absolute top-20 left-2/4 -translate-x-2/4 md:w-full">
+            <div className="hero-heading">
+              <h1 className="text-white mb-6 text-center">Our Top Products</h1>
+              <h5 className="mb-8 2xl:mb-[68px]">Dive into our range products</h5>
+            </div>
+            <div className="flex justify-center">
+              <button data-aos="fade-up">Explore</button>
+            </div>
           </div>
-          <button data-aos="fade-up">Explore</button>
-        </section>
+        </div>
+        {/* <section className="bg-mobHeroBg sm:bg-heroBg hero-banner">
+          
+        </section> */}
       </div>
       <section className="py-[122px] flex flex-col bg-white items-center justify-center">
         <h2 className="mb-[100px]" data-aos="fade-up">Precision. Reliability. Excellence.</h2>

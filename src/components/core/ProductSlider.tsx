@@ -6,11 +6,11 @@ import Link from 'next/link';
 
 const ProductSlider = () => {
   const slides = [
-    { src: '/about/product1.svg', description: 'Description text', title: 'PRODUCT NAME DEMO' },
-    { src: '/about/product2.svg', description: 'Description text', title: 'PRODUCT NAME DEMO' },
-    { src: '/about/product3.svg', description: 'Description text', title: 'PRODUCT NAME DEMO' },
-    { src: '/about/product4.svg', description: 'Description text', title: 'PRODUCT NAME DEMO' },
-    { src: '/about/product4.svg', description: 'Description text', title: 'PRODUCT NAME DEMO' },
+    { src: '/about/product1.svg', description: 'Description text', title: 'Infinity', slug: 'infinity' },
+    { src: '/about/product2.svg', description: 'Description text', title: 'Sleek', slug: 'sleek' },
+    { src: '/about/product3.svg', description: 'Description text', title: 'Swift', slug: 'swift' },
+    { src: '/about/product4.svg', description: 'Description text', title: 'Intima', slug: 'intima' },
+    { src: '/about/product4.svg', description: 'Description text', title: 'Endostent', slug: 'endostent' },
   ];
 
   const [maxHeight, setMaxHeight] = useState(538);
@@ -79,7 +79,7 @@ const ProductSlider = () => {
               <h3 className="text-[28px] mb-4 font-bold font-helvetica">{slide.title}</h3>
               <h4 className="text-lg text-[#6D6D6D] font-semibold font-helvetica mb-14">{slide.description}</h4>
               <img src={slide.src} alt={`Product Image ${index + 1}`} className="mx-auto mb-4" />
-              <Link href={'/product/1'}>
+              <Link href={`/product/${slide.slug}`}>
                 <button
                   className="mt-4 py-2 px-6 sm:px-10 md:px-6 lg:px-5 3xl:px-[42px] rounded-t-full absolute bottom-0 left-1/2 transform -translate-x-1/2"
                 >

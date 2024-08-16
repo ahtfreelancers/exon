@@ -68,7 +68,7 @@ export default function Navbar() {
                     </div>
                 </div>
             </nav>
-            <div className="laptop:hidden w-full px-8 absolute top-6 sm:top-0 z-[99]">
+            <div className="laptop:hidden w-full fixed px-8 top-9 sm:top-0 z-[99]">
                 <nav className={`w-full flex justify-between items-center transition-all duration-300 sm:py-5 ${navBg ? 'fade-in' : ''}`}>
                     <div className="flex items-center ">
                         <Image src="/home/mobile-logo.svg" alt="Logo" width={96} height={96} />

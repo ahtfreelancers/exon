@@ -3,6 +3,7 @@ import ContactUs from "@/components/core/ContactUs";
 import KindWords from "@/components/core/KindWords";
 import Navbar from "@/components/core/Navbar";
 import Slider from "@/components/core/Slider";
+import { useScreens } from "@/hooks/useScreens";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -28,6 +29,7 @@ const faqs = [
 
 export default function About() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const { md }: any = useScreens()
 
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -35,23 +37,62 @@ export default function About() {
 
   return (
     <main className="relative">
-      <div className="p-[6px] sm:p-5">
+      <div className="sm:bg-background p-1 md:p-[6px]">
         <Navbar />
-        <section className="bg-mobaboutBg sm:bg-aboutBg hero-banner">
-          <div className="max-w-[250px] sm:max-w-full text-center">
-            <h1 className="text-white mb-3 lg:mb-6" data-aos="fade-up">So how did<span className="text-secondary"> Exon</span> come to be?</h1>
+        <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 md:mt-10">
+          {md ? (
+            <Image
+              src="/about/about-banner.png"
+              priority
+              fill
+              alt="Picture of the author"
+            />
+          ) : (
+            <Image
+              src="/about/mob-banner.png"
+              priority
+              fill
+              alt="Picture of the author"
+            />
+          )}
+          <div className="absolute top-20 left-2/4 -translate-x-2/4 md:w-full">
+            <div className="hero-heading">
+              <h1 className="text-white mb-6 text-center" data-aos="fade-up">So how did<span className="text-secondary"> Exon</span> come to be?</h1>
+              <h5 className="mb-8 2xl:mb-[68px] text-sm text-center lg:text-[28px]" data-aos="fade-up">Exon Therapeutics LLP was founded by healthcare</h5>
+            </div>
+            <div className="flex justify-center">
+              <button data-aos="fade-up">Meet our team</button>
+            </div>
           </div>
-          <h5 className="mb-8 2xl:mb-[68px] text-sm text-center lg:text-[28px]" data-aos="fade-up">Exon Therapeutics LLP was founded by healthcare</h5>
-          <button data-aos="fade-up">Meet our team</button>
-        </section>
-      </div>
-      <section className="sm:bg-solutionBg hero-banner px-8 !pt-0 flex !justify-center !items-center">
-        <div className="max-w-[900px]">
-          <h5 className="text-secondary text-xs md:text-sm mb-3 font-medium" data-aos="fade-up">PHARMACY SOLUTIONS</h5>
-          <h2 className="text-2xl md:text-5xl text-center mb-10" data-aos="fade-up">&quot;Building Connections with Customers: Uniting Vision and Design&quot;</h2>
-          <p className="text-xs md:text-2xl text-center" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text Lorem Ipsum is simply dummy text.</p>
         </div>
-      </section>
+        {/* <section className="bg-mobHeroBg sm:bg-heroBg hero-banner">
+          
+        </section> */}
+      </div>
+      <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 md:mt-10">
+        {md ? (
+          <Image
+            src="/about/solutions-about.png"
+            priority
+            fill
+            alt="Picture of the author"
+          />
+        ) : (
+          <Image
+            src="/about/solutionmob.png"
+            priority
+            fill
+            alt="Picture of the author"
+          />
+        )}
+        <div className="absolute top-[40%] left-2/4 -translate-x-2/4">
+          <div className="max-w-[900px]">
+            <h5 className="text-secondary text-xs sm:text-sm mb-3 font-medium" data-aos="fade-up">PHARMACY SOLUTIONS</h5>
+            <h2 className="text-2xl sm:text-2xl spbp:text-5xl text-center mb-10" data-aos="fade-up">&quot;Building Connections with Customers: Uniting Vision and Design&quot;</h2>
+            <p className="text-xs sm:text-lg spbp:text-2xl text-center" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text Lorem Ipsum is simply dummy text.</p>
+          </div>
+        </div>
+      </div>
       <div className="px-14 md:px-20 xl:px-36 py-8 md:py-32 2xl:py-64">
         <h2 className="mb-10 md:mb-[61px] borderText" data-aos="fade-right">
           Frequently asked questions
@@ -103,11 +144,11 @@ export default function About() {
           <h2 className="text-[28px] md:text-5xl text-[#111827] text-center mb-7" data-aos="fade-up">Ready to Superpower Your Ideas?</h2>
           <p className="text-center text-base md:text-xl mb-6 mx-auto max-w-[1000px]" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard.</p>
           <h5 className="mb-3 text-[#6B7280] text-center text-sm font-helvetica font-bold" data-aos="fade-up">Subscribe to Update</h5>
-          <form className="w-[80%] mx-auto flex sm:inline lg:max-w-[650px]" data-aos="fade-up">
+          <form className="w-[80%]  flex sm:inline lg:max-w-[650px]" data-aos="fade-up">
             <input
               type="email"
               placeholder="Enter email to Subscribe"
-              className="md:flex-1 py-4 px-5 rounded-l-full text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#12A89D] bg-white"
+              className="md:flex-1 py-2 md:py-4 px-5 max-w-full rounded-l-full text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#12A89D] bg-white"
             />
             <button
               type="submit"

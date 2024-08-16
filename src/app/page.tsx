@@ -13,7 +13,7 @@ export default function Home() {
     <main className="relative">
       <div className="sm:bg-background p-1 md:p-[6px]">
         <Navbar />
-        <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-24">
+        <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 md:mt-10">
           {md ? (
             <Image
               src="/home/hero.png"
@@ -29,9 +29,9 @@ export default function Home() {
               alt="Picture of the author"
             />
           )}
-          <div className="absolute top-20 left-2/4 -translate-x-2/4">
+          <div className="absolute top-20 left-2/4 -translate-x-2/4 md:w-full">
             <div className="hero-heading">
-              <h1 className="text-white mb-6" data-aos="fade-up">Challenging limitations</h1>
+              <h1 className="text-white mb-6 text-center" data-aos="fade-up">Challenging limitations</h1>
               <h5 className="mb-8 2xl:mb-[68px]" data-aos="fade-up">One device at a time</h5>
             </div>
             <div className="flex justify-center">
