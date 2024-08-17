@@ -172,18 +172,20 @@ export default function About() {
           <h2 className="text-[28px] md:text-5xl text-[#111827] text-center mb-7" data-aos="fade-up">Ready to Superpower Your Ideas?</h2>
           <p className="text-center text-base md:text-xl mb-6 mx-auto max-w-[1000px]" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard.</p>
           <h5 className="mb-3 text-[#6B7280] text-center text-sm font-helvetica font-bold" data-aos="fade-up">Subscribe to Update</h5>
-          <form className="w-[80%]  flex sm:inline lg:max-w-[650px]" data-aos="fade-up">
-            <input
-              type="email"
-              placeholder="Enter email to Subscribe"
-              className="md:flex-1 py-2 md:py-4 px-5 max-w-full rounded-l-full text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#12A89D] bg-white"
-            />
-            <button
-              type="submit"
-              className="bg-[#12A89D] text-white py-2 md:py-4 px-6 md:px-8 rounded-full text-base md:text-xl hover:bg-[#0f9080] transition-all"
-            >
-              Subscribe
-            </button>
+          <form data-aos="fade-up">
+            <div className="flex max-w-[95%] md:max-w-[70%] lg:max-w-[50%] mx-auto">
+              <input
+                type="email"
+                placeholder="Enter email to Subscribe"
+                className="md:flex-1 py-2 md:py-4 px-5 w-full rounded-l-full text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#12A89D] bg-white"
+              />
+              <button
+                type="submit"
+                className="bg-[#12A89D] text-white py-2 md:py-4 px-6 md:px-8 rounded-full text-base md:text-xl hover:bg-[#0f9080] transition-all"
+              >
+                Subscribe
+              </button>
+            </div>
           </form>
         </div>
       </section>

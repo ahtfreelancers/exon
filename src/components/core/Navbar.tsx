@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const navLinks = [
     { href: "/", label: "Home" },
@@ -13,48 +13,37 @@ const navLinks = [
     { href: "/career", label: "Career" },
     { href: "/contact", label: "Contact" }
 ];
-const menuItem = [
-    {
-        name: 'Home',
-        url: '/home'
-    },
-    {
-        name: 'About Us',
-        url: '/about-us'
-    },
-    {
-        name: 'Medicines',
-        url: '/medicines'
-    },
-    {
-        name: 'FAQ',
-        url: '/home#faqsection'
-    }
-]
+
 export default function Navbar() {
     const pathname = usePathname();
-    const [placement, setPlacement] = useState()
-    const [open, setOpen] = useState(false)
-    const [navBg, setNavBg] = useState(false)
+    const [placement, setPlacement] = useState();
+    const [open, setOpen] = useState(false);
+    const [navBg, setNavBg] = useState(false);
+    const [selectedLink, setSelectedLink] = useState("");
 
+    useEffect(() => {
+        if (pathname) {
+            setSelectedLink(pathname);
+        }
+    }, [pathname]);
 
     const closeDrawer = () => {
         setOpen(false);
-    }
+    };
     const showDrawer = () => {
         setOpen(true);
-    }
+    };
 
     return (
         <>
             <nav className="hidden laptop:flex rounded-[39px] bg-white px-[77px] sticky top-[20px] right-[20px] left-[20px] z-10">
                 <div className="container mx-auto flex items-center justify-between py-4">
-                    <div className="flex items-center ">
+                    <div className="flex items-center">
                         <Image src="/home/logo.svg" alt="Logo" width={96} height={96} />
                     </div>
                     <div className="flex space-x-8">
                         {navLinks.map((link) => (
-                            <Link key={link.href} href={link.href} className={`font-openSans text-lg ${pathname === link.href ? 'text-primary font-bold' : ''}`}>
+                            <Link key={link.href} href={link.href} className={`font-openSans text-lg ${selectedLink === link.href ? 'text-primary font-bold' : ''}`}>
                                 {link.label}
                             </Link>
                         ))}
@@ -70,7 +59,7 @@ export default function Navbar() {
             </nav>
             <div className="laptop:hidden w-full fixed px-8 top-9 sm:top-0 z-[99]">
                 <nav className={`w-full flex justify-between items-center transition-all duration-300 sm:py-5 ${navBg ? 'fade-in' : ''}`}>
-                    <div className="flex items-center ">
+                    <div className="flex items-center">
                         <Image src="/home/mobile-logo.svg" alt="Logo" width={96} height={96} />
                     </div>
                     <Image
@@ -106,20 +95,18 @@ export default function Navbar() {
                             <X />
                         </Button>
                         <div className="grid">
-                            {!!navLinks && navLinks.map((item, index) => {
-                                return (
-                                    <Link
-                                        key={index}
-                                        href={item.href === '/#faqsection' ? '/home#faqsection' : item.href}
-                                        className={`text-[#1E3A2B] ${index === 1 ? 'bg-[#01B3A32E]' : ''} font-helvetica px-6 py-3 rounded-lg mb-2 font-medium text-base`}
-                                        onClick={closeDrawer}
-                                    >
-                                        <div>
-                                            {item.label}
-                                        </div>
-                                    </Link>
-                                )
-                            })}
+                            {navLinks.map((item, index) => (
+                                <Link
+                                    key={index}
+                                    href={item.href}
+                                    className={`text-[#1E3A2B] ${selectedLink === item.href ? 'bg-[#01B3A32E]' : ''} font-helvetica px-6 py-3 rounded-lg mb-2 font-medium text-base`}
+                                    onClick={closeDrawer}
+                                >
+                                    <div>
+                                        {item.label}
+                                    </div>
+                                </Link>
+                            ))}
                         </div>
                     </Drawer>
                 </div>
