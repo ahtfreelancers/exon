@@ -47,7 +47,7 @@ const ProductSlider = () => {
   }, [mounted]);
 
   return (
-    <div className="bg-background py-12 md:px-12 rounded-[72px]">
+    <div className="bg-background py-12 lg:px-12 rounded-[72px]">
       <Swiper
         modules={[Navigation, Pagination, Scrollbar, A11y]}
         spaceBetween={12}
@@ -81,9 +81,9 @@ const ProductSlider = () => {
               <img src={slide.src} alt={`Product Image ${index + 1}`} className="mx-auto mb-4" />
               <Link href={`/product/${slide.slug}`}>
                 <button
-                  className="mt-4 py-2 px-6 sm:px-10 md:px-6 lg:px-5 3xl:px-[42px] rounded-t-full absolute bottom-0 left-1/2 transform -translate-x-1/2"
+                  className="mt-4 py-2 px-8 font-medium md:font-bold text-base rounded-b-none sm:px-10 md:px-6 lg:px-5 3xl:px-[42px] rounded-t-[28px] md:rounded-t-full absolute bottom-0 left-1/2 transform -translate-x-1/2"
                 >
-                  Buy Now
+                  Know More
                 </button>
               </Link>
             </div>

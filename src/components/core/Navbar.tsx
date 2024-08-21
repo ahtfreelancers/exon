@@ -1,4 +1,5 @@
 "use client"
+import { useScreens } from "@/hooks/useScreens";
 import { Button, Drawer } from "antd";
 import { X } from "lucide-react";
 import Image from "next/image";
@@ -20,6 +21,7 @@ export default function Navbar() {
     const [open, setOpen] = useState(false);
     const [navBg, setNavBg] = useState(false);
     const [selectedLink, setSelectedLink] = useState("");
+    const { md }: any = useScreens()
 
     useEffect(() => {
         if (pathname) {
@@ -43,7 +45,8 @@ export default function Navbar() {
                     </div>
                     <div className="flex space-x-8">
                         {navLinks.map((link) => (
-                            <Link key={link.href} href={link.href} className={`font-openSans text-lg ${selectedLink === link.href ? 'text-primary font-bold' : ''}`}>
+                            (md && link.label != "Contact") &&
+                            < Link key={link.href} href={link.href} className={`font-openSans text-lg ${selectedLink === link.href ? 'text-primary font-bold' : ''}`}>
                                 {link.label}
                             </Link>
                         ))}
@@ -56,8 +59,8 @@ export default function Navbar() {
                         </Link>
                     </div>
                 </div>
-            </nav>
-            <div className="laptop:hidden w-full fixed px-8 top-9 sm:top-0 z-[99]">
+            </nav >
+            <div className="laptop:hidden w-full absolute px-8 top-9 sm:top-0 z-[99]">
                 <nav className={`w-full flex justify-between items-center transition-all duration-300 sm:py-5 ${navBg ? 'fade-in' : ''}`}>
                     <div className="flex items-center">
                         <Image src="/home/mobile-logo.svg" alt="Logo" width={96} height={96} />

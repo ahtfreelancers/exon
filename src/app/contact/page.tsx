@@ -5,9 +5,9 @@ import Image from "next/image";
 
 export default function Contact() {
   return (
-    <main className="lg:relative bg-[#e9f2f8] p-5 min-h-screen">
+    <main className="lg:relative bg-[#e9f2f8] p-5 min-h-screen contactus">
       <Navbar />
-      <section className="mx-auto lg:flex justify-center items-center pt-[80px] mt-[100px] lg:mt-0">
+      <section className="mx-auto lg:flex justify-center items-center pt-[80px] mt-[100px] lg:mt-0 bg-[#e9f2f8]">
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:max-w-[1000px] spbp:max-w-[1200px] 3xl:max-w-[1440px] bg-white min-h-[550px] lg:min-h-0 xl:h-[520px] rounded-b-[180px] lg:rounded-[200px] 3xl:rounded-[236px] p-10">
           <div className="flex rounded-full justify-center lg:relative left-[-100px]">
             <Image

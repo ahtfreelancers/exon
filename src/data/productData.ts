@@ -66,12 +66,18 @@ export const productData = {
         deliverySystems: {
             title: "Delivery Systems",
             details: [
-                "Delivery System Type: Monorail rapid exchange",
-                "Polymer Type: Biodegradable polymer",
-                "Nominal Pressure: 8 Bar",
-                "Rated Burst Pressure: 16 Bar",
-                "Guidewire Compatibility: 0.014″",
-                "Guiding Catheter Compatibility: 5F"
+                "Delivery System Type",
+                "Monorail rapid exchange",
+                "Polymer Type",
+                "Biodegradable polymer",
+                "Nominal Pressure",
+                "8 Bar",
+                "Rated Burst Pressure",
+                "16 Bar",
+                "Guidewire Compatibility",
+                "0.014″",
+                "Guiding Catheter Compatibility",
+                "5F"
             ]
         }
     },
