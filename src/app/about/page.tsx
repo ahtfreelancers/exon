@@ -40,7 +40,7 @@ export default function About() {
     <main className="relative">
       <div className="sm:bg-background p-1 md:p-[6px]">
         <Navbar />
-        <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 md:mt-10">
+        <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 lg:mt-10">
           {md ? (
             <Image
               src="/about/about-banner.png"
@@ -94,7 +94,7 @@ export default function About() {
           </div>
         </div>
       </div>
-      <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 md:mt-10 mb-14 w-full">
+      <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 lg:mt-10 mb-14 w-full">
         {md ? (
           <>
             <Image

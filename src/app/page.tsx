@@ -13,7 +13,7 @@ export default function Home() {
     <main className="relative">
       <div className="sm:bg-background p-1 md:p-[6px]">
         <Navbar />
-        <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 md:mt-10">
+        <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 lg:mt-10">
           {md ? (
             <Image
               src="/home/hero.png"

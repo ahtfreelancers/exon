@@ -11,6 +11,7 @@ const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/product", label: "Product" },
+    { href: "/accessories", label: "Accessories" },
     { href: "/career", label: "Career" },
     { href: "/contact", label: "Contact" }
 ];
@@ -41,7 +42,9 @@ export default function Navbar() {
             <nav className="hidden laptop:flex rounded-[39px] bg-white px-[77px] sticky top-[20px] right-[20px] left-[20px] z-10">
                 <div className="container mx-auto flex items-center justify-between py-4">
                     <div className="flex items-center">
-                        <Image src="/home/logo.svg" alt="Logo" width={96} height={96} />
+                        <Link href={'/'}>
+                            <Image src="/home/logo.svg" alt="Logo" width={96} height={96} />
+                        </Link>
                     </div>
                     <div className="flex space-x-8">
                         {navLinks.map((link) => (
@@ -61,9 +64,11 @@ export default function Navbar() {
                 </div>
             </nav >
             <div className="laptop:hidden w-full absolute px-8 top-9 sm:top-0 z-[99]">
-                <nav className={`w-full flex justify-between items-center transition-all duration-300 sm:py-5 ${navBg ? 'fade-in' : ''}`}>
+                <nav className={`w-full flex justify-between items-center transition-all duration-300 sm:pt-8 ${navBg ? 'fade-in' : ''}`}>
                     <div className="flex items-center">
-                        <Image src="/home/mobile-logo.svg" alt="Logo" width={96} height={96} />
+                        <Link href={'/'}>
+                            <Image src="/home/mobile-logo.svg" alt="Logo" width={96} height={96} />
+                        </Link>
                     </div>
                     <Image
                         src="/icons/bar.png"
