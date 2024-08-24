@@ -32,17 +32,16 @@ export default function Contact() {
                   className="col-span-12 lg:col-span-6 contact-form"
                 />
                 <input
-                  type="email"
-                  placeholder="Email"
+                  type="contact"
+                  placeholder="Contact Number"
                   className="col-span-12 lg:col-span-6 contact-form"
                 />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  className="col-span-12 contact-form"
+                />
               </div>
-              <select className="col-span-12 w-full contact-form mb-4">
-                <option value="">Your Interest</option>
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-              </select>
               <textarea
                 placeholder="Message"
                 className="col-span-12  w-full contact-form mb-[54px] xl:mb-[94px]"

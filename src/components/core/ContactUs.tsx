@@ -38,14 +38,6 @@ const ContactUs = () => {
               className="p-3 md:p-5 rounded-[32px] md:rounded-[71px] border-none bg-[#f5f5f5] text-black w-full"
             />
             <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email"
-              className="p-3 md:p-5 rounded-[32px] md:rounded-[71px] border-none bg-[#f5f5f5] text-black w-full"
-            />
-            <input
               type="text"
               name="contactNumber"
               value={formData.contactNumber}
@@ -53,20 +45,20 @@ const ContactUs = () => {
               placeholder="Contact Number"
               className="p-3 md:p-5 rounded-[32px] md:rounded-[71px] border-none bg-[#f5f5f5] text-black w-full"
             />
-            <input
-              type="text"
-              name="interest"
-              value={formData.interest}
-              onChange={handleChange}
-              placeholder="Your Interest"
-              className="p-3 md:p-5 rounded-[32px] md:rounded-[71px] border-none bg-[#f5f5f5] text-black w-full"
-            />
           </div>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email"
+            className="p-3 md:p-5 rounded-[32px] md:rounded-[71px] border-none bg-[#f5f5f5] text-black w-full"
+          />
           <textarea
-            name="message"
+            name="interest"
             value={formData.message}
             onChange={handleChange}
-            placeholder="Message"
+            placeholder="Your Interest"
             className="p-3 md:p-5 rounded-xl md:rounded-2xl border-none bg-[#f5f5f5] text-black w-full h-40"
           />
           <div className="flex justify-center gap-5">

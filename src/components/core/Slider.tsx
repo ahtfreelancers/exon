@@ -40,7 +40,7 @@ const Slider = () => {
           }}
           loop={true}
           autoplay={{
-            delay: 2000, // Adjust the delay as needed
+            delay: 2500, // Adjust the delay as needed
             disableOnInteraction: false, // Continue autoplay even when user interacts with the slider
           }}
           breakpoints={{
@@ -64,18 +64,18 @@ const Slider = () => {
         >
           {slides?.map((slide) => (
             <SwiperSlide key={slide?.id}>
-              <div className="rounded-lg flex flex-col items-start justify-center">
-                <div className='bg-primary flex justify-center rounded-[30px] items-center size-[200px]'>
-                  <Image src={slide?.image} alt={`Slide ${slide?.id}`} width={150} height={150} />
-                </div>
-                <div className='flex justify-between items-center w-full mt-3'>
-                  <h4 className='font-helvetica text-xs'>{slide?.name}</h4>
-                  <Link href={slide?.slug}>
+              <Link href={slide?.slug}>
+                <div className="rounded-lg flex flex-col items-start justify-center">
+                  <div className='bg-primary flex justify-center rounded-[30px] items-center size-[200px]'>
+                    <Image src={slide?.image} alt={`Slide ${slide?.id}`} width={150} height={150} />
+                  </div>
+                  <div className='flex justify-between items-center w-full mt-3'>
+                    <h4 className='font-helvetica text-xs'>{slide?.name}</h4>
                     <ArrowRight />
-                  </Link>
+                  </div>
+                  {/* <h4 className='font-helvetica text-[10px]'>Category Detail</h4> */}
                 </div>
-                {/* <h4 className='font-helvetica text-[10px]'>Category Detail</h4> */}
-              </div>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>

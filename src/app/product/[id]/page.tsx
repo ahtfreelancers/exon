@@ -41,10 +41,10 @@ export default function ProductPage() {
                         />
                     </div>
                     <div className="3xl:pr-32" data-aos="fade-left">
-                        <h3 className="text-2xl mb-4 font-helvetica text-[#162D3E] font-normal">
+                        <h3 className="text-2xl mb-4 font-helvetica text-[#162D3E] font-medium">
                             <span className="text-4xl font-medium block md:inline">{productName}</span> {title}
                         </h3>
-                        <p className="text-base text-left lg:text-2xl" dangerouslySetInnerHTML={{ __html: content }} />
+                        <p className="text-base text-left lg:text-2xl text-[#919191] font-medium" dangerouslySetInnerHTML={{ __html: content }} />
                     </div>
                 </section>
             </div>

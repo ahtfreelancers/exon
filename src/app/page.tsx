@@ -1,10 +1,11 @@
 "use client"
 import ContactUs from "@/components/core/ContactUs";
-import KindWords from "@/components/core/KindWords";
+// import KindWords from "@/components/core/KindWords";
 import Navbar from "@/components/core/Navbar";
 import Slider from "@/components/core/Slider";
 import { useScreens } from "@/hooks/useScreens";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   const { md }: any = useScreens()
@@ -35,7 +36,8 @@ export default function Home() {
               <h5 className="mb-8 2xl:mb-[68px]" data-aos="fade-up">One device at a time</h5>
             </div>
             <div className="flex justify-center">
-              <button data-aos="fade-up">Know More</button>
+              <Link href={'/about'}><button data-aos="fade-up">Know More</button>
+              </Link>
             </div>
           </div>
         </div>
@@ -43,21 +45,23 @@ export default function Home() {
           
         </section> */}
       </div>
-    <section className="sm:rounded-[72px] bg-white py-24 homeslider">
+      <section className="sm:rounded-[72px] bg-white py-24 homeslider">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px] items-center justify-center px-12 spbp:px-24 3xl:px-36 py-12 2xl:py-24">
           <div className="relative h-[440px] sm:h-[590px] 2xl:h-[700px]" data-aos="fade-right">
-            <Image
-              src="/home/about.svg"
-              alt="Featured Product"
-              layout="fill"
-              objectFit="contain"
-            />
+            <Link href={'/about'}>
+              <Image
+                src="/home/about.svg"
+                alt="Featured Product"
+                layout="fill"
+                objectFit="contain"
+              />
+            </Link>
           </div>
           <div>
             <h2 className="mb-6 md:mb-14 borderText" data-aos="fade-left">
               About Exon
             </h2>
-            <p className="font-helvetica text-textSecondary font-normal text-xs md:text-2xl" data-aos="fade-up">
+            <p className="font-helvetica text-textSecondary font-medium text-xs md:text-2xl" data-aos="fade-up">
               Exon Therapeutics LLP is committed to innovate the heart health technology at the forefront. We have created an ecosystem for invention and growth, all under one umbrella. In today’s times where
               health is always at an edge, it is necessary to prioritize the production of high-quality medical devices that are both accessible and affordable. Our topmost indulgence lies in making cutting
               edge cardiovascular devices that improve the quality of your life. We also provide flexible implantable cardiac devices and drug-eluting stents with longevity. We also assert to be your one-stop
@@ -85,9 +89,9 @@ export default function Home() {
         </div>
         <Slider />
       </section>
-      <section className="py-32 bg-primary">
+      {/* <section className="py-32 bg-primary">
         <KindWords />
-      </section>
+      </section> */}
       <ContactUs />
     </main>
   );

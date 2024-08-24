@@ -4,12 +4,20 @@ import ContactUs from "@/components/core/ContactUs";
 import Navbar from "@/components/core/Navbar";
 import ProductSlider from "@/components/core/ProductSlider";
 import { useScreens } from "@/hooks/useScreens";
-import { Hexagon, Star, Triangle } from "lucide-react";
+// import { Hexagon, Star, Triangle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRef } from "react";
 
 export default function Product() {
   const { md }: any = useScreens()
+  const productSliderRef = useRef<HTMLDivElement>(null);
 
+  const scrollToProductSlider = () => {
+    if (productSliderRef.current) {
+      productSliderRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <main className="relative">
       <div className="sm:bg-background p-1 md:p-[6px]">
@@ -36,7 +44,7 @@ export default function Product() {
               <h5 className="mb-8 2xl:mb-[68px]">Dive into our range products</h5>
             </div>
             <div className="flex justify-center">
-              <button data-aos="fade-up">Explore</button>
+              <button data-aos="fade-up" onClick={scrollToProductSlider}>Explore</button>
             </div>
           </div>
         </div>
@@ -46,13 +54,13 @@ export default function Product() {
       </div>
       <section className="py-[122px] flex flex-col bg-white items-center justify-center">
         <h2 className="mb-[100px]" data-aos="fade-up">Precision. Reliability. Excellence.</h2>
-        <div className="relative mb-[178px] w-[90%]">
+        <div className="relative w-[90%]">
           <hr className="border-t border-gray-300 w-full absolute top-1/2 transform -translate-y-1/2" />
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-[-15deg]">
             <span className="bg-white px-4 py-2 text-lg font-semibold border border-gray-300 rounded-full">Products</span>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[80px] px-12 spbp:max-w-[1200px] 3xl:max-w-[1440px]">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-[80px] px-12 spbp:max-w-[1200px] 3xl:max-w-[1440px]">
           <div className="flex flex-col" data-aos="fade-up">
             <Star className="mb-3" />
             <h3 className="text-[28px] font-semibold mb-2">Feature</h3>
@@ -68,27 +76,30 @@ export default function Product() {
             <h3 className="text-[28px] font-semibold mb-2">Feature</h3>
             <p className="text-[#6D6D6D] text-lg text-left">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien.</p>
           </div>
-        </div>
+        </div> */}
       </section>
-      <section className="md:px-5">
+      <section ref={productSliderRef} className="md:px-5">
         <ProductSlider />
       </section>
       <section className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-20 px-8 md:px-[100px] bg-white py-[100px]">
         <div className="relative h-[300px] md:h-[680px]" data-aos="fade-right">
           <Image
-            src="/about/featured.png"
+            src="/products/endostent-featured.png"
             alt="Featured Product"
             layout="fill"
             objectFit="contain"
           />
         </div>
-        <div className="" data-aos="fade-left">
-          <h2 className="mb-4 borderText">
-            Featured Product
-          </h2>
-          <p className="text-base text-left md:text-2xl font-helvetica text-textSecondary">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id blandit mauris ipsum id sapien. Vestibulum malesuada orci sit amet pretium facilisis. In lobortis congue augue, a commodo libero tincidunt scelerisque.
-          </p>
+        <div data-aos="fade-left">
+          <div className="borderText mb-4">
+            <h2 className="">
+              ENDOSTENT
+            </h2>
+            <h4 className="font-medium text-[20px]">Sirolimus Eluting coronary stent system</h4>
+          </div>
+          <Link href={'/product/endostent'}>
+            <button data-aos="fade-up">Know More</button>
+          </Link>
         </div>
       </section>
       <section className="md:px-5">

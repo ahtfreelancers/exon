@@ -90,11 +90,11 @@ export default function About() {
           <div className="max-w-[300px] mx-auto md:max-w-[900px]">
             <h5 className="text-secondary text-xs sm:text-sm mb-3 font-medium" data-aos="fade-up">PHARMACY SOLUTIONS</h5>
             <h2 className="text-2xl sm:text-2xl spbp:text-5xl text-center mb-10" data-aos="fade-up">&quot;Building Connections with Customers: Uniting Vision and Design&quot;</h2>
-            <p className="text-xs sm:text-lg spbp:text-2xl text-center" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text Lorem Ipsum is simply dummy text.</p>
+            <p className="text-xs sm:text-lg spbp:text-2xl text-center" data-aos="fade-up">we builds strong connections with healthcare professionals, offering innovative stents and surgical accessories that enhance patient care and outcomes.</p>
           </div>
         </div>
       </div>
-      <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mb-14 w-full">
+      {/* <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mb-14 w-full">
         {md ? (
           <>
             <Image
@@ -120,8 +120,8 @@ export default function About() {
           </div>
         )}
 
-      </div>
-      <div className="px-7 md:px-20 xl:px-36 py-8 md:py-32 mt-28 md:mt-0">
+      </div> */}
+      <div className="px-7 md:px-20 xl:px-36 py-8 md:py-32 mt-28 md:mt-0" id="faq-section">
         <h2 className="mb-10 md:mb-[61px] borderText" data-aos="fade-right">
           Frequently asked questions
         </h2>
@@ -170,7 +170,7 @@ export default function About() {
       <section className="px-5 md:px-24 mb-10">
         <div className="py-5 md:py-16 3xl:py-[94px] bg-[#e0f4f2] rounded-[10px] md:rounded-[72px] mt-[32px] text-center px-6 md:px-0">
           <h2 className="text-[28px] md:text-5xl text-[#111827] text-center mb-7" data-aos="fade-up">Ready to Superpower Your Ideas?</h2>
-          <p className="text-center text-base md:text-xl mb-6 mx-auto max-w-[1000px]" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard.</p>
+          <p className="text-center text-base md:text-xl mb-6 mx-auto max-w-[1000px]" data-aos="fade-up">we here to support your ideas, offering tailored cardiovascular solutions that align with your vision and patient needs.</p>
           <h5 className="mb-3 text-[#6B7280] text-center text-sm font-helvetica font-bold" data-aos="fade-up">Subscribe to Update</h5>
           <form data-aos="fade-up" className="relative max-w-[95%] md:max-w-[70%] lg:max-w-[50%] mx-auto">
             <input

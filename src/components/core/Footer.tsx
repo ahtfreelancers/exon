@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AiOutlineYoutube } from "react-icons/ai";
+import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 export default function Footer() {
     return (
@@ -11,8 +13,7 @@ export default function Footer() {
                             <div>
                                 <h4 className="text-left mb-6 sm:mb- 3xl:mb-12">Exon</h4>
                                 <p className="text-left mt-2 text-xs 2xl:text-sm font-openSans">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis nunc a molestie dictum. Mauris venenatis, felis scelerisque aliquet lacinia, nulla nisi venenatis odio, id
-                                    blandit mauris ipsum id sapien.
+                                    Exon Therapeutics LLP is committed to innovate the heart health technology at the forefront. We have created an ecosystem for invention and growth, all under one umbrella.
                                 </p>
                             </div>
                             <div>
@@ -24,7 +25,7 @@ export default function Footer() {
                                     <Link href={'/privacy-policy'}>
                                         Privacy Policy
                                     </Link>
-                                    <Link href={''}>
+                                    <Link href={'/about#faq-section'}>
                                         FAQ
                                     </Link>
                                 </div>
@@ -32,7 +33,7 @@ export default function Footer() {
                             <div>
                                 <h4 className="text-left mb-6 sm:mb- 3xl:mb-12">Contact</h4>
                                 <div className="mt-2 space-y-2 flex flex-col">
-                                    <Link href={'/conatact'}>
+                                    <Link href={'/contact'}>
                                         Help
                                     </Link>
                                     <Link href={'/contact'}>
@@ -42,6 +43,12 @@ export default function Footer() {
                             </div>
                             <div>
                                 <h4 className="text-left mb-6 sm:mb- 3xl:mb-12">Social Media</h4>
+                                <div className="flex gap-4">
+                                    <AiOutlineYoutube className="text-xl cursor-pointer" />
+                                    <FaFacebook className="text-xl cursor-pointer" />
+                                    <FaInstagram className="text-xl cursor-pointer" />
+                                    <FaLinkedin className="text-xl cursor-pointer" />
+                                </div>
                             </div>
                         </div>
                         <div className="mt-8 text-center font-semibold text-[#6E6E6E] text-[10px] sm:text-xs 3xl:text-lg">Exon © 2024 | All rights reserved</div>

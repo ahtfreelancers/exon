@@ -140,3 +140,7 @@ li {
 section {
   @apply overflow-hidden
 }
+
+html {
+  scroll-behavior: smooth;
+}

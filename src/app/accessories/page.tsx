@@ -3,151 +3,96 @@ import Navbar from "@/components/core/Navbar";
 import { useScreens } from "@/hooks/useScreens";
 import { Hexagon, Star, Triangle } from "lucide-react";
 import Image from "next/image";
+import { useRef } from "react";
 
 const products = [
   {
-    name: "REGAL Disposable Balloon Inflation Device (GUN TYPE)",
-    features: [
-      "Gun type inflation device which comes with an HP stopcock.",
-      "Comes with a 20ml clear syringe and 30atm/bars & a Precision Manometer.",
-      "Ergonomic design to facilitate operation of the device.",
-      "Trigger release mechanism helps in rapid inflation and deflation.",
-      "Inclination of manometer provides easy and precise view of Pressure points.",
-    ],
-    orderingInfo: [
-      {
-        catalogNo: "IFD2000-GT",
-        description: "20ml, 30 atm/bar, with HP stopcock",
-      },
-    ],
-    image: "/accessories/REGALDisposableBalloonInflationDevice(GUNTYPE).png", // Replace with the actual path to your image
-  },
-  {
-    name: "RELIPORT Manifold",
-    features: [
-      "Available in 2 port Right ON/OFF and 3 port Right OFF.",
-      "Withstands pressures up to 500 Psi.",
-      "Presence of rotation adapters.",
-    ],
-    orderingInfo: [
-      {
-        catalogNo: "RLP-RN50-02",
-        description: "2 Port Right ON-500 PSI",
-      },
-      {
-        catalogNo: "RLP-RF50-02",
-        description: "2 Port Right OFF-500 PSI",
-      },
-      {
-        catalogNo: "RLP-RF50-03",
-        description: "3 Port Right OFF-500 PSI",
-      },
-    ],
-    image: "/accessories/RELIPORTManifold.png", // Replace with the actual path to your image
-  },
-  {
-    name: "REGAL Disposable Balloon Inflation Devices (A TYPE)",
+    name: "INFLA - D",
+    title: "Inflation Device",
     features: [
       "Ergonomic design facilitates doctor’s operation.",
       "Trigger release mechanism provides easy and quick deflation.",
       "Inclination of manometer provides easy and precise view of Pressure points.",
     ],
-    orderingInfo: [
-      {
-        catalogNo: "HV-07-PP-SS-IT",
-        description: "7F, Y Click, Sideon Tubing and Stopcock, Insertion Tool, Red/ Copper Torquer, Tyvek - plastic Blister",
-      },
-    ],
-    image: "/accessories/REGALDisposableBalloonInflationDevices(ATYPE).png", // Replace with the actual path to your image
+    image: "/accessories/inflad.png", // Replace with the actual path to your image
   },
   {
-    name: "REGAL Disposable Balloon Inflation Devices (N TYPE)",
+    name: "ADC",
+    title: "Angiographic Diagnostic Catheter",
     features: [
-      "Normal type inflation device which comes with 20ml clear syringe.",
-      "Ergonomic design to facilitate operation of the device.",
-      "Trigger release mechanism helps in rapid inflation and deflation.",
-      "Inclination of manometer provides easy and precise view of pressure points.",
+      "Good Curve Shape Memory.",
+      "Good Torque control due to internal SS braid mesh.",
+      "Very good kink Resistance.",
+      "Excellent surface finish to prevent vascular spasm.",
+      "Various tip configurations.",
     ],
-    orderingInfo: [
-      {
-        catalogNo: "IFD2000-NT",
-        description: "20ml, 30 atm/bar",
-      },
-    ],
-    image: "/accessories/REGALDisposableBalloonInflationDevices(NTYPE).png", // Replace with the actual path to your image
+    image: "/accessories/adc.png", // Replace with the actual path to your image
   },
   {
-    name: "GENTLE Introducer Needles",
+    name: "GUIDE PLUS",
+    title: "Guide Extension Catheter",
+    features: [
+      "Ensures easy maneuverability.",
+      "Provides excellent back-up support.",
+      "Highly kink-resistant Entry port designed to prevent detachmen.",
+      "Available in all French sizes.",
+    ],
+    image: "/accessories/guideplus.png", // Replace with the actual path to your image
+  },
+  {
+    name: "Y - CLICK",
+    title: "Y-Connector-Push Pull",
+    features: [
+      "Three-stage valve creates maneuverability without any bleeding.",
+      "Auto-closing mechanism ensures the device to move from semi-closed position to closed position automatically when contrast is injected from the sideon lumen.",
+    ],
+    image: "/accessories/yclick.png", // Replace with the actual path to your image
+  },
+  {
+    name: "ARROW",
+    title: "Introducer Needle",
     features: [
       "Sharp tip that has low resistance increases accessibility and reduce tissue trauma.",
       "Short tip has better controllability.",
-      "Tapered hub inner diameter facilities insertion of the guide wire.",
+      "Tapered hub inner diameter facilitates insertion of the guide wire.",
       "Needles of customized sizes are also available.",
     ],
-    orderingInfo: [
-      {
-        catalogNo: "PNL 1800-07",
-        description: "Large Size with 20ml Syringe, Tyvek- plastic Pouch",
-      },
-    ],
-    image: "/accessories/GENTLEIntroducerNeedles.png", // Replace with the actual path to your image
+    image: "/accessories/arrow.png", // Replace with the actual path to your image
   },
   {
-    name: "RADISEAL Disposable TR - Closure Band",
+    name: "2 - PORT",
+    title: "Manifold 2port Right on/off",
     features: [
-      "Blue dot leads to precise positioning of TR-closure Band.",
-      "Two different sizes are applicable to almost all patients.",
-      "Large size is for 20cm to 26cm wrist perimeters while",
-      "Small size is for 16cm to 21cm wrist perimeters.",
-      "Pressure in air balloons is easily adjusted by specially designed syringe tip adaptor.",
+      "Available in 2 port Right ON/OFF and 3 port Right ON/OFF.",
+      "Withstands pressures up to 500 Psi.",
+      "Presence of rotation adapters.",
+      "Ease of inspection.",
     ],
-    orderingInfo: [
-      {
-        catalogNo: "TRB2000-LR",
-        description: "Large Size with 20ml Syringe, Tyvek- plastic Pouch",
-      },
-      {
-        catalogNo: "TRB2000-SM",
-        description: "Small Size with 20ml Syringe, Tyvek-plastic Pouch",
-      },
-    ],
-    image: "/accessories/RADISEALDisposableTR-ClosureBand.png", // Replace with the actual path to your image
+    image: "/accessories/port2.png", // Replace with the actual path to your image
   },
   {
-    name: "CUSP KIT (PUSH PULL), Hemostasis Valve Set",
+    name: "3 - PORT",
+    title: "Manifold3portRighton/off",
     features: [
-      "Two different sideons of Y adaptor suit for various customers.",
-      "Push - Pull Y connector makes it easier for doctor to operate precisely.",
+      "Available in 2 port Right ON/OFF and 3 port Right ON/OFF.",
+      "Withstands pressures up to 500 Psi.",
+      "Presence of rotation adapters.",
+      "Ease of inspection.",
     ],
-    orderingInfo: [
-      {
-        catalogNo: "HV-07-PP-SS-IT",
-        description: "7F, Y Click, Sideon Tubing and Stopcock, Insertion Tool, Red/Copper Torquer, Tyvek-plastic Blister",
-      },
-    ],
-    image: "/accessories/CUSPKIT(PUSH PULL)HemostasisValveSet.png", // Replace with the actual path to your image
-  },
-  {
-    name: "CUSP KIT (Y-CLICK), Hemostasis Valve Set",
-    features: [
-      "Three-stage valve creates maneuverability without any bleeding.",
-      "Auto-closing mechanism ensures the device to move from semi-closed position to closed position automatically when contrast is injected from the side-on-lumen.",
-      "Ergonomic design allows for one-hand operation.",
-    ],
-    orderingInfo: [
-      {
-        catalogNo: "HV-07-YC-SS-IT",
-        description: "7F, Y Click, Sideon Tubing and Stopcock, Insertion Tool, Red/Copper Torquer, Tyvekplastic Bliste",
-      },
-    ],
-    image: "/accessories/CUSPKIT(Y-CLICK)HemostasisValveSet.png", // Replace with the actual path to your image
+    image: "/accessories/port3.png", // Replace with the actual path to your image
   },
   // Add more products as needed
 ];
 
 export default function Accessories() {
   const { md }: any = useScreens();
+  const productSliderRef = useRef<HTMLDivElement>(null);
 
+  const scrollToProductSlider = () => {
+    if (productSliderRef.current) {
+      productSliderRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <main className="relative">
       <div className="sm:bg-background p-1 md:p-[6px]">
@@ -181,7 +126,7 @@ export default function Accessories() {
               </h5>
             </div>
             <div className="flex justify-center">
-              <button data-aos="fade-up">Explore</button>
+              <button data-aos="fade-up" onClick={scrollToProductSlider}>Explore</button>
             </div>
           </div>
         </div>
@@ -190,7 +135,7 @@ export default function Accessories() {
         <h2 className="mb-[100px]" data-aos="fade-up">
           Precision. Reliability. Excellence.
         </h2>
-        <div className="relative mb-[178px] w-[90%]">
+        <div className="relative w-[90%]">
           <hr className="border-t border-gray-300 w-full absolute top-1/2 transform -translate-y-1/2" />
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-[-17deg]">
             <span className="bg-white px-4 py-2 text-lg font-semibold border border-gray-300 rounded-full">
@@ -198,7 +143,7 @@ export default function Accessories() {
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[80px] px-12 spbp:max-w-[1200px] 3xl:max-w-[1440px]">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-[80px] px-12 spbp:max-w-[1200px] 3xl:max-w-[1440px]">
           <div className="flex flex-col" data-aos="fade-up">
             <Star className="mb-3" />
             <h3 className="text-[28px] font-semibold mb-2">Feature</h3>
@@ -229,59 +174,35 @@ export default function Accessories() {
               blandit mauris ipsum id sapien.
             </p>
           </div>
-        </div>
+        </div> */}
       </section>
-      <section className="px-8 md:px-12 spbp:px-24 bg-white py-[100px]">
-        {products.map((product, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-10 md:gap-16 spbp:gap-20 mb-5 md:mb-10"
-            data-aos="fade-left"
-          >
-            <div
-              className="relative h-[300px] md:h-[680px]"
-              data-aos="fade-right"
-            >
-              <Image
-                src={product?.image}
-                alt="Featured Product"
-                layout="fill"
-                objectFit="contain"
-              />
-            </div>
-            <div className="md:pl-10">
-              <h2 className="text-lg md:text-xl spbp:text-[28px] font-semibold mb-4 text-center md:text-left">{product?.name}</h2>
-              <ul className="mb-4">
-                {product?.features.map((feature, i) => (
-                  <li key={i} className="text-[#6D6D6D] text-sm md:text-lg mb-2">
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <div>
-                <h2 className="font-semibold text-lg mb-2 text-center md:text-left">
-                  Ordering Information:
-                </h2>
-                <table className="w-full">
-                  <thead>
-                    <tr>
-                      <th className="text-left p-2 text-xs md:text-base">Ref. catalogue No.</th>
-                      <th className="text-left p-2 text-xs md:text-base">Description</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {product?.orderingInfo.map((info, i) => (
-                      <tr key={i}>
-                        <td className="p-2 border-b text-xs md:text-base">{info.catalogNo}</td>
-                        <td className="p-2 border-b text-xs md:text-base">{info.description}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+      <section className="px-6 md:px-12 spbp:px-24 bg-white pb-[100px]" ref={productSliderRef}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {products.map((product, index) => (
+            <div key={index} className="bg-white rounded-lg overflow-hidden transition transform hover:scale-105" data-aos="fade-up">
+              <div className="relative h-[250px] md:h-[280px] lg:h-[300px]">
+                <Image
+                  src={product?.image}
+                  alt={product?.name}
+                  layout="fill"
+                  objectFit="cover"
+                  className="w-full h-full"
+                />
+              </div>
+              <div className="p-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2 text-center">{product?.name}</h2>
+                <h4 className="text-lg md:text-xl font-semibold text-gray-600 mb-4 text-center">{product?.title}</h4>
+                <ul className="list-disc ml-6 text-gray-700">
+                  {product?.features.map((feature, i) => (
+                    <li key={i} className="text-sm md:text-base mb-2">
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </section>
     </main>
   );

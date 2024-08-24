@@ -266,7 +266,7 @@ export const productData = {
     ENDOSTENT: {
         productImage: "endostent.png",
         productName: "ENDOSTENT",
-        title: "SSirolimus-Eluting Coronary Stent System",
+        title: "Sirolimus-Eluting Coronary Stent System",
         content: "The ENDOSTENT Sirolimus-Eluting Coronary Stent System is engineered to advance coronary interventions with a focus on early endothelialization and effective drug delivery. Featuring ultra-thin struts (63 μm) that minimize recoil and provide high radial strength, this stent ensures optimal vessel support and reduced foreshortening (<2%). The stent is coated with sirolimus, with a precise 6 μm thickness for controlled, sustained drug release over 90 to 120 days, promoting long-term vessel patency. Available in a range of diameters(2.25 to 4.00 mm) and lengths(10 to 48 mm), the ENDOSTENT offers versatile sizing to accommodate various anatomical needs.Its design includes both open and closed cell configurations to enhance flexibility and conformability.",
         description: [
             "The ENDOSTENT Sirolimus-Eluting Coronary Stent System is engineered to enhance coronary interventions with advanced drug-eluting technology. It utilizes ultra-thin struts (63 μm) for early endothelialization and reduced stent recoil, with a high radial strength to maintain vessel patency. The stent's design includes both open and closed cell configurations, and it comes in various lengths and diameters to suit different anatomical needs.",
