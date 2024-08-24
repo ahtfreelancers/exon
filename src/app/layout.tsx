@@ -7,7 +7,6 @@ import "aos/dist/aos.css";
 import "../styles/global.scss";
 import Footer from "@/components/core/Footer";
 import { ArrowUpIcon } from "lucide-react";
-import Head from "next/head";
 
 export default function RootLayout({
   children,
@@ -26,55 +25,55 @@ export default function RootLayout({
     });
 
     // Disable text selection and copying
-    // const handleCopy = (e: ClipboardEvent) => {
-    //   e.preventDefault();
-    // };
+    const handleCopy = (e: ClipboardEvent) => {
+      e.preventDefault();
+    };
 
-    // const handleCut = (e: ClipboardEvent) => {
-    //   e.preventDefault();
-    // };
+    const handleCut = (e: ClipboardEvent) => {
+      e.preventDefault();
+    };
 
-    // const handleSelectStart = (e: Event) => {
-    //   e.preventDefault();
-    // };
+    const handleSelectStart = (e: Event) => {
+      e.preventDefault();
+    };
 
-    // document.addEventListener("copy", handleCopy);
-    // document.addEventListener("cut", handleCut);
-    // document.addEventListener("selectstart", handleSelectStart);
+    document.addEventListener("copy", handleCopy);
+    document.addEventListener("cut", handleCut);
+    document.addEventListener("selectstart", handleSelectStart);
 
-    // // Disable right-click
-    // const handleContextMenu = (e: MouseEvent) => {
-    //   e.preventDefault();
-    // };
-    // document.addEventListener("contextmenu", handleContextMenu);
+    // Disable right-click
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+    document.addEventListener("contextmenu", handleContextMenu);
 
-    // // Disable Inspect Element (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+Shift+C)
-    // const handleKeyDown = (e: KeyboardEvent) => {
-    //   if (
-    //     e.key === "F12" ||
-    //     (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) ||
-    //     (e.ctrlKey && e.key === "U")
-    //   ) {
-    //     e.preventDefault();
-    //   }
-    // };
-    // document.addEventListener("keydown", handleKeyDown);
-    // const handleScroll = () => {
-    //   if (window.scrollY > 300) {
-    //     setShowScrollButton(true);
-    //   } else {
-    //     setShowScrollButton(false);
-    //   }
-    // };
+    // Disable Inspect Element (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+Shift+C)
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) ||
+        (e.ctrlKey && e.key === "U")
+      ) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    };
 
-    // window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      // document.removeEventListener("copy", handleCopy);
-      // document.removeEventListener("cut", handleCut);
-      // document.removeEventListener("selectstart", handleSelectStart);
-      // document.removeEventListener("contextmenu", handleContextMenu);
-      // document.removeEventListener("keydown", handleKeyDown);
-      // window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("copy", handleCopy);
+      document.removeEventListener("cut", handleCut);
+      document.removeEventListener("selectstart", handleSelectStart);
+      document.removeEventListener("contextmenu", handleContextMenu);
+      document.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -84,24 +83,63 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <Head>
-        <title>Exon Therapeutics</title>
-        <meta name="description" content="Exon Therapeutics is a leading provider of heart-related products." />
-        <meta name="author" content="Exon Therapeutics" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
+      <head>
         <link rel="icon" href="/icons/favicon.png" sizes="any" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Exon Therapeutics - Leading provider of innovative heart endostents and heart-related products." />
+        <meta name="author" content="Exon Therapeutics" />
+        <meta name="robots" content="index, follow" />
+        <meta name="keywords" content="heart stents, endostents, cardiology, heart health, heart surgery, cardiac care, Exon Therapeutics, heart devices, medical devices, heart treatment, cardiovascular health" />
+        <meta property="og:title" content="Exon Therapeutics | Innovative Heart Endostents" />
+        <meta property="og:description" content="Explore our range of heart endostents and heart-related products at Exon Therapeutics." />
+        <meta property="og:url" content="https://www.exontherapeutics.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://www.exontherapeutics.com/images/og-image.png" />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:title" content="Exon Therapeutics | Heart Endostents" />
+        <meta property="twitter:description" content="Leading provider of innovative heart endostents and heart-related products." />
+        <meta property="twitter:image" content="https://www.exontherapeutics.com/images/twitter-card.png" />
 
-        {/* Meta Tags */}
-        <meta name="product-name" content="Exon Therapeutics" />
-        <meta name="website-name" content="exontherapeutics.com" />
-        <meta name="keywords" content="heart health, medical products, stents, Exon Therapeutics" />
-        {/* Add more meta tags as needed */}
-        {/* Example with a loop to add 200 meta tags */}
-        {Array.from({ length: 200 }, (_, index) => (
-          <meta key={index} name={`meta-tag-${index + 1}`} content={`Meta tag ${index + 1} for exontherapeutics.com`} />
-        ))}
-      </Head>
+        {/* Additional meta tags */}
+        <meta name="theme-color" content="#0056b3" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="application-name" content="Exon Therapeutics" />
+        <meta name="msapplication-TileColor" content="#0056b3" />
+        <meta name="msapplication-config" content="/icons/browserconfig.xml" />
+        <meta name="msapplication-TileImage" content="/icons/mstile-150x150.png" />
+        <meta name="msapplication-square70x70logo" content="/icons/mstile-70x70.png" />
+        <meta name="msapplication-square150x150logo" content="/icons/mstile-150x150.png" />
+        <meta name="msapplication-wide310x150logo" content="/icons/mstile-310x150.png" />
+        <meta name="msapplication-square310x310logo" content="/icons/mstile-310x310.png" />
+
+        <meta name="generator" content="Next.js" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="Exon Therapeutics" />
+        <meta name="application-name" content="Exon Therapeutics" />
+        <meta name="description" content="High-quality heart endostents and related products for cardiovascular care." />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="format-detection" content="telephone=no" />
+
+        <meta name="keywords" content="heart endostent, heart devices, cardiovascular, heart surgery, cardiology" />
+        <meta name="keywords" content="medical devices, stents, endostent, heart treatment, Exon Therapeutics" />
+        <meta name="keywords" content="cardiac care, heart health, medical supplies, heart care, heart surgery" />
+        <meta name="keywords" content="endostent technology, innovative heart solutions, Exon Therapeutics" />
+        <meta name="keywords" content="heart stents, endostents, heart surgery products, heart surgery" />
+        <meta name="keywords" content="cardiac devices, heart care solutions, Exon Therapeutics, heart health" />
+
+        {/* ... repeat similar meta tags with variations for different contexts, services, and product-related keywords ... */}
+        {/* Ensure unique content for description and keywords to avoid redundancy */}
+
+        {/* Example of different meta tags */}
+        <meta name="description" content="Explore advanced heart stents and devices by Exon Therapeutics." />
+        <meta name="keywords" content="Exon Therapeutics, heart endostents, advanced stents, heart health" />
+        <meta name="description" content="Heart stents for improved cardiovascular care by Exon Therapeutics." />
+        <meta name="keywords" content="heart stents, cardiovascular devices, Exon Therapeutics, heart surgery" />
+
+        {/* ... continue with different descriptions, keywords, and metadata until you have 200 ... */}
+
+      </head>
       <body className="relative">
         {children}
         {showFooter && <Footer />}
