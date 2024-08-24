@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
-import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
+import { A11y, Navigation, Pagination, Scrollbar, Autoplay } from 'swiper/modules';
 import Link from 'next/link';
 
 const ProductSlider = () => {
   const slides = [
-    { src: '/about/product1.svg', description: 'Description text', title: 'Infinity', slug: 'infinity' },
-    { src: '/about/product2.svg', description: 'Description text', title: 'Sleek', slug: 'sleek' },
-    { src: '/about/product3.svg', description: 'Description text', title: 'Swift', slug: 'swift' },
-    { src: '/about/product4.svg', description: 'Description text', title: 'Intima', slug: 'intima' },
-    { src: '/about/product4.svg', description: 'Description text', title: 'Endostent', slug: 'endostent' },
+    { src: '/products/infinity.png', description: 'Description text', title: 'Infinity', slug: 'infinity' },
+    { src: '/products/sleek.png', description: 'Description text', title: 'Sleek', slug: 'sleek' },
+    { src: '/products/swift.png', description: 'Description text', title: 'Swift', slug: 'swift' },
+    { src: '/products/intima.png', description: 'Description text', title: 'Intima', slug: 'intima' },
+    { src: '/products/endostent.png', description: 'Description text', title: 'Endostent', slug: 'endostent' },
   ];
 
   const [maxHeight, setMaxHeight] = useState(538);
@@ -49,12 +49,12 @@ const ProductSlider = () => {
   return (
     <div className="bg-background py-12 lg:px-12 rounded-[72px]">
       <Swiper
-        modules={[Navigation, Pagination, Scrollbar, A11y]}
+        modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
         spaceBetween={12}
         breakpoints={{
           320: {
             slidesPerView: 1.3,
-            centeredSlides: true
+            centeredSlides: true,
           },
           768: {
             slidesPerView: 2,
@@ -66,7 +66,11 @@ const ProductSlider = () => {
             slidesPerView: 4,
           },
         }}
-        loop
+        loop={true}
+        autoplay={{
+          delay: 2000, // Adjust the delay as needed
+          disableOnInteraction: false, // Continue autoplay even when user interacts with the slider
+        }}
         onSlideChange={calculateMaxHeight}
       >
         {slides.map((slide, index) => (
@@ -76,8 +80,8 @@ const ProductSlider = () => {
               className="bg-white shadow px-10 py-12 rounded-[50px] text-center relative"
               style={{ height: maxHeight ? `${maxHeight}px` : 'auto' }} data-aos="fade-up"
             >
-              <h3 className="text-[28px] mb-4 font-bold font-helvetica">{slide.title}</h3>
-              <h4 className="text-lg text-[#6D6D6D] font-semibold font-helvetica mb-14">{slide.description}</h4>
+              <h3 className="text-[28px] mb-20 font-bold font-helvetica">{slide.title}</h3>
+              {/* <h4 className="text-lg text-[#6D6D6D] font-semibold font-helvetica mb-14">{slide.description}</h4> */}
               <img src={slide.src} alt={`Product Image ${index + 1}`} className="mx-auto mb-4" />
               <Link href={`/product/${slide.slug}`}>
                 <button

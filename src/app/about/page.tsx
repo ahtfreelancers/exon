@@ -70,7 +70,7 @@ export default function About() {
           
         </section> */}
       </div>
-      <div className="relative h-[450px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 md:mt-10">
+      <div className="relative h-[450px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px]">
         {md ? (
           <Image
             src="/about/solutions-about.png"
@@ -94,7 +94,7 @@ export default function About() {
           </div>
         </div>
       </div>
-      <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 lg:mt-10 mb-14 w-full">
+      <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mb-14 w-full">
         {md ? (
           <>
             <Image
@@ -121,7 +121,7 @@ export default function About() {
         )}
 
       </div>
-      <div className="px-14 md:px-20 xl:px-36 py-8 md:py-32 2xl:py-64 mt-28 md:mt-20">
+      <div className="px-7 md:px-20 xl:px-36 py-8 md:py-32 mt-28 md:mt-0">
         <h2 className="mb-10 md:mb-[61px] borderText" data-aos="fade-right">
           Frequently asked questions
         </h2>
@@ -172,20 +172,18 @@ export default function About() {
           <h2 className="text-[28px] md:text-5xl text-[#111827] text-center mb-7" data-aos="fade-up">Ready to Superpower Your Ideas?</h2>
           <p className="text-center text-base md:text-xl mb-6 mx-auto max-w-[1000px]" data-aos="fade-up">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard.</p>
           <h5 className="mb-3 text-[#6B7280] text-center text-sm font-helvetica font-bold" data-aos="fade-up">Subscribe to Update</h5>
-          <form data-aos="fade-up">
-            <div className="flex max-w-[95%] md:max-w-[70%] lg:max-w-[50%] mx-auto">
-              <input
-                type="email"
-                placeholder="Enter email to Subscribe"
-                className="md:flex-1 py-2 md:py-4 px-5 w-full rounded-l-full text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#12A89D] bg-white"
-              />
-              <button
-                type="submit"
-                className="bg-[#12A89D] text-white py-2 md:py-4 px-6 md:px-8 rounded-full text-base md:text-xl hover:bg-[#0f9080] transition-all"
-              >
-                Subscribe
-              </button>
-            </div>
+          <form data-aos="fade-up" className="relative max-w-[95%] md:max-w-[70%] lg:max-w-[50%] mx-auto">
+            <input
+              type="email"
+              placeholder="Enter email to Subscribe"
+              className="py-4 md:py-4 px-5 w-full rounded-full text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#12A89D] bg-white"
+            />
+            <button
+              type="submit"
+              className="absolute right-2 top-[8px] md:top-[6px] bg-[#12A89D] text-white md:py-2 px-6 md:px-8 rounded-full text-base md:text-xl hover:bg-[#0f9080] transition-all"
+            >
+              Subscribe
+            </button>
           </form>
         </div>
       </section>

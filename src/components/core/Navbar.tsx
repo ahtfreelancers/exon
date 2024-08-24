@@ -63,7 +63,7 @@ export default function Navbar() {
                     </div>
                 </div>
             </nav >
-            <div className="laptop:hidden w-full absolute px-8 top-9 sm:top-0 z-[99]">
+            <div className="laptop:hidden absolute left-0 right-0 px-8 top-9 sm:top-0 z-[99]">
                 <nav className={`w-full flex justify-between items-center transition-all duration-300 sm:pt-8 ${navBg ? 'fade-in' : ''}`}>
                     <div className="flex items-center">
                         <Link href={'/'}>

@@ -1,18 +1,20 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import Image from 'next/image';
-import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
+import { A11y, Navigation, Pagination, Scrollbar, Autoplay } from 'swiper/modules';
 import 'swiper/css/navigation';
 import { ArrowRight } from 'lucide-react';
 import PrevArrow from '@/asset/icons/PrevArrow';
 import NextArrow from '@/asset/icons/NextArrow';
+import Link from 'next/link';
 
 const Slider = () => {
   const slides = [
-    { id: 1, image: '/home/product1.png' },
-    { id: 2, image: '/home/product2.png' },
-    { id: 3, image: '/home/product1.png' },
-    { id: 4, image: '/home/product2.png' },
+    { id: 1, image: '/products/intima.png', name: "Intima", slug: "/product/intima" },
+    { id: 2, image: '/products/swift.png', name: "Swift", slug: "/product/swift" },
+    { id: 3, image: '/products/sleek.png', name: "Sleek", slug: "/product/sleek" },
+    { id: 4, image: '/products/endostent.png', name: "Endostent", slug: "/product/endostent" },
+    { id: 5, image: '/products/infinity.png', name: "Infinity", slug: "/product/infinity" },
   ];
 
   return (
@@ -29,14 +31,18 @@ const Slider = () => {
           <PrevArrow />
         </div>
         <Swiper
-          modules={[Navigation, Pagination, Scrollbar, A11y]}
+          modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
           spaceBetween={20}
           slidesPerView={1}
           navigation={{
             nextEl: '.swiper-btn-next',
             prevEl: '.swiper-btn-prev',
           }}
-          loop
+          loop={true}
+          autoplay={{
+            delay: 2000, // Adjust the delay as needed
+            disableOnInteraction: false, // Continue autoplay even when user interacts with the slider
+          }}
           breakpoints={{
             // For mobile screens
             320: {
@@ -56,15 +62,19 @@ const Slider = () => {
             },
           }}
         >
-          {slides.map((slide) => (
-            <SwiperSlide key={slide.id}>
+          {slides?.map((slide) => (
+            <SwiperSlide key={slide?.id}>
               <div className="rounded-lg flex flex-col items-start justify-center">
-                <Image src={slide.image} alt={`Slide ${slide.id}`} width={200} height={200} className='mb-6' />
-                <div className='flex justify-between items-center w-full'>
-                  <h4 className='font-helvetica text-xs'>Product Name Demo</h4>
-                  <ArrowRight />
+                <div className='bg-primary flex justify-center rounded-[30px] items-center size-[200px]'>
+                  <Image src={slide?.image} alt={`Slide ${slide?.id}`} width={150} height={150} />
                 </div>
-                <h4 className='font-helvetica text-[10px]'>Category Detail</h4>
+                <div className='flex justify-between items-center w-full mt-3'>
+                  <h4 className='font-helvetica text-xs'>{slide?.name}</h4>
+                  <Link href={slide?.slug}>
+                    <ArrowRight />
+                  </Link>
+                </div>
+                {/* <h4 className='font-helvetica text-[10px]'>Category Detail</h4> */}
               </div>
             </SwiperSlide>
           ))}

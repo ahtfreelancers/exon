@@ -20,7 +20,7 @@ const products = [
         description: "20ml, 30 atm/bar, with HP stopcock",
       },
     ],
-    image: "/path-to-your-image1.png", // Replace with the actual path to your image
+    image: "/accessories/REGALDisposableBalloonInflationDevice(GUNTYPE).png", // Replace with the actual path to your image
   },
   {
     name: "RELIPORT Manifold",
@@ -43,7 +43,7 @@ const products = [
         description: "3 Port Right OFF-500 PSI",
       },
     ],
-    image: "/path-to-your-image2.png", // Replace with the actual path to your image
+    image: "/accessories/RELIPORTManifold.png", // Replace with the actual path to your image
   },
   {
     name: "REGAL Disposable Balloon Inflation Devices (A TYPE)",
@@ -58,7 +58,7 @@ const products = [
         description: "7F, Y Click, Sideon Tubing and Stopcock, Insertion Tool, Red/ Copper Torquer, Tyvek - plastic Blister",
       },
     ],
-    image: "/path-to-your-image2.png", // Replace with the actual path to your image
+    image: "/accessories/REGALDisposableBalloonInflationDevices(ATYPE).png", // Replace with the actual path to your image
   },
   {
     name: "REGAL Disposable Balloon Inflation Devices (N TYPE)",
@@ -74,7 +74,7 @@ const products = [
         description: "20ml, 30 atm/bar",
       },
     ],
-    image: "/path-to-your-image2.png", // Replace with the actual path to your image
+    image: "/accessories/REGALDisposableBalloonInflationDevices(NTYPE).png", // Replace with the actual path to your image
   },
   {
     name: "GENTLE Introducer Needles",
@@ -90,7 +90,7 @@ const products = [
         description: "Large Size with 20ml Syringe, Tyvek- plastic Pouch",
       },
     ],
-    image: "/path-to-your-image2.png", // Replace with the actual path to your image
+    image: "/accessories/GENTLEIntroducerNeedles.png", // Replace with the actual path to your image
   },
   {
     name: "RADISEAL Disposable TR - Closure Band",
@@ -111,7 +111,7 @@ const products = [
         description: "Small Size with 20ml Syringe, Tyvek-plastic Pouch",
       },
     ],
-    image: "/path-to-your-image2.png", // Replace with the actual path to your image
+    image: "/accessories/RADISEALDisposableTR-ClosureBand.png", // Replace with the actual path to your image
   },
   {
     name: "CUSP KIT (PUSH PULL), Hemostasis Valve Set",
@@ -125,7 +125,7 @@ const products = [
         description: "7F, Y Click, Sideon Tubing and Stopcock, Insertion Tool, Red/Copper Torquer, Tyvek-plastic Blister",
       },
     ],
-    image: "/path-to-your-image2.png", // Replace with the actual path to your image
+    image: "/accessories/CUSPKIT(PUSH PULL)HemostasisValveSet.png", // Replace with the actual path to your image
   },
   {
     name: "CUSP KIT (Y-CLICK), Hemostasis Valve Set",
@@ -140,7 +140,7 @@ const products = [
         description: "7F, Y Click, Sideon Tubing and Stopcock, Insertion Tool, Red/Copper Torquer, Tyvekplastic Bliste",
       },
     ],
-    image: "/path-to-your-image2.png", // Replace with the actual path to your image
+    image: "/accessories/CUSPKIT(Y-CLICK)HemostasisValveSet.png", // Replace with the actual path to your image
   },
   // Add more products as needed
 ];
@@ -243,16 +243,16 @@ export default function Accessories() {
               data-aos="fade-right"
             >
               <Image
-                src="/about/featured.png"
+                src={product?.image}
                 alt="Featured Product"
                 layout="fill"
                 objectFit="contain"
               />
             </div>
             <div className="md:pl-10">
-              <h2 className="text-lg md:text-xl spbp:text-[28px] font-semibold mb-4 text-center md:text-left">{product.name}</h2>
+              <h2 className="text-lg md:text-xl spbp:text-[28px] font-semibold mb-4 text-center md:text-left">{product?.name}</h2>
               <ul className="mb-4">
-                {product.features.map((feature, i) => (
+                {product?.features.map((feature, i) => (
                   <li key={i} className="text-[#6D6D6D] text-sm md:text-lg mb-2">
                     {feature}
                   </li>
@@ -270,7 +270,7 @@ export default function Accessories() {
                     </tr>
                   </thead>
                   <tbody>
-                    {product.orderingInfo.map((info, i) => (
+                    {product?.orderingInfo.map((info, i) => (
                       <tr key={i}>
                         <td className="p-2 border-b text-xs md:text-base">{info.catalogNo}</td>
                         <td className="p-2 border-b text-xs md:text-base">{info.description}</td>

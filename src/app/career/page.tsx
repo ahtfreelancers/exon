@@ -4,7 +4,7 @@ import Navbar from "@/components/core/Navbar";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import Image from 'next/image';
-import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
+import { A11y, Navigation, Pagination, Scrollbar, Autoplay } from 'swiper/modules';
 import 'swiper/css/navigation';
 import { useLayoutEffect, useRef, useState } from "react";
 const benefits = [
@@ -94,7 +94,7 @@ export default function Career() {
           <div data-aos="fade-up">
             <div className="relative">
               <Swiper
-                modules={[Navigation, Pagination, Scrollbar, A11y]}
+                modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
                 spaceBetween={30}
                 slidesPerView={3}
                 navigation={{
@@ -113,7 +113,6 @@ export default function Career() {
                     slidesPerView: 3,
                   }
                 }}
-                loop
                 onSlideChange={() => {
                   const heights = slideRefs.current.map(slide => slide.offsetHeight);
                   setMaxHeight(Math.max(...heights));
@@ -121,6 +120,11 @@ export default function Career() {
                 onSwiper={() => {
                   const heights = slideRefs.current.map(slide => slide.offsetHeight);
                   setMaxHeight(Math.max(...heights));
+                }}
+                loop={true}
+                autoplay={{
+                  delay: 2000, // Adjust the delay as needed
+                  disableOnInteraction: false, // Continue autoplay even when user interacts with the slider
                 }}
               >
                 {recruitmentSteps.map((step, index) => (
@@ -154,7 +158,7 @@ export default function Career() {
           Open positions
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5" data-aos="fade-up">
-          {positions.map((step,index) => (
+          {positions.map((step, index) => (
             <div className="bg-[#f3f4f5] p-6 md:p-12 rounded-[34px] flex justify-between items-center" key={index}>
               <div>
                 <h3 className="text-xl">{step.title}</h3>

@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
-import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
+import { A11y, Navigation, Pagination, Scrollbar, Autoplay } from 'swiper/modules';
 
 const KindWords = () => {
   const slides = [
@@ -32,11 +32,12 @@ const KindWords = () => {
       <h2 className='text-white mb-10 text-center md:text-left' data-aos="fade-right">Kind Words</h2>
       <div className='pl-10 md:pl-0'>
         <Swiper
-          modules={[Navigation, Pagination, Scrollbar, A11y]}
+          modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
           spaceBetween={30}
           loop={true}
           autoplay={{
-            stopOnLastSlide: false,
+            delay: 2000, // Adjust the delay as needed
+            disableOnInteraction: false, // Continue autoplay even when user interacts with the slider
           }}
           breakpoints={{
             430: {

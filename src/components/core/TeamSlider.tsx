@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import Image from 'next/image';
-import { A11y, Navigation, Pagination, Scrollbar } from 'swiper/modules';
+import { A11y, Navigation, Pagination, Scrollbar, Autoplay } from 'swiper/modules';
 import 'swiper/css/navigation';
 import { ArrowRight, CircleArrowLeft, CircleArrowRight } from 'lucide-react';
 import PrevArrow from '@/asset/icons/PrevArrow';
@@ -23,14 +23,13 @@ const TeamSlider = () => {
           <CircleArrowLeft />
         </div>
         <Swiper
-          modules={[Navigation, Pagination, Scrollbar, A11y]}
+          modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
           spaceBetween={20}
           slidesPerView={1}
           navigation={{
             nextEl: '.swiper-btn-next',
             prevEl: '.swiper-btn-prev',
           }}
-          loop
           breakpoints={{
             // For mobile screens
             320: {
@@ -49,6 +48,11 @@ const TeamSlider = () => {
               spaceBetween: 30,
             },
           }}
+          loop={true}
+          autoplay={{
+            delay: 2000, // Adjust the delay as needed
+            disableOnInteraction: false, // Continue autoplay even when user interacts with the slider
+          }}
         >
           {slides.map((slide) => (
             <SwiperSlide key={slide.id}>
@@ -61,7 +65,7 @@ const TeamSlider = () => {
           ))}
         </Swiper>
         <div className="swiper-btn-next text-black md:text-white hover:text-secondary absolute bottom-[-40px] right-[40%] sm:right-[45%] md:right-[47%]">
-          <CircleArrowRight/>
+          <CircleArrowRight />
         </div>
       </div>
     </div>
