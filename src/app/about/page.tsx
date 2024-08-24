@@ -61,9 +61,9 @@ export default function About() {
               <h1 className="text-white mb-6 text-center" data-aos="fade-up">So how did<span className="text-secondary"> Exon</span> come to be?</h1>
               <h5 className="mb-8 2xl:mb-[68px] text-sm text-center lg:text-[28px]" data-aos="fade-up">Exon Therapeutics LLP was founded by healthcare</h5>
             </div>
-            <div className="flex justify-center">
+            {/* <div className="flex justify-center">
               <button data-aos="fade-up">Meet our team</button>
-            </div>
+            </div> */}
           </div>
         </div>
         {/* <section className="bg-mobHeroBg sm:bg-heroBg hero-banner">

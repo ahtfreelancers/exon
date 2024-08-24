@@ -67,7 +67,7 @@ const Slider = () => {
               <Link href={slide?.slug}>
                 <div className="rounded-lg flex flex-col items-start justify-center">
                   <div className='bg-primary flex justify-center rounded-[30px] items-center size-[200px]'>
-                    <Image src={slide?.image} alt={`Slide ${slide?.id}`} width={150} height={150} />
+                    <Image src={slide?.image} alt={`Slide ${slide?.id}`} width={100} height={100} />
                   </div>
                   <div className='flex justify-between items-center w-full mt-3'>
                     <h4 className='font-helvetica text-xs'>{slide?.name}</h4>
