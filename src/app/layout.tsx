@@ -7,6 +7,7 @@ import "aos/dist/aos.css";
 import "../styles/global.scss";
 import Footer from "@/components/core/Footer";
 import { ArrowUpIcon } from "lucide-react";
+import Head from "next/head";
 
 export default function RootLayout({
   children,
@@ -83,7 +84,24 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <link rel="icon" href="/icons/favicon.png" sizes="any" />
+      <Head>
+        <title>Exon Therapeutics</title>
+        <meta name="description" content="Exon Therapeutics is a leading provider of heart-related products." />
+        <meta name="author" content="Exon Therapeutics" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <link rel="icon" href="/icons/favicon.png" sizes="any" />
+
+        {/* Meta Tags */}
+        <meta name="product-name" content="Exon Therapeutics" />
+        <meta name="website-name" content="exontherapeutics.com" />
+        <meta name="keywords" content="heart health, medical products, stents, Exon Therapeutics" />
+        {/* Add more meta tags as needed */}
+        {/* Example with a loop to add 200 meta tags */}
+        {Array.from({ length: 200 }, (_, index) => (
+          <meta key={index} name={`meta-tag-${index + 1}`} content={`Meta tag ${index + 1} for exontherapeutics.com`} />
+        ))}
+      </Head>
       <body className="relative">
         {children}
         {showFooter && <Footer />}
