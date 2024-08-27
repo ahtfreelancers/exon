@@ -1,9 +1,5 @@
 "use client";
-import ContactUs from "@/components/core/ContactUs";
-import KindWords from "@/components/core/KindWords";
 import Navbar from "@/components/core/Navbar";
-import Slider from "@/components/core/Slider";
-import TeamSlider from "@/components/core/TeamSlider";
 import { useScreens } from "@/hooks/useScreens";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";

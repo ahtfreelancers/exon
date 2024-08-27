@@ -84,62 +84,45 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/icons/favicon.png" sizes="any" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Exon Therapeutics LLP is committed to innovate the heart health technology at the forefront.</title>
         <meta name="description" content="Exon Therapeutics - Leading provider of innovative heart endostents and heart-related products." />
-        <meta name="author" content="Exon Therapeutics" />
-        <meta name="robots" content="index, follow" />
-        <meta name="keywords" content="heart stents, endostents, cardiology, heart health, heart surgery, cardiac care, Exon Therapeutics, heart devices, medical devices, heart treatment, cardiovascular health" />
-        <meta property="og:title" content="Exon Therapeutics | Innovative Heart Endostents" />
-        <meta property="og:description" content="Explore our range of heart endostents and heart-related products at Exon Therapeutics." />
-        <meta property="og:url" content="https://www.exontherapeutics.com" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://www.exontherapeutics.com/images/og-image.png" />
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:title" content="Exon Therapeutics | Heart Endostents" />
-        <meta property="twitter:description" content="Leading provider of innovative heart endostents and heart-related products." />
-        <meta property="twitter:image" content="https://www.exontherapeutics.com/images/twitter-card.png" />
 
-        {/* Additional meta tags */}
-        <meta name="theme-color" content="#0056b3" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="application-name" content="Exon Therapeutics" />
-        <meta name="msapplication-TileColor" content="#0056b3" />
-        <meta name="msapplication-config" content="/icons/browserconfig.xml" />
-        <meta name="msapplication-TileImage" content="/icons/mstile-150x150.png" />
-        <meta name="msapplication-square70x70logo" content="/icons/mstile-70x70.png" />
-        <meta name="msapplication-square150x150logo" content="/icons/mstile-150x150.png" />
-        <meta name="msapplication-wide310x150logo" content="/icons/mstile-310x150.png" />
-        <meta name="msapplication-square310x310logo" content="/icons/mstile-310x310.png" />
+        {/* Primary Keywords Related to Exon Therapeutics  */}
+        <meta name="keywords" content="Exon Therapeutics, heart endostents, cardiovascular technology, heart health, medical devices, Infinity, Sleek, Swift, Intima, Endostent, heart stents" />
 
-        <meta name="generator" content="Next.js" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-title" content="Exon Therapeutics" />
-        <meta name="application-name" content="Exon Therapeutics" />
-        <meta name="description" content="High-quality heart endostents and related products for cardiovascular care." />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="format-detection" content="telephone=no" />
+        {/* Additional Keywords for Products  */}
+        <meta name="keywords" content="INFLA-D, Inflation Device, ergonomic design, deflation mechanism, manometer, ADC, Angiographic Diagnostic Catheter, curve shape memory, torque control, kink resistance, surface finish" />
+        <meta name="keywords" content="GUIDE PLUS, Guide Extension Catheter, maneuverability, back-up support, kink-resistant, Y-CLICK, Y-Connector-Push Pull, three-stage valve, auto-closing mechanism" />
+        <meta name="keywords" content="ARROW, Introducer Needle, sharp tip, low resistance, tissue trauma reduction, short tip controllability, tapered hub, guide wire, customized sizes" />
+        <meta name="keywords" content="2-PORT, Manifold 2port Right on/off, pressure resistance, rotation adapters, ease of inspection, 3-PORT, Manifold 3port Right on/off, manifold systems" />
 
-        <meta name="keywords" content="heart endostent, heart devices, cardiovascular, heart surgery, cardiology" />
-        <meta name="keywords" content="medical devices, stents, endostent, heart treatment, Exon Therapeutics" />
-        <meta name="keywords" content="cardiac care, heart health, medical supplies, heart care, heart surgery" />
-        <meta name="keywords" content="endostent technology, innovative heart solutions, Exon Therapeutics" />
-        <meta name="keywords" content="heart stents, endostents, heart surgery products, heart surgery" />
-        <meta name="keywords" content="cardiac devices, heart care solutions, Exon Therapeutics, heart health" />
+        {/* More Variations of Keywords  */}
+        <meta name="keywords" content="heart stents by Exon Therapeutics, innovative cardiovascular devices, Exon Therapeutics heart health solutions, cardiac care technology, medical innovations by Exon Therapeutics" />
+        <meta name="keywords" content="best heart stents, cutting-edge cardiovascular care, heart health products, Exon Therapeutics medical devices, advanced endostent technology" />
+        <meta name="keywords" content="cardiac devices, heart care solutions, heart surgery products, cardiovascular innovation, Exon Therapeutics heart stents" />
+        <meta name="keywords" content="where to buy heart stents, advanced cardiovascular devices, Exon Therapeutics heart care products, innovative endostents, Exon medical devices" />
+        <meta name="keywords" content="cardiovascular surgery technology, heart stent providers, top heart health technology, Exon Therapeutics heart health products" />
 
-        {/* ... repeat similar meta tags with variations for different contexts, services, and product-related keywords ... */}
-        {/* Ensure unique content for description and keywords to avoid redundancy */}
+        {/* Product-Specific Keywords  */}
+        <meta name="keywords" content="Infinity stent, Sleek stent, Swift stent, Intima stent, Endostent by Exon Therapeutics, heart stent models, best heart stent technology" />
+        <meta name="keywords" content="Inflation Device INFLA-D, ergonomic design for doctors, easy deflation mechanism, manometer viewing" />
+        <meta name="keywords" content="Angiographic Diagnostic Catheter ADC, torque control, kink resistance, vascular spasm prevention" />
+        <meta name="keywords" content="Guide Extension Catheter GUIDE PLUS, maneuverability, back-up support, kink-resistant catheter" />
+        <meta name="keywords" content="Y-Connector Y-CLICK, push-pull connector, three-stage valve, auto-closing mechanism, introducer needle ARROW" />
+        <meta name="keywords" content="Introducer Needle ARROW, sharp tip, low resistance, tissue trauma, tapered hub, manifold 2-port, manifold 3-port" />
 
-        {/* Example of different meta tags */}
-        <meta name="description" content="Explore advanced heart stents and devices by Exon Therapeutics." />
-        <meta name="keywords" content="Exon Therapeutics, heart endostents, advanced stents, heart health" />
-        <meta name="description" content="Heart stents for improved cardiovascular care by Exon Therapeutics." />
-        <meta name="keywords" content="heart stents, cardiovascular devices, Exon Therapeutics, heart surgery" />
+        {/* Long-Tail Keywords and Descriptions  */}
+        <meta name="description" content="Explore advanced heart stents like Infinity, Sleek, Swift, Intima, and Endostent, along with other cardiovascular devices by Exon Therapeutics." />
+        <meta name="keywords" content="heart stents, Infinity stent, Sleek stent, Swift stent, Intima stent, Endostent, Exon Therapeutics" />
+        <meta name="description" content="Innovative cardiovascular devices including INFLA-D Inflation Device, ADC Angiographic Diagnostic Catheter, and GUIDE PLUS Guide Extension Catheter." />
+        <meta name="keywords" content="heart stents, cardiovascular devices, inflation device, angiographic diagnostic catheter, guide extension catheter, Exon Therapeutics" />
 
-        {/* ... continue with different descriptions, keywords, and metadata until you have 200 ... */}
+        {/* Region-Specific Keywords  */}
+        <meta name="keywords" content="Exon Therapeutics USA, Exon Therapeutics Europe, Exon Therapeutics India, heart stents worldwide, cardiovascular devices in Asia" />
 
       </head>
+
+
       <body className="relative">
         {children}
         {showFooter && <Footer />}
