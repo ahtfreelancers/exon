@@ -68,7 +68,7 @@ const ProductSlider = () => {
         }}
         loop={true}
         autoplay={{
-          delay: 2000, // Adjust the delay as needed
+          delay: 3000, // Adjust the delay as needed
           disableOnInteraction: false, // Continue autoplay even when user interacts with the slider
         }}
         onSlideChange={calculateMaxHeight}

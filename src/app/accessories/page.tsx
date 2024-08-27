@@ -97,13 +97,14 @@ export default function Accessories() {
     <main className="relative">
       <div className="sm:bg-background p-1 md:p-[6px]">
         <Navbar />
-        <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 lg:mt-10">
+        <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 lg:mt-10 ">
           {md ? (
             <Image
               src="/about/team-about.png"
               priority
               fill
               alt="Picture of the author"
+              className="rounded-[55px]"
             />
           ) : (
             <Image
@@ -111,6 +112,7 @@ export default function Accessories() {
               priority
               fill
               alt="Picture of the author"
+              className="rounded-[32px]"
             />
           )}
           <div className="absolute top-1/3 left-2/4 -translate-x-2/4 md:w-full">

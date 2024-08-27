@@ -6,6 +6,7 @@ import ProductSlider from "@/components/core/ProductSlider";
 import Image from "next/image";
 import { productData } from "@/data/productData";
 import { usePathname, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 // Type definition for product keys
 type ProductKey = keyof typeof productData;
@@ -109,16 +110,18 @@ function SpecificationSection({ title, details }: any) {
 
 function ProductDescription({ description }: any) {
     return (
-        <div className="max-w-[1024px] mx-auto">
+        <div className="max-w-[1024px] mx-auto mb-10 md:mb-20">
             <h2 className="mb-6 md:mb-16 borderText" data-aos="fade-right">
                 Product Description
             </h2>
             {description.map((para: any, index: any) => (
                 <p key={index} className="text-base md:text-2xl text-left font-helvetica text-textSecondary mb-4" data-aos="fade-right" dangerouslySetInnerHTML={{ __html: para }} />
             ))}
-            <button className="px-10 md:px-20 3xl:px-[125px] py-2 md:py-4 3xl:py-6" data-aos="fade-right">
-                Enquiry Now
-            </button>
+            <Link href={'/contact'}>
+                <button className="px-10 md:px-20 3xl:px-[125px] py-2 md:py-4 3xl:py-6" data-aos="fade-right">
+                    Enquiry Now
+                </button>
+            </Link>
         </div>
     );
 }
