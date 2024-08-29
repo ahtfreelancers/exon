@@ -25,7 +25,6 @@ export default function Navbar() {
     const [selectedLink, setSelectedLink] = useState("");
     const { md }: any = useScreens()
     const showFooter = pathname == "/contact";
-    console.log("showFooter", showFooter);
 
     useEffect(() => {
         if (pathname) {
