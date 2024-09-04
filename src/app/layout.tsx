@@ -122,7 +122,6 @@ export default function RootLayout({
 
       </head>
 
-
       <body className="relative">
         {children}
         {showFooter && <Footer />}

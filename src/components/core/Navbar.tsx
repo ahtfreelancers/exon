@@ -24,6 +24,7 @@ export default function Navbar() {
     const [navBg, setNavBg] = useState(false);
     const [selectedLink, setSelectedLink] = useState("");
     const { md }: any = useScreens()
+    const showFooter = pathname == "/contact";
 
     useEffect(() => {
         if (pathname) {
@@ -64,8 +65,8 @@ export default function Navbar() {
                     </div>
                 </div>
             </nav >
-            <div className="laptop:hidden absolute left-0 right-0 px-8 top-9 sm:top-0 z-[99]">
-                <nav className={`w-full flex justify-between items-center transition-all duration-300 sm:pt-8 ${navBg ? 'fade-in' : ''}`}>
+            <div className="laptop:hidden absolute left-0 right-0 px-1 top-2 sm:top-0 z-[99]">
+                <nav className={`w-full flex justify-between items-center p-6 transition-all duration-300 sm:pt-8 ${navBg ? 'fade-in' : ''} ${showFooter ? "bg-[#162D3E] rounded-[28px]" : ""}`}>
                     <div className="flex items-center">
                         <Link href={'/'}>
                             <Image src="/home/mobile-logo.svg" alt="Logo" width={96} height={96} />
