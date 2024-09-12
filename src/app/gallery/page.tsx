@@ -12,10 +12,10 @@ import { useEffect } from "react";
 
 export default function Gallery() {
   const images = [
-    "/gallery/1.jpg",
+    // "/gallery/1.jpg",
     "/gallery/2.jpg",
-    "/gallery/3.jpg",
-    "/gallery/016.jpg",
+    // "/gallery/3.jpg",
+    // "/gallery/016.jpg",
     "/gallery/026.jpg",
     "/gallery/027.jpg",
     "/gallery/032.jpg",

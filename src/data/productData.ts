@@ -32,11 +32,11 @@ export const productData = {
                 "Stent Recoil",
                 "<4%",
                 "Stent struct thickness",
-                "63µm",
-                "Drug",
-                "Sirolimus",
-                "Coating Thickness",
-                "6µm"
+                "63µm"
+                // "Drug",
+                // "Sirolimus",
+                // "Coating Thickness",
+                // "6µm"
             ]
         },
         guidewireCompatibilityData: [
