@@ -2,8 +2,19 @@
 
 import Navbar from "@/components/core/Navbar";
 import Image from "next/image";
+import { useForm, ValidationError } from '@formspree/react';
+import React, { useState } from 'react';
+import { useRouter } from "next/navigation";
 
 export default function Contact() {
+  const [loading, setLoading] = useState(false);
+  const [state, handleSubmit] = useForm("xeojwgpq");  // Formspree form ID
+  const router = useRouter();
+
+  if (state.succeeded) {
+    router.push('/');
+  }
+
   return (
     <main className="spbp:relative bg-[#e9f2f8] p-5 min-h-screen contactus">
       <Navbar />
@@ -24,30 +35,54 @@ export default function Contact() {
               <br />
               Get in touch 👋
             </h2>
-            <form className="text-center">
+            <form className="text-center" onSubmit={handleSubmit}>
               <div className="grid grid-cols-12 gap-[20px] mb-4">
                 <input
+                  id="name"
                   type="text"
+                  name="name"
                   placeholder="Name"
                   className="col-span-12 spbp:col-span-6 contact-form"
+                  required
                 />
+                <ValidationError prefix="Name" field="name" errors={state.errors} />
+
                 <input
-                  type="contact"
+                  id="contact"
+                  type="text"
+                  name="contact"
                   placeholder="Contact Number"
                   className="col-span-12 spbp:col-span-6 contact-form"
+                  required
                 />
+                <ValidationError prefix="Contact" field="contact" errors={state.errors} />
+
                 <input
+                  id="email"
                   type="email"
+                  name="email"
                   placeholder="Email"
                   className="col-span-12 contact-form"
+                  required
                 />
+                <ValidationError prefix="Email" field="email" errors={state.errors} />
               </div>
               <textarea
+                id="message"
+                name="message"
                 placeholder="Message"
                 className="col-span-12 w-full contact-form mb-[54px] xl:mb-[64px] 3xl:mb-[104px]"
-              // rows="4"
+                rows={4}
               />
-              <button className="px-[80px] spbp:px-[133px] py-4 ">Send</button>
+              <ValidationError prefix="Message" field="message" errors={state.errors} />
+
+              <button
+                type="submit"
+                disabled={state.submitting}
+                className="px-[80px] spbp:px-[133px] py-4"
+              >
+                {state.submitting ? 'Sending...' : 'Send'}
+              </button>
             </form>
           </div>
         </div>
