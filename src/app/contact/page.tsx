@@ -72,7 +72,7 @@ export default function Contact() {
                 name="message"
                 placeholder="Message"
                 className="col-span-12 w-full contact-form mb-[54px] xl:mb-[64px] 3xl:mb-[104px]"
-                rows={4}
+              // rows={4}
               />
               <ValidationError prefix="Message" field="message" errors={state.errors} />
 
