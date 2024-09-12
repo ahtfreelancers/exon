@@ -33,7 +33,7 @@ const ContactUs = () => {
 
   return (
     <section className="px-5 py-16 md:py-32 bg-white">
-      <h2 className="text-center mb-16" data-aos="fade-up">Let's Connect</h2>
+      <h2 className="text-center mb-16" data-aos="fade-up">Let&apos;s Connect</h2>
       <div className="max-w-[1180px] px-14 md:px-32 py-9 md:py-9 bg-primary mx-auto rounded-xl md:rounded-[34px]">
         <form onSubmit={onSubmit} className="space-y-2 md:space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
