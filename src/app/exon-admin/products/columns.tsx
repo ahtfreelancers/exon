@@ -35,10 +35,10 @@ const ActionsCell = ({ id }: { id: string }) => {
 
   return (
     <div className="flex gap-[10px]">
-      <Link href={`/products/${id}`}>
+      <Link href={`/exon-admin/products/${id}`}>
         <Eye size={22} className="cursor-pointer" />
       </Link>
-      <Link href={`/products/edit/${id}`}>
+      <Link href={`/exon-admin/products/edit/${id}`}>
         <FilePenLine size={22} />
       </Link>
       <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />

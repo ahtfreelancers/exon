@@ -109,7 +109,7 @@ export default function ListProducts() {
                     columns={columns}
                     data={data}
                     buttonTitle={"Add Product"}
-                    buttonUrl={"/products/add"}
+                    buttonUrl={"/exon-admin/products/add"}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
                     pageCount={pageCount}

@@ -101,7 +101,7 @@ const Products = {
     updateProduct: (id: any, data: any) => requests.put(`${API_BASE_URL}/products/${id}`, data),
     deleteProduct: (id: number) => requests.delete(`${API_BASE_URL}/products/${id}`),
     getProductById: (id: number) => requests.get(`${API_BASE_URL}/products/${id}`),
-    productStatusUpdate: (serialNumber: string) => requests.get(`${API_BASE_URL}/products/statusupdate/${serialNumber}`),
+    productStatusUpdate: (serialNumber: string) => requests.put(`${API_BASE_URL}/products/statusupdate/${serialNumber}`, {serialNumber}),
 }
 
 const Contact = {
