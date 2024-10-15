@@ -7,6 +7,7 @@ import "aos/dist/aos.css";
 import "../styles/global.scss";
 import Footer from "@/components/core/Footer";
 import { ArrowUpIcon } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function RootLayout({
   children,
@@ -125,14 +126,29 @@ export default function RootLayout({
       <body className="relative">
         {children}
         {showFooter && <Footer />}
-        {showScrollButton && (
-          <button
-            onClick={scrollToTop}
-            className="fixed bottom-4 z-[9999999] right-4 p-1 md:p-3 bg-secondary text-white rounded-full shadow-md transition-colors duration-300 animate-bounce"
+        <div className="fixed bottom-4 right-4 flex flex-col gap-4 z-[9999999]">
+          {/* WhatsApp Button */}
+          <a
+            href={`https://wa.me/918141603611?text=Hello! I would like to inquire about Exon Therapeutics products.`}
+            className="p-3 bg-green-500 text-white rounded-full shadow-lg transition-transform duration-300 hover:scale-110"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="WhatsApp"
           >
-            <ArrowUpIcon className="h-6 w-6" />
-          </button>
-        )}
+            <FaWhatsapp className="h-6 w-6" />
+          </a>
+
+          {/* Scroll to Top Button */}
+          {showScrollButton && (
+            <button
+              onClick={scrollToTop}
+              className="p-3 bg-secondary text-white rounded-full shadow-lg transition-transform duration-300 animate-bounce"
+              aria-label="Scroll to Top"
+            >
+              <ArrowUpIcon className="h-6 w-6" />
+            </button>
+          )}
+        </div>
       </body>
     </html>
   );
