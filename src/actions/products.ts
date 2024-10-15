@@ -48,3 +48,14 @@ export async function deleteProduct(id: any) {
   }
 }
 
+export async function productStatusUpdate(serialNumber: any) {
+  try {
+    const response = await agent.Products.productStatusUpdate(serialNumber);
+    return handleResponse(response);
+  } catch (error) {
+    console.error("Update product error", error);
+    return {
+      error,
+    };
+  }
+}
