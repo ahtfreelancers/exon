@@ -6,7 +6,7 @@ export default async function ListBrandsPage() {
   const session = await auth()
 
   if (!session) {
-    return redirect('/login')
+    return redirect('/exon-admin')
   }
 
   return (

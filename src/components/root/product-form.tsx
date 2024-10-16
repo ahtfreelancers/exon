@@ -35,10 +35,10 @@ import { Calendar as CalendarIcon } from "lucide-react"
 
 interface Product {
     id: number,
-    name: string,
-    brandName: string,
-    lotNo: string,
-    batchNo: string,
+    itemNo: string,
+    itemDescription: string,
+    serialNumber: string,
+    lotNumber: string,
     manufactureDate: string,
     expirationDate: string,
     price: string,
@@ -67,10 +67,10 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
     const form = useForm<z.infer<typeof MedicineSchema>>({
         resolver: zodResolver(MedicineSchema),
         defaultValues: {
-            name: product?.name ?? "",
-            brandName: product?.brandName ?? "",
-            lotNo: product?.lotNo ?? "",
-            batchNo: product?.batchNo ?? "",
+            itemNo: product?.itemNo ?? "",
+            itemDescription: product?.itemDescription ?? "",
+            serialNumber: product?.serialNumber ?? "",
+            lotNumber: product?.lotNumber ?? "",
             manufactureDate: product?.manufactureDate ?? "",
             expirationDate: product?.expirationDate ?? "",
             price: product?.price ?? "",
@@ -94,7 +94,7 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                 const response = await agent.Products.createProduct(newValues)
                 if (response && response.isSuccess) {
                     form.reset();
-                    router.push('/products')
+                    router.push('/exon-admin/products')
                 }
             } catch (error) {
                 console.error("An error occurred:", error);
@@ -106,7 +106,7 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                 
                 if (response && response.isSuccess) {
                     form.reset();
-                    router.push('/products')
+                    router.push('/exon-admin/products')
                 }
             } catch (error) {
                 console.error("An error occurred:", error);
@@ -123,15 +123,15 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                 <div className="grid grid-cols-2 gap-[10px]">
                     <FormField
                         control={form.control}
-                        name="name"
+                        name="itemNo"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Name</FormLabel>
+                                <FormLabel>Item No</FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
                                         disabled={isPending}
-                                        placeholder="Enter Name"
+                                        placeholder="Enter Item No"
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -140,16 +140,16 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                     />
                     <FormField
                         control={form.control}
-                        name="brandName"
+                        name="itemDescription"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Brand Name
+                                <FormLabel>Item Description
                                 </FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
                                         disabled={isPending}
-                                        placeholder="Enter Brand Name"
+                                        placeholder="Enter Item Description"
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -158,16 +158,16 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                     />
                     <FormField
                         control={form.control}
-                        name="lotNo"
+                        name="serialNumber"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Lot No
+                                <FormLabel>Serial Number
                                 </FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
                                         disabled={isPending}
-                                        placeholder="Enter Lot No"
+                                        placeholder="Enter Serial Number"
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -176,16 +176,16 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                     />
                     <FormField
                         control={form.control}
-                        name="batchNo"
+                        name="lotNumber"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Batch No
+                                <FormLabel>Lot Number
                                 </FormLabel>
                                 <FormControl>
                                     <Input
                                         {...field}
                                         disabled={isPending}
-                                        placeholder="Enter Batch No"
+                                        placeholder="Enter Lot Number"
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -202,8 +202,8 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button
-                                                variant={"outline"}
-                                                className="flex w-full justify-start text-left font-normal"
+                                                // variant={"outline"}
+                                                className="border border-input bg-transparent text-black flex w-full justify-start text-left font-normal"
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
                                                 {field.value ? new Date(field.value).toLocaleDateString() : <span>Pick a date</span>}
@@ -234,8 +234,8 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Button
-                                                variant={"outline"}
-                                                className="flex w-full justify-start text-left font-normal"
+                                                // variant={"outline"}
+                                                className="border border-input bg-transparent text-black flex w-full justify-start text-left font-normal"
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
                                                 {field.value ? new Date(field.value).toLocaleDateString() : <span>Pick a date</span>}

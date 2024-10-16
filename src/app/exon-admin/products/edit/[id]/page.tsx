@@ -13,7 +13,7 @@ const ProductEditPage = async ({ params }: ProductEditPageProps) => {
     const session = await auth()
 
     if (!session) {
-        return redirect('/login')
+        return redirect('/exon-admin')
     }
     const { id } = params;
 

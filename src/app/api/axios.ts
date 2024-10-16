@@ -38,7 +38,7 @@ axios.interceptors.request.use(
         if (error.response && error.response.status === 401) {
             console.log("errorerrorerror", error);
 
-            window.location.href = '/login'
+            window.location.href = '/exon-admin'
             return Promise.reject('Unauthorized')
         }
         return Promise.reject(error)
@@ -60,7 +60,7 @@ axios.interceptors.response.use(
             }
 
             if (!session) {
-                return redirect('/login')
+                return redirect('/exon-admin')
             }
         }
 

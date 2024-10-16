@@ -6,7 +6,7 @@ const LoginPage = async () => {
     const session = await auth()
 
     if (session) {
-        return redirect('/dashboard')
+        return redirect('/exon-admin/products')
     }
 
     return (

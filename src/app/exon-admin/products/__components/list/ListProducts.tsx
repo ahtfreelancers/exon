@@ -1,8 +1,10 @@
 'use client'
 
+import { logout } from '@/actions/logout'
 import { getAllProducts, productStatusUpdate } from '@/actions/products'
 import { columns } from '@/app/exon-admin/products/columns'
 import { DataTable } from '@/components/root/data-table'
+import { Button } from '@/components/ui/button'
 import { useEffect, useRef, useState } from 'react'
 
 export default function ListProducts() {

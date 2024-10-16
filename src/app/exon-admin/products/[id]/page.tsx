@@ -17,10 +17,10 @@ const MedicineDetailed = async ({ params }: ProductDetailedPageProps) => {
     }
 
     const {
-        name,
-        brandName,
-        lotNo,
-        batchNo,
+        itemNo,
+        itemDescription,
+        serialNumber,
+        lotNumber,
         manufactureDate,
         expirationDate,
         price,
@@ -28,16 +28,16 @@ const MedicineDetailed = async ({ params }: ProductDetailedPageProps) => {
 
     return (
         <section className="container mx-auto">
-            <Link href="/products" className="flex mb-5"><ChevronLeft />Back</Link>
+            <Link href="/exon-admin/products" className="flex mb-5"><ChevronLeft />Back</Link>
             <div className="bg-white rounded-md p-4 flex flex-col md:flex-row">
                 <div className="mt-4 md:mt-0 text-gray-700 flex flex-col gap-2">
-                    <h1><label>Name : </label >{name}</h1>
-                    <p><label>Brand Name : </label >{brandName}</p>
-                    <p><label>Price : </label >{price}</p>
-                    <p><label>Lot No : </label >{lotNo}</p>
-                    <p><label>Batch No : </label >{batchNo}</p>
-                    <p><label>Manufacture Date : </label >{manufactureDate}</p>
-                    <p><label>Expiration Date : </label >{expirationDate}</p>
+                    <p><label className="font-bold">Item No : </label >{itemNo}</p>
+                    <p><label className="font-bold">Item Description : </label >{itemDescription}</p>
+                    <p><label className="font-bold">Serial Number : </label >{serialNumber}</p>
+                    <p><label className="font-bold">Price : </label >{price}</p>
+                    <p><label className="font-bold">Lot No : </label >{lotNumber}</p>
+                    <p><label className="font-bold">Manufacture Date : </label >{manufactureDate}</p>
+                    <p><label className="font-bold">Expiration Date : </label >{expirationDate}</p>
                 </div>
             </div>
         </section>

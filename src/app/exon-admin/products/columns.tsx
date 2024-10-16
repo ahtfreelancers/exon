@@ -14,7 +14,15 @@ export type User = {
   batchNo: string
   manufactureDate: string
   expirationDate: string
+  productStatus: number
   price: string
+}
+
+const statusEnum: any = {
+  "0": 'Not In',
+  "1": 'In',
+  "2": 'Out',
+  "3": 'Dispose'
 }
 
 const ActionsCell = ({ id }: { id: string }) => {
@@ -48,49 +56,49 @@ const ActionsCell = ({ id }: { id: string }) => {
 
 export const columns: ColumnDef<User>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: 'itemNo',
     header: ({ column }) => (
       <div
         className='flex items-center'
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        Name
+        No
         <ArrowUpDown className='ml-2 h-4 w-4' />
       </div>
     ),
   },
   {
-    accessorKey: 'brandName',
+    accessorKey: 'itemDescription',
     header: ({ column }) => (
       <div
         className='flex items-center'
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        Brand
+        Description
         <ArrowUpDown className='ml-2 h-4 w-4' />
       </div>
     ),
   },
   {
-    accessorKey: 'lotNo',
+    accessorKey: 'serialNumber',
     header: ({ column }) => (
       <div
         className='flex items-center'
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        Lot No
+        Serial Number
         <ArrowUpDown className='ml-2 h-4 w-4' />
       </div>
     ),
   },
   {
-    accessorKey: 'batchNo',
+    accessorKey: 'lotNumber',
     header: ({ column }) => (
       <div
         className='flex items-center'
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        Batch No
+        Lot Number
         <ArrowUpDown className='ml-2 h-4 w-4' />
       </div>
     ),
@@ -138,16 +146,18 @@ export const columns: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: 'price',
+    accessorKey: 'productStatus',
     header: ({ column }) => (
       <div
         className='flex items-center'
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        Price
+        Status
         <ArrowUpDown className='ml-2 h-4 w-4' />
       </div>
     ),
+    cell: ({ row }) => <>{statusEnum[`${row.original.productStatus}`]}</>,
+    filterFn: (row, columnId, value) => row.getValue(columnId) === value,
   },
   {
     id: 'actions',
