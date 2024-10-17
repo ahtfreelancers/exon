@@ -50,12 +50,12 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
         >
             <div className="flex h-[55px] items-center border-b justify-between px-3 w-full">
                 <Link className="flex items-center gap-2 font-semibold ml-1 justify-center w-full" href="/">
-                    <Image
+                    {/* <Image
                         src="/images/logo.png"
                         alt="Exon Logo"
                         width={100} // adjust width as needed
                         height={100} // adjust height as needed
-                    />
+                    /> */}
                 </Link>
             </div>
             <ChevronsLeft

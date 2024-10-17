@@ -51,12 +51,12 @@ export default function NavBar({ children }: { children: ReactNode }) {
               <Link href="/">
                 <SheetTitle>
                   <Link className="flex items-center gap-2 font-semibold ml-1 justify-start w-full" href="/">
-                    <Image
+                    {/* <Image
                       src="/images/logo.png" // replace with the actual path to your logo
                       alt="My Pharmacy Logo"
                       width={100} // adjust width as needed
                       height={100} // adjust height as needed
-                    />
+                    /> */}
                   </Link>
                 </SheetTitle>
               </Link>

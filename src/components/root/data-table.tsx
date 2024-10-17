@@ -22,7 +22,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
-import { Select, SelectItem } from '../ui/select'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
 
 const statusEnum = {
   "0": 'Not In',
@@ -39,6 +39,7 @@ interface DataTableProps<TData, TValue> {
   search?: string
   onSearch: (value: string) => void
   onPageChange: (pageIndex: number) => void
+  setStatusFilter: (value: string) => void
   pageCount: number
   currentPage: number
   pageSize?: number
@@ -54,6 +55,7 @@ export function DataTable<TData, TValue>({
   search,
   onSearch,
   onPageChange,
+  setStatusFilter,
   pageCount,
   currentPage,
   pageSize = 10,
@@ -64,7 +66,6 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [searchTerm, setSearchTerm] = useState(search || '')
-  const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined)
 
   const table = useReactTable({
     data,
@@ -94,14 +95,6 @@ export function DataTable<TData, TValue>({
     return () => clearTimeout(delayDebounce)
   }, [searchTerm, onSearch])
 
-  useEffect(() => {
-    setColumnFilters((prev) =>
-      statusFilter
-        ? [{ id: 'productStatus', value: statusFilter }]
-        : prev.filter((filter) => filter.id !== 'productStatus')
-    )
-  }, [statusFilter])
-
   const totalPages = Math.ceil(pageCount / pageSize)
 
   return (
@@ -116,24 +109,31 @@ export function DataTable<TData, TValue>({
               className='max-w-sm'
             />
           )}
-          {/* <Select
-            value={statusFilter}
-            // onChange={(e: any) => setStatusFilter(e.target.value || undefined)}
-            // className='ml-2'
-          >
-            <SelectItem value="">All Statuses</SelectItem>
-            {Object.entries(statusEnum).map(([key, value]) => (
-              <SelectItem key={key} value={key}>
-                {value}
-              </SelectItem>
-            ))}
-          </Select> */}
         </div>
-        {buttonTitle && (
-          <Link href={buttonUrl}>
-            <Button className='ml-auto'>{buttonTitle}</Button>
-          </Link>
-        )}
+        <div className='flex gap-4'>
+          <div className='flex items-center gap-2'>
+            <label className='font-medium'>Filter:</label>
+            <Select onValueChange={(value: any) => setStatusFilter(value)}>
+              <SelectTrigger className="w-[180px] text-black border-input">
+                <SelectValue placeholder="Select a status" />
+              </SelectTrigger>
+              <SelectContent className='bg-white'>
+                <SelectGroup>
+                  {Object.entries(statusEnum).map(([key, value]) => (
+                    <SelectItem key={key} value={key}>
+                      {value}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          {buttonTitle && (
+            <Link href={buttonUrl}>
+              <Button className='ml-auto'>{buttonTitle}</Button>
+            </Link>
+          )}
+        </div>
       </div>
 
       <div className='rounded-md border'>
