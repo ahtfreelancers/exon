@@ -94,12 +94,16 @@ export default function ListProducts() {
         setProductStatus(value)
     }
 
+    const onSuccess = () => {
+        fetchProducts()
+    }
+
     return (
         <section className=''>
             <div className='container'>
                 <div className='flex justify-between'>
                     <h1 className='mb-6 text-2xl font-bold'>Products</h1>
-                    <ScannerButton asChild>
+                    <ScannerButton asChild onSuccess={onSuccess}>
                         <Button>
                             Scan barcode
                         </Button>
@@ -133,6 +137,7 @@ export default function ListProducts() {
                     currentPage={pageIndex}
                     search={search}
                     pageSize={pageSize}
+                    isStatusFilterEnable={true}
                 />
             </div>
         </section>

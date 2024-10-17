@@ -11,11 +11,13 @@ import { useEffect, useRef, useState } from "react";
 interface ScannerButtonProps {
     children: React.ReactNode;
     asChild?: boolean;
+    onSuccess: () => void
 }
 
 export const ScannerButton = ({
     children,
-    asChild
+    asChild,
+    onSuccess
 }: ScannerButtonProps) => {
     const [barcodeData, setBarcodeData] = useState<string>('');
     const [scannedData, setScannedData] = useState<string>('');
@@ -58,6 +60,7 @@ export const ScannerButton = ({
             const { data, isSuccess }: any = await productStatusUpdate(barcodeData)
             if (isSuccess) {
                 console.log('product successfully updated!')
+                onSuccess()
             }
         }
         if (barcodeData) {

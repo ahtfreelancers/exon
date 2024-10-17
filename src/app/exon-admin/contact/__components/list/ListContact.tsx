@@ -21,8 +21,8 @@ export default function ListContact(props: any) {
         try {
             const { data, isSuccess }: any = await getAllContact(params)
             if (isSuccess) {
-                setData(data)
-                // setPageCount(data.count)
+                setData(data.items)
+                setPageCount(data.totalCount)
             }
         } catch (err) {
             console.log(`err`, err);

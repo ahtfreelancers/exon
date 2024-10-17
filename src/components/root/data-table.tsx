@@ -39,12 +39,13 @@ interface DataTableProps<TData, TValue> {
   search?: string
   onSearch: (value: string) => void
   onPageChange: (pageIndex: number) => void
-  setStatusFilter: (value: string) => void
+  setStatusFilter?: (value: string) => void
   pageCount: number
   currentPage: number
   pageSize?: number
   isSearchEnable?: boolean
   isPaginationEnable?: boolean
+  isStatusFilterEnable?: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -61,6 +62,7 @@ export function DataTable<TData, TValue>({
   pageSize = 10,
   isSearchEnable = true,
   isPaginationEnable = true,
+  isStatusFilterEnable = false
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -111,9 +113,9 @@ export function DataTable<TData, TValue>({
           )}
         </div>
         <div className='flex gap-4'>
-          <div className='flex items-center gap-2'>
+          {isStatusFilterEnable && <div className='flex items-center gap-2'>
             <label className='font-medium'>Filter:</label>
-            <Select onValueChange={(value: any) => setStatusFilter(value)}>
+            <Select onValueChange={(value: any) => setStatusFilter && setStatusFilter(value)}>
               <SelectTrigger className="w-[180px] text-black border-input">
                 <SelectValue placeholder="Select a status" />
               </SelectTrigger>
@@ -127,7 +129,7 @@ export function DataTable<TData, TValue>({
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </div>
+          </div>}
           {buttonTitle && (
             <Link href={buttonUrl}>
               <Button className='ml-auto'>{buttonTitle}</Button>

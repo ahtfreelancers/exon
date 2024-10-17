@@ -62,7 +62,7 @@ export const columns: ColumnDef<User>[] = [
         className='flex items-center'
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        No
+        Item No
         <ArrowUpDown className='ml-2 h-4 w-4' />
       </div>
     ),
@@ -74,7 +74,7 @@ export const columns: ColumnDef<User>[] = [
         className='flex items-center'
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
-        Description
+        Item Description
         <ArrowUpDown className='ml-2 h-4 w-4' />
       </div>
     ),
