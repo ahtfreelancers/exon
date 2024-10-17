@@ -61,6 +61,7 @@ export const ScannerButton = ({
             if (isSuccess) {
                 console.log('product successfully updated!')
                 onSuccess()
+                setBarcodeData("")
             }
         }
         if (barcodeData) {

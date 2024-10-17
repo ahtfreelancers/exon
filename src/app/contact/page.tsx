@@ -2,18 +2,45 @@
 
 import Navbar from "@/components/core/Navbar";
 import Image from "next/image";
-import { useForm, ValidationError } from '@formspree/react';
 import React, { useState } from 'react';
 import { useRouter } from "next/navigation";
+import { createContactForm } from "@/actions/contact";
 
 export default function Contact() {
   const [loading, setLoading] = useState(false);
-  const [state, handleSubmit] = useForm("xeojwgpq");  // Formspree form ID
+  const [formValues, setFormValues] = useState({
+    name: '',
+    phoneNumber: '',
+    email: '',
+    message: '',
+  });
   const router = useRouter();
 
-  if (state.succeeded) {
-    router.push('/');
-  }
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setLoading(true);
+    console.log("formValues", formValues);
+
+    try {
+      const response: any = await createContactForm(formValues);
+      if (response && response.isSuccess) {
+        setFormValues({ name: '', phoneNumber: '', email: '', message: '' }); // Reset form
+        router.push('/'); // Redirect to home
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="spbp:relative bg-[#e9f2f8] p-5 min-h-screen contactus">
@@ -41,47 +68,47 @@ export default function Contact() {
                   id="name"
                   type="text"
                   name="name"
+                  value={formValues.name}
+                  onChange={handleChange}
                   placeholder="Name"
                   className="col-span-12 spbp:col-span-6 contact-form"
                   required
                 />
-                <ValidationError prefix="Name" field="name" errors={state.errors} />
-
                 <input
-                  id="contact"
+                  id="phoneNumber"
                   type="text"
-                  name="contact"
+                  name="phoneNumber"
+                  value={formValues.phoneNumber}
+                  onChange={handleChange}
                   placeholder="Contact Number"
                   className="col-span-12 spbp:col-span-6 contact-form"
                   required
                 />
-                <ValidationError prefix="Contact" field="contact" errors={state.errors} />
-
                 <input
                   id="email"
                   type="email"
                   name="email"
+                  value={formValues.email}
+                  onChange={handleChange}
                   placeholder="Email"
                   className="col-span-12 contact-form"
                   required
                 />
-                <ValidationError prefix="Email" field="email" errors={state.errors} />
               </div>
               <textarea
                 id="message"
                 name="message"
+                value={formValues.message}
+                onChange={handleChange}
                 placeholder="Message"
                 className="col-span-12 w-full contact-form mb-[54px] xl:mb-[64px] 3xl:mb-[104px]"
-              // rows={4}
               />
-              <ValidationError prefix="Message" field="message" errors={state.errors} />
-
               <button
                 type="submit"
-                disabled={state.submitting}
+                disabled={loading}
                 className="px-[80px] spbp:px-[133px] py-4"
               >
-                {state.submitting ? 'Sending...' : 'Send'}
+                {loading ? 'Sending...' : 'Send'}
               </button>
             </form>
           </div>

@@ -1,17 +1,18 @@
+"use client"
 import { useState } from "react";
 import Image from "next/image";
-import { useForm, ValidationError } from '@formspree/react';
 import { useRouter } from "next/navigation";
+import { createContactForm } from "@/actions/contact";  // Make sure to import your API function
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     contactNumber: "",
-    interest: "",
+    message: "",
   });
 
-  const [state, handleSubmit] = useForm("xeojwgpq"); // Your Formspree form ID
+  const [loading, setLoading] = useState(false); // Loading state
   const router = useRouter();
 
   const handleChange = (e: any) => {
@@ -22,12 +23,20 @@ const ContactUs = () => {
     }));
   };
 
-  const onSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    handleSubmit(e);
+    setLoading(true);
 
-    if (state.succeeded) {
-      router.push('/');  // Redirect after successful submission
+    try {
+      const response: any = await createContactForm(formData);
+      if (response && response.isSuccess) {
+        setFormData({ name: "", email: "", contactNumber: "", message: "" }); // Reset form
+        router.push('/');  // Redirect after successful submission
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -35,7 +44,7 @@ const ContactUs = () => {
     <section className="px-5 py-16 md:py-32 bg-white">
       <h2 className="text-center mb-16" data-aos="fade-up">Let&apos;s Connect</h2>
       <div className="max-w-[1180px] px-14 md:px-32 py-9 md:py-9 bg-primary mx-auto rounded-xl md:rounded-[34px]">
-        <form onSubmit={onSubmit} className="space-y-2 md:space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-2 md:space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
             <input
               type="text"
@@ -46,7 +55,6 @@ const ContactUs = () => {
               className="p-3 md:p-5 rounded-[32px] md:rounded-[71px] border-none bg-[#f5f5f5] text-black w-full"
               required
             />
-            <ValidationError prefix="Name" field="name" errors={state.errors} />
 
             <input
               type="text"
@@ -57,7 +65,6 @@ const ContactUs = () => {
               className="p-3 md:p-5 rounded-[32px] md:rounded-[71px] border-none bg-[#f5f5f5] text-black w-full"
               required
             />
-            <ValidationError prefix="Contact Number" field="contactNumber" errors={state.errors} />
           </div>
 
           <input
@@ -69,25 +76,23 @@ const ContactUs = () => {
             className="p-3 md:p-5 rounded-[32px] md:rounded-[71px] border-none bg-[#f5f5f5] text-black w-full"
             required
           />
-          <ValidationError prefix="Email" field="email" errors={state.errors} />
 
           <textarea
-            name="interest"
-            value={formData.interest}
+            name="message"
+            value={formData.message}
             onChange={handleChange}
-            placeholder="Your Interest"
+            placeholder="message"
             className="p-3 md:p-5 rounded-xl md:rounded-2xl border-none bg-[#f5f5f5] text-black w-full h-40"
             required
           />
-          <ValidationError prefix="Interest" field="interest" errors={state.errors} />
 
           <div className="flex justify-center gap-5">
             <button
               type="submit"
-              disabled={state.submitting}
+              disabled={loading}
               className="py-3 px-16 bg-[#12A89D] text-white text-lg font-bold font-helvetica rounded-[83px] flex items-center justify-center"
             >
-              {state.submitting ? 'Sending...' : 'Send'}
+              {loading ? 'Sending...' : 'Send'}
               <span className="ml-5">
                 <Image
                   src="/icons/contact-left.png"

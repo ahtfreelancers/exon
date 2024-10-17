@@ -79,9 +79,9 @@ export const LoginForm = () => {
     return (
         <CardWrapper
             headerLabel="Welcome back"
-            backButtonLabel="Don't have an account?"
-            backButtonHref="/register"
-            // showSocial
+            backButtonLabel=""
+            backButtonHref=""
+        // showSocial
         >
             <Form {...form}>
                 <form
@@ -124,20 +124,20 @@ export const LoginForm = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => setShowPassword(!showPassword)}
-                                                className="absolute inset-y-0 right-0 flex items-center pr-3"
+                                                className="absolute inset-y-0 right-0 flex items-center pr-3 !bg-transparent"
                                                 tabIndex={-1}
                                             >
                                                 {showPassword ? (
-                                                    <EyeOff className="h-5 w-5" />
+                                                    <EyeOff className="h-5 w-5 text-black" />
                                                 ) : (
-                                                    <Eye className="h-5 w-5" />
+                                                    <Eye className="h-5 w-5 text-black" />
                                                 )}
                                             </button>
                                         </div>
                                     </FormControl>
                                     <div className="pt-2">
-                                        <Link href="/reset" className="text-sm text-blue-600 hover:underline">
-                                            Forgot password?
+                                        <Link href="/" className="text-sm text-grey-600 hover:underline">
+                                            Back to Exon
                                         </Link>
                                     </div>
                                     <FormMessage />

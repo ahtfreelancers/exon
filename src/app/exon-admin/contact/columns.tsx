@@ -10,6 +10,7 @@ export type Contact = {
   email: string
   phoneNumber: string
   message: string
+  created: string
 }
 
 export const columns: ColumnDef<Contact>[] = [
@@ -67,6 +68,24 @@ export const columns: ColumnDef<Contact>[] = [
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </div>
       )
+    }
+  },
+  {
+    accessorKey: 'created',
+    header: ({ column }) => {
+      return (
+        <div
+          className='flex items-center'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Contact Date
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </div>
+      )
+    },
+    cell: ({ row }) => {
+      const createdDate = row.original.created.split('T')[0]; // Split the string by 'T' and take the first part (the date)
+      return <span>{createdDate}</span>;
     }
   }
 ]

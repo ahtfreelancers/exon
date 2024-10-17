@@ -1,4 +1,5 @@
 "use client";
+import { createContactForm } from "@/actions/contact";
 import Navbar from "@/components/core/Navbar";
 import { useScreens } from "@/hooks/useScreens";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -31,7 +32,23 @@ export default function About() {
   const toggleAccordion = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+  const [email, setEmail] = useState("");  // Only email state
 
+  const handleChange = (e: any) => {
+    setEmail(e.target.value);  // Update email field
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      // Send only the email value in the form submission
+      const response: any = await createContactForm({ email });
+      console.log("Form submitted with email:", response, email);
+      // Call to backend action or API to handle email subscription can be placed here
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
   return (
     <main className="relative">
       <div className="sm:bg-background p-1 md:p-[6px]">
@@ -168,11 +185,14 @@ export default function About() {
           <h2 className="text-[28px] md:text-5xl text-[#111827] text-center mb-7" data-aos="fade-up">Ready to Superpower Your Ideas?</h2>
           <p className="text-center text-base md:text-xl mb-6 mx-auto max-w-[1000px]" data-aos="fade-up">we here to support your ideas, offering tailored cardiovascular solutions that align with your vision and patient needs.</p>
           <h5 className="mb-3 text-[#6B7280] text-center text-sm font-helvetica font-bold" data-aos="fade-up">Subscribe to Update</h5>
-          <form data-aos="fade-up" className="relative max-w-[95%] md:max-w-[70%] lg:max-w-[50%] mx-auto">
+          <form data-aos="fade-up" onSubmit={handleSubmit} className="relative max-w-[95%] md:max-w-[70%] lg:max-w-[50%] mx-auto">
             <input
               type="email"
               placeholder="Enter email to Subscribe"
+              value={email}
+              onChange={handleChange}
               className="py-4 md:py-4 px-5 w-full rounded-full text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#12A89D] bg-white"
+              required
             />
             <button
               type="submit"

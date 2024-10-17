@@ -132,7 +132,7 @@ export default function RootLayout({
               <div className="fixed bottom-4 right-4 flex flex-col gap-4 z-[9999999]">
                 {/* WhatsApp Button */}
                 <a
-                  href={`https://wa.me/918141603611?text=Hello! I would like to inquire about Exon Therapeutics products.`}
+                  href={`https://wa.me/918799410617?text=Hello! I would like to inquire about Exon Therapeutics products.`}
                   className="p-3 bg-green-500 text-white rounded-full shadow-lg transition-transform duration-300 hover:scale-110"
                   target="_blank"
                   rel="noopener noreferrer"
