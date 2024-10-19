@@ -276,7 +276,7 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                 </div>
                 <FormError message={error || urlError} />
                 <FormSuccess message={success} />
-                <Link href={'/medicines'}>
+                <Link href={'/exon-admin/products'}>
                     <Button
                         disabled={isPending}
                         type="submit"
