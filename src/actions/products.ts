@@ -59,3 +59,14 @@ export async function productStatusUpdate(serialNumber: any) {
     };
   }
 }
+export async function productBulkUpload(serialNumber: any) {
+  try {
+    const response = await agent.Products.productBulkUpload(serialNumber);
+    return handleResponse(response);
+  } catch (error) {
+    console.error("Update product error", error);
+    return {
+      error,
+    };
+  }
+}
