@@ -8,7 +8,7 @@ const ContactUs = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    contactNumber: "",
+    phoneNumber: "",
     message: "",
   });
 
@@ -30,7 +30,7 @@ const ContactUs = () => {
     try {
       const response: any = await createContactForm(formData);
       if (response && response.isSuccess) {
-        setFormData({ name: "", email: "", contactNumber: "", message: "" }); // Reset form
+        setFormData({ name: "", email: "", phoneNumber: "", message: "" }); // Reset form
         router.push('/');  // Redirect after successful submission
       }
     } catch (error) {
@@ -58,8 +58,8 @@ const ContactUs = () => {
 
             <input
               type="text"
-              name="contactNumber"
-              value={formData.contactNumber}
+              name="phoneNumber"
+              value={formData.phoneNumber}
               onChange={handleChange}
               placeholder="Contact Number"
               className="p-3 md:p-5 rounded-[32px] md:rounded-[71px] border-none bg-[#f5f5f5] text-black w-full"
