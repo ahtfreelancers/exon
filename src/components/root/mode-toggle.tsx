@@ -25,8 +25,8 @@ export function ModeToggle() {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button size="icon" className="w-auto p-3">
-                    <p>Admin</p>
-                    <User className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 ml-2" />
+                    {/* <p className="text-base">Admin</p> */}
+                    <User className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                     <span className="sr-only">Toggle theme</span>
                 </Button>
             </DropdownMenuTrigger>

@@ -75,10 +75,10 @@ export default function ListProducts() {
                     onPageChange={setPageIndex}
                     setStatusFilter={setStatusFilter}
                     pageCount={pageCount}
+                    isStatusFilterEnable={true}
                     currentPage={pageIndex}
                     search={search}
                     pageSize={pageSize}
-                    isStatusFilterEnable={true}
                 />
             </div>
         </section>
