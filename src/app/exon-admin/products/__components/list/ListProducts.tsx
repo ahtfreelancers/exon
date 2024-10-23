@@ -1,6 +1,7 @@
 'use client'
 
 import { getAllProducts, productStatusUpdate } from '@/actions/products'
+import { DocumentUploadModal } from '@/app/exon-admin/__components/DocumentUploadModal'
 import { ScannerButton } from '@/app/exon-admin/__components/scanner-modal'
 import { columns } from '@/app/exon-admin/products/columns'
 import { DataTable } from '@/components/root/data-table'
@@ -55,11 +56,14 @@ export default function ListProducts() {
             <div className='container'>
                 <div className='flex justify-between'>
                     <h1 className='mb-6 text-2xl font-bold'>Products</h1>
-                    <ScannerButton asChild onSuccess={onSuccess}>
-                        <Button>
-                            Scan barcode
-                        </Button>
-                    </ScannerButton>
+                    <div className='flex items-center gap-4'>
+                        <ScannerButton asChild onSuccess={onSuccess}>
+                            <Button>
+                                Scan barcode
+                            </Button>
+                        </ScannerButton>
+                        <DocumentUploadModal onSuccess={onSuccess} />
+                    </div>
                 </div>
 
                 <DataTable
