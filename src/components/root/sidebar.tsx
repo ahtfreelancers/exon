@@ -5,14 +5,8 @@ import { cn } from "@/lib/utils";
 import { SideNav } from "./side-nav";
 import {
     ChevronsLeft,
-    CirclePercent,
     Contact,
     Folder,
-    Home,
-    HomeIcon,
-    SquareM,
-    User,
-    UserRoundCog
 } from "lucide-react";
 import { FaTasks } from "react-icons/fa";
 import Link from "next/link";
@@ -29,7 +23,7 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
 
     const sidebarItems = [
         { href: "/exon-admin/products", label: "Products", icon: Folder },
-        { href: "/exon-admin/contact", label: "Contact", icon: Folder },
+        { href: "/exon-admin/contact", label: "Contact", icon: Contact },
     ];
 
     const handleToggle = () => {
