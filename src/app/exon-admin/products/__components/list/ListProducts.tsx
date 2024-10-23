@@ -19,7 +19,7 @@ export default function ListProducts() {
     const pageSize = 10
     const fetchProducts = async () => {
         let params = {
-            pageIndex,
+            PageNumber: pageIndex,
             pageSize: pageSize,
             searchParam: search,
             productStatus: Number(productStatus) ?? null
