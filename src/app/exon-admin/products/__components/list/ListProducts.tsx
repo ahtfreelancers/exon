@@ -69,7 +69,6 @@ export default function ListProducts() {
                 <DataTable
                     columns={columns(fetchProducts)}
                     data={data}
-                    isAddVisible={true}
                     buttonTitle={"Add Product"}
                     buttonUrl={"/exon-admin/products/add"}
                     onSearch={setSearch}
