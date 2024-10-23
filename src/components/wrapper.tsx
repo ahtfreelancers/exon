@@ -17,7 +17,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => {
     <>
       {showlayout ?
         <main className="flex items-center justify-center h-screen w-full">
-          <Toaster />
+          <Toaster position="top-center" />
           {children}
         </main>
         :
@@ -25,7 +25,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => {
           <Sidebar Setopen={Setopen} />
           <NavBar>
             <main className="flex flex-col gap-4 pt-4 px-4 lg:gap-6">
-              <Toaster />
+              <Toaster position="top-center" />
               {children}
             </main>
           </NavBar>

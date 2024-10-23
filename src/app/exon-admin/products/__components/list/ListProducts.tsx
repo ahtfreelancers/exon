@@ -12,58 +12,10 @@ export default function ListProducts() {
     const [search, setSearch] = useState('')
     const [productStatus, setProductStatus] = useState('')
 
-    // const [barcodeData, setBarcodeData] = useState<string>('');
-    // const [scannedData, setScannedData] = useState<string>('');
-
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
 
     const pageSize = 50
-
-    // const inputRef = useRef<HTMLInputElement | null>(null);
-    // let scanTimeout: NodeJS.Timeout;
-
-    // const handleKeyDown = (e: KeyboardEvent) => {
-    //     if (e.key === 'Enter') {
-    //         // When the "Enter" key is pressed, finalize the barcode scan
-    //         setBarcodeData(scannedData); // Update state with the complete barcode
-    //         setScannedData(''); // Reset the scanning state for the next barcode
-    //     } else {
-    //         // Append each key to the scanned data
-    //         setScannedData((prev) => prev + e.key);
-
-    //         // Reset the scanning state if the barcode isn't completed within a short window
-    //         clearTimeout(scanTimeout);
-    //         scanTimeout = setTimeout(() => setScannedData(''), 300); // 300ms timeout to reset if no further keys are pressed
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     if (inputRef.current) {
-    //         inputRef.current.focus();
-    //     }
-
-    //     // Attach the event listener to capture the keypresses
-    //     const handleKeydownEvent = (e: KeyboardEvent) => handleKeyDown(e);
-    //     window.addEventListener('keydown', handleKeydownEvent);
-
-    //     // Clean up the event listener on unmount
-    //     return () => {
-    //         window.removeEventListener('keydown', handleKeydownEvent);
-    //     };
-    // }, [scannedData]);
-
-    // useEffect(() => {
-    //     const updateStatus = async () => {
-    //         const { data, isSuccess }: any = await productStatusUpdate(barcodeData)
-    //         if (isSuccess) {
-    //             console.log('product successfully updated!')
-    //         }
-    //     }
-    //     if (barcodeData) {
-    //         updateStatus()
-    //     }
-    // }, [barcodeData])
 
     const fetchProducts = async () => {
         let params = {
@@ -109,24 +61,9 @@ export default function ListProducts() {
                         </Button>
                     </ScannerButton>
                 </div>
-                {/* 
-                {barcodeData && (
-                    <div>
-                        <h3>Scanned Barcode Data:</h3>
-                        <p>{barcodeData}</p>
-                    </div>
-                )}
-
-                <input
-                    ref={inputRef}
-                    type="text"
-                    style={{ opacity: 0, position: 'absolute' }}
-                    readOnly
-                />
-                <p>Please scan a barcode using your scanner.</p> */}
 
                 <DataTable
-                    columns={columns}
+                    columns={columns(fetchProducts)}
                     data={data}
                     buttonTitle={"Add Product"}
                     buttonUrl={"/exon-admin/products/add"}
