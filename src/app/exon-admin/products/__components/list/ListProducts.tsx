@@ -69,16 +69,17 @@ export default function ListProducts() {
                 <DataTable
                     columns={columns(fetchProducts)}
                     data={data}
+                    isAddVisible={true}
                     buttonTitle={"Add Product"}
                     buttonUrl={"/exon-admin/products/add"}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
                     setStatusFilter={setStatusFilter}
                     pageCount={pageCount}
+                    isStatusFilterEnable={true}
                     currentPage={pageIndex}
                     search={search}
                     pageSize={pageSize}
-                    isStatusFilterEnable={true}
                 />
             </div>
         </section>
