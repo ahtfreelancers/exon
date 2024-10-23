@@ -13,7 +13,7 @@ export default function ListContact(props: any) {
 
     const fetchContact = async () => {
         let params = {
-            pageIndex,
+            PageNumber: pageIndex,
             pageSize: 10,
             searchParam: search
         }
