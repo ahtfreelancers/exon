@@ -16,8 +16,7 @@ export default function ListProducts() {
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
 
-    const pageSize = 50
-
+    const pageSize = 10
     const fetchProducts = async () => {
         let params = {
             pageIndex,
