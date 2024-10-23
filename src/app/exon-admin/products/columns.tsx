@@ -5,6 +5,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Eye, FilePenLine, Trash } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 export type User = {
   id: string
@@ -25,19 +26,20 @@ const statusEnum: any = {
   "3": 'Dispose'
 }
 
-const ActionsCell = ({ id }: { id: string }) => {
+const ActionsCell = ({ id, fetchProducts }: { id: string, fetchProducts: () => void }) => {
   const { data: session } = useSession();
 
   const handleDelete = async () => {
     try {
       const result: any = await deleteProduct(id);
       if (result.error) {
-        console.error("Delete error", result.error);
+        toast.error(result.error)
       } else {
-        console.log("Product deleted successfully");
+        toast.success("Product deleted successfully")
+        fetchProducts();
       }
     } catch (error) {
-      console.error("Error deleting medicine", error);
+      console.error("Error deleting product", error);
     }
   };
 
@@ -54,7 +56,7 @@ const ActionsCell = ({ id }: { id: string }) => {
   );
 };
 
-export const columns: ColumnDef<User>[] = [
+export const columns = (fetchProducts: () => void): ColumnDef<User>[] => [
   {
     accessorKey: 'itemNo',
     header: ({ column }) => (
@@ -166,6 +168,6 @@ export const columns: ColumnDef<User>[] = [
         Action
       </div>
     ),
-    cell: ({ row }) => <ActionsCell id={row.original.id} />,
+    cell: ({ row }) => <ActionsCell id={row.original.id} fetchProducts={fetchProducts} />,
   },
 ];
