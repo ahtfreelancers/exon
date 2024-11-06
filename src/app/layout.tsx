@@ -4,10 +4,19 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import "../styles/admin.scss";
 import "../styles/global.scss";
 import Footer from "@/components/core/Footer";
 import { ArrowUpIcon } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
+import { Poppins } from "next/font/google";
+import { cn } from "@/lib/utils"
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins'
+});
 
 export default function RootLayout({
   children,
@@ -123,7 +132,10 @@ export default function RootLayout({
 
       </head>
 
-      <body className="relative">
+      <body className={cn(
+        "relative",
+        poppins.className
+      )}>
         <>
           {!pathname.includes('exon-admin') ? (
             <>
@@ -159,7 +171,6 @@ export default function RootLayout({
             </>
           )}
         </>
-
       </body>
     </html>
   );
