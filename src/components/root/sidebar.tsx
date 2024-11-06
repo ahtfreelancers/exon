@@ -24,6 +24,7 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
     const sidebarItems = [
         { href: "/exon-admin/products", label: "Products", icon: Folder },
         { href: "/exon-admin/contact", label: "Contact", icon: Contact },
+        { href: "/exon-admin/hospitals", label: "Hospitals", icon: Contact },
     ];
 
     const handleToggle = () => {
