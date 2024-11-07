@@ -18,3 +18,27 @@ export const MedicineSchema = z.object({
     expirationDate: z.string().min(1, { message: "Expiration Date is required" }),
     price: z.string().min(1, { message: "Price is required" }),
 })
+
+export const HospitalSchema = z.object({
+    name: z.string().min(1, { message: "Name is required" }),
+    gstNumber: z.string().min(1, { message: "Gst Number is required" }),
+    phoneNumber: z.string().min(1, { message: "Phone Number is required" }),
+    panNumber: z.string().min(1, { message: "Pan Number is required" }),
+    address1: z.string().min(1, { message: "Address 1 is required" }),
+    address2: z.string().min(1, { message: "Address 2 is required" }),
+    city: z.string().min(1, { message: "City is required" }),
+    state: z.string().min(1, { message: "State is required" }),
+    pinCode: z.string().min(1, { message: "Pincode is required" }),
+})
+
+export const DistributorSchema = z.object({
+    name: z.string().min(1, { message: "Name is required" }),
+    gstNumber: z.string().min(1, { message: "Gst Number is required" }),
+    phoneNumber: z.string().min(1, { message: "Phone Number is required" }),
+    panNumber: z.string().min(1, { message: "Pan Number is required" }),
+    address1: z.string().min(1, { message: "Address 1 is required" }),
+    address2: z.string().min(1, { message: "Address 2 is required" }),
+    city: z.string().min(1, { message: "City is required" }),
+    state: z.string().min(1, { message: "State is required" }),
+    pinCode: z.string().min(1, { message: "Pincode is required" }),
+})

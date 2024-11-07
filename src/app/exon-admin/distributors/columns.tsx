@@ -1,12 +1,12 @@
 'use client'
 
-import { deleteHospital } from '@/actions/hospitals';
+import { deleteDistributor } from '@/actions/distributor';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Eye, FilePenLine, Trash } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-export type User = {
+export type Distributor = {
   id: number
   name: string
   gstNumber: string
@@ -14,15 +14,15 @@ export type User = {
   panNumber: string
 }
 
-const ActionsCell = ({ id, fetchHospitals }: { id: number, fetchHospitals: () => void }) => {
+const ActionsCell = ({ id, fetchDistributors }: { id: number, fetchDistributors: () => void }) => {
   const handleDelete = async () => {
     try {
-      const result: any = await deleteHospital(id);
+      const result: any = await deleteDistributor(id);
       if (result.error) {
         toast.error(result.error)
       } else {
         toast.success("Product deleted successfully")
-        fetchHospitals();
+        fetchDistributors();
       }
     } catch (error) {
       console.error("Error deleting product", error);
@@ -31,10 +31,10 @@ const ActionsCell = ({ id, fetchHospitals }: { id: number, fetchHospitals: () =>
 
   return (
     <div className="flex gap-[10px]">
-      <Link href={`/exon-admin/hospitals/${id}`}>
+      <Link href={`/exon-admin/distributors/${id}`}>
         <Eye size={22} className="cursor-pointer" />
       </Link>
-      <Link href={`/exon-admin/hospitals/edit/${id}`}>
+      <Link href={`/exon-admin/distributors/edit/${id}`}>
         <FilePenLine size={22} />
       </Link>
       <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
@@ -42,7 +42,7 @@ const ActionsCell = ({ id, fetchHospitals }: { id: number, fetchHospitals: () =>
   );
 };
 
-export const columns = (fetchHospitals: () => void): ColumnDef<User>[] => [
+export const columns = (fetchDistributors: () => void): ColumnDef<Distributor>[] => [
   {
     accessorKey: 'name',
     header: ({ column }) => (
@@ -98,6 +98,6 @@ export const columns = (fetchHospitals: () => void): ColumnDef<User>[] => [
         Action
       </div>
     ),
-    cell: ({ row }) => <ActionsCell id={row.original.id} fetchHospitals={fetchHospitals} />,
+    cell: ({ row }) => <ActionsCell id={row.original.id} fetchDistributors={fetchDistributors} />,
   },
 ];

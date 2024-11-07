@@ -70,3 +70,14 @@ export async function productBulkUpload(serialNumber: any) {
     };
   }
 }
+
+export async function getProductBySerialNumber(serialNumber: any) {
+  try {
+      const response = await agent.Products.getProductBySerialNumber(serialNumber)
+      return handleResponse(response)
+  } catch (error) {
+      return {
+          error,
+      };
+  }
+}

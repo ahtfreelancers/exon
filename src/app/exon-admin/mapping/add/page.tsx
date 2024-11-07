@@ -1,8 +1,8 @@
 import { auth } from "../../../../../auth";
-import { HospitalForm } from "@/components/root/hospital-form";
+import { ProductForm } from "@/components/root/product-form";
 import { redirect } from "next/navigation";
 
-const HospitalAddPage = async () => {
+const MedicineAddPage = async () => {
     const session = await auth()
 
     if (!session) {
@@ -10,8 +10,8 @@ const HospitalAddPage = async () => {
     }
 
     return (
-        <HospitalForm type={1} />
+        <ProductForm type={1} />
     );
 }
 
-export default HospitalAddPage
+export default MedicineAddPage

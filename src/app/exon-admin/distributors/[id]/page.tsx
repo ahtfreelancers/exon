@@ -1,4 +1,4 @@
-import { getHospital } from "@/actions/hospitals";
+import { getDistributor } from "@/actions/distributor";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -10,7 +10,7 @@ interface HospitalDetailedPageProps {
 
 const HospitalDetailed = async ({ params }: HospitalDetailedPageProps) => {
     const { id } = params;
-    const { data }: any = await getHospital(id);
+    const { data }: any = await getDistributor(id);
 
     if (!data) {
         return <div>Loading...</div>;
@@ -26,7 +26,7 @@ const HospitalDetailed = async ({ params }: HospitalDetailedPageProps) => {
 
     return (
         <section className="container mx-auto">
-            <Link href="/exon-admin/hospitals" className="flex mb-5"><ChevronLeft />Back</Link>
+            <Link href="/exon-admin/distributors" className="flex mb-5"><ChevronLeft />Back</Link>
             <div className="bg-white rounded-md p-4 flex flex-col md:flex-row">
                 <div className="mt-4 md:mt-0 text-gray-700 flex flex-col gap-2">
                     <p><label className="font-bold">Name : </label >{name}</p>
