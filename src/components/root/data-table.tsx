@@ -22,14 +22,15 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
+// import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-const statusEnum = {
-  "0": 'Not In',
-  "1": 'In',
-  "2": 'Out',
-  "3": 'Dispose',
-}
+// const statusEnum = {
+//   "0": 'Not In',
+//   "1": 'In',
+//   "2": 'Out',
+//   "3": 'Dispose',
+// }
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -170,7 +171,7 @@ export function DataTable<TData, TValue>({
         </div>
         <div className='flex gap-4'>
           {isStatusFilterEnable && <div className='flex items-center gap-2'>
-            <label className='font-medium'>Filter:</label>
+            {/* <label className='font-medium'>Filter:</label>
             <Select onValueChange={(value: any) => setStatusFilter && setStatusFilter(value)}>
               <SelectTrigger className="w-[180px] text-black border-input">
                 <SelectValue placeholder="Select a status" />
@@ -184,7 +185,16 @@ export function DataTable<TData, TValue>({
                   ))}
                 </SelectGroup>
               </SelectContent>
-            </Select>
+            </Select> */}
+            <Tabs defaultValue="all" className="w-[400px]">
+              <TabsList>
+                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("")} value="all">All</TabsTrigger>
+                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("0")} value="notin">Not In</TabsTrigger>
+                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("1")} value="in">In</TabsTrigger>
+                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("2")} value="out">Out</TabsTrigger>
+                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("3")} value="dispose">Dispose</TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>}
           {buttonTitle && (
             <Link href={buttonUrl}>

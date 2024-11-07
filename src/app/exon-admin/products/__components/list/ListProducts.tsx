@@ -8,7 +8,6 @@ import { DataTable } from '@/components/root/data-table'
 import { Button } from '@/components/ui/button'
 import { useEffect, useRef, useState } from 'react'
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function ListProducts() {
     const [data, setData] = useState([])
@@ -66,21 +65,6 @@ export default function ListProducts() {
                         <DocumentUploadModal onSuccess={onSuccess} />
                     </div>
                 </div>
-
-                <Tabs defaultValue="account" className="w-[400px]">
-                    <TabsList>
-                        <TabsTrigger value="all">All</TabsTrigger>
-                        <TabsTrigger value="notin">Not In</TabsTrigger>
-                        <TabsTrigger value="in">In</TabsTrigger>
-                        <TabsTrigger value="out">Out</TabsTrigger>
-                        <TabsTrigger value="dispose">Dispose</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="all">Make changes to your account here.</TabsContent>
-                    <TabsContent value="notin">notin Change your password here.</TabsContent>
-                    <TabsContent value="in">in Change your password here.</TabsContent>
-                    <TabsContent value="out">out Change your password here.</TabsContent>
-                    <TabsContent value="dispose">dispose Change your password here.</TabsContent>
-                </Tabs>
 
                 <DataTable
                     columns={columns(fetchProducts)}

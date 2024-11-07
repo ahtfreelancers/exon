@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AiOutlineYoutube } from "react-icons/ai";
-import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaLinkedin } from "react-icons/fa";
 
 export default function Footer() {
     return (
@@ -44,10 +44,16 @@ export default function Footer() {
                             <div>
                                 <h4 className="text-left mb-6 sm:mb- 3xl:mb-12">Social Media</h4>
                                 <div className="flex gap-4">
-                                    <AiOutlineYoutube className="text-xl cursor-pointer" />
-                                    <FaFacebook className="text-xl cursor-pointer" />
-                                    <FaInstagram className="text-xl cursor-pointer" />
-                                    <FaLinkedin className="text-xl cursor-pointer" />
+                                    <Link href={'https://www.youtube.com/@EXONTHERAPEUTICS'} target="_blank">
+                                        <AiOutlineYoutube className="text-xl cursor-pointer" />
+                                    </Link>
+                                    <Link href={'https://www.facebook.com/profile.php?id=61563239412087'} target="_blank">
+                                        <FaFacebook className="text-xl cursor-pointer" />
+                                    </Link>
+                                    {/* <FaInstagram className="text-xl cursor-pointer" /> */}
+                                    <Link href={'https://www.linkedin.com/company/exon-therapeutics-llp/posts/?feedView=all'} target="_blank">
+                                        <FaLinkedin className="text-xl cursor-pointer" />
+                                    </Link>
                                 </div>
                             </div>
                         </div>
