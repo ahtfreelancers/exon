@@ -21,7 +21,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => {
           {children}
         </main>
         :
-        <div className={`grid min-h-screen w-full transition-all duration-300 ${open ? "lg:grid-cols-[210px_1fr]" : "lg:grid-cols-[78px_1fr]"}`}>
+        <div className={`grid min-h-screen w-full transition-all duration-300 bg-[#f5f5f5] ${open ? "lg:grid-cols-[210px_1fr]" : "lg:grid-cols-[78px_1fr]"}`}>
           <Sidebar Setopen={Setopen} />
           <NavBar>
             <main className="flex flex-col gap-4 pt-4 px-4 lg:gap-6">
