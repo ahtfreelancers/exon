@@ -110,6 +110,9 @@ const Contact = {
     getContact: (params: any) => requests.get(`${API_BASE_URL}/contactus`, params),
     createContact: (data: any) => requests.post(`${API_BASE_URL}/contactus`, data),
 }
+const Dashboard = {
+    getDashboard: () => requests.get(`${API_BASE_URL}/dashboard`),
+}
 
 const Hospitals = {
     getHospitals: (params: any) => requests.get(`${API_BASE_URL}/hospitals`, params),
@@ -133,7 +136,8 @@ const agent = {
     Products,
     Contact,
     Hospitals,
-    Distributors
+    Distributors,
+    Dashboard
 }
 
 export default agent

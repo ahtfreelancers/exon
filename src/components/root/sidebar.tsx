@@ -7,6 +7,7 @@ import {
     ChevronsLeft,
     Contact,
     Folder,
+    HomeIcon,
     Hospital,
 } from "lucide-react";
 import { FaTasks } from "react-icons/fa";
@@ -23,6 +24,7 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
     const [status, setStatus] = useState(false);
 
     const sidebarItems = [
+        { href: "/exon-admin/dashboard", label: "Dashboard", icon: HomeIcon },
         { href: "/exon-admin/products", label: "Products", icon: Folder },
         { href: "/exon-admin/contact", label: "Contact", icon: Contact },
         { href: "/exon-admin/hospitals", label: "Hospitals", icon: Hospital },
