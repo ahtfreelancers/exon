@@ -1,8 +1,8 @@
 import { auth } from '../../../../auth'
-import ListHospitals from './__components/list/ListHospitals'
+import ListMapping from './__components/list/ListMapping'
 import { redirect } from 'next/navigation'
 
-export default async function ListHospitalsPage() {
+export default async function ListMappingPage() {
   const session = await auth()
 
   if (!session) {
@@ -10,6 +10,6 @@ export default async function ListHospitalsPage() {
   }
 
   return (
-    <ListHospitals />
+    <ListMapping />
   )
 }

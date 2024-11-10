@@ -158,14 +158,5 @@ export const columns: ColumnDef<User>[] = [
     ),
     cell: ({ row }) => <>{statusEnum[`${row.original.productStatus}`]}</>,
     filterFn: (row, columnId, value) => row.getValue(columnId) === value,
-  },
-  {
-    id: 'actions',
-    header: () => (
-      <div className='flex items-center'>
-        Action
-      </div>
-    ),
-    cell: ({ row }) => <ActionsCell id={row.original.id} />,
-  },
+  }
 ];

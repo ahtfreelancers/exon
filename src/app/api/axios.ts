@@ -117,6 +117,7 @@ const Hospitals = {
     updateHospital: (id: any, data: any) => requests.put(`${API_BASE_URL}/hospitals/${id}`, data),
     deleteHospital: (id: number) => requests.delete(`${API_BASE_URL}/hospitals/${id}`),
     getHospitalById: (id: number) => requests.get(`${API_BASE_URL}/hospitals/${id}`),
+    hospitalProductMapping: (data: any) => requests.post(`${API_BASE_URL}/hospitals/hospitalproductmapping`, data),
 }
 
 const Distributors = {
@@ -125,6 +126,7 @@ const Distributors = {
     updateDistributor: (id: any, data: any) => requests.put(`${API_BASE_URL}/distributors/${id}`, data),
     deleteDistributor: (id: number) => requests.delete(`${API_BASE_URL}/distributors/${id}`),
     getDistributorById: (id: number) => requests.get(`${API_BASE_URL}/distributors/${id}`),
+    distributorProductMapping: (data: any) => requests.post(`${API_BASE_URL}/distributors/distributorproductmapping`, data),
 }
 
 const agent = {
