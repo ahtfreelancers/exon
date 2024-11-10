@@ -28,12 +28,14 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
         { href: "/exon-admin/products", label: "Products", icon: Folder },
         { href: "/exon-admin/contact", label: "Contact", icon: Contact },
         { href: "/exon-admin/hospitals", label: "Hospitals", icon: Hospital },
+        { href: "/exon-admin/distributors", label: "Distributors", icon: Contact },
+        { href: "/exon-admin/mapping", label: "Mapping", icon: Contact },
     ];
 
     const handleToggle = () => {
         setStatus(true);
         setIsOpen(!isOpen);
-        Setopen(!isOpen); // Update Setopen with the new state
+        Setopen(!isOpen);
         setTimeout(() => setStatus(false), 500);
     };
 

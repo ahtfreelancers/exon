@@ -103,6 +103,7 @@ const Products = {
     getProductById: (id: number) => requests.get(`${API_BASE_URL}/products/${id}`),
     productStatusUpdate: (serialNumber: string) => requests.put(`${API_BASE_URL}/products/statusupdate/${serialNumber}`, { serialNumber }),
     productBulkUpload: (data: any) => requests.post(`${API_BASE_URL}/products/upload`, data),
+    getProductBySerialNumber: (serialNumber: string) => requests.get(`${API_BASE_URL}/products/byserialnumber/${serialNumber}`),
 }
 
 const Contact = {
@@ -113,9 +114,29 @@ const Dashboard = {
     getDashboard: () => requests.get(`${API_BASE_URL}/dashboard`),
 }
 
+const Hospitals = {
+    getHospitals: (params: any) => requests.get(`${API_BASE_URL}/hospitals`, params),
+    createHospital: (data: any) => requests.post(`${API_BASE_URL}/hospitals`, data),
+    updateHospital: (id: any, data: any) => requests.put(`${API_BASE_URL}/hospitals/${id}`, data),
+    deleteHospital: (id: number) => requests.delete(`${API_BASE_URL}/hospitals/${id}`),
+    getHospitalById: (id: number) => requests.get(`${API_BASE_URL}/hospitals/${id}`),
+    hospitalProductMapping: (data: any) => requests.post(`${API_BASE_URL}/hospitals/hospitalproductmapping`, data),
+}
+
+const Distributors = {
+    getDistributors: (params: any) => requests.get(`${API_BASE_URL}/distributors`, params),
+    createDistributor: (data: any) => requests.post(`${API_BASE_URL}/distributors`, data),
+    updateDistributor: (id: any, data: any) => requests.put(`${API_BASE_URL}/distributors/${id}`, data),
+    deleteDistributor: (id: number) => requests.delete(`${API_BASE_URL}/distributors/${id}`),
+    getDistributorById: (id: number) => requests.get(`${API_BASE_URL}/distributors/${id}`),
+    distributorProductMapping: (data: any) => requests.post(`${API_BASE_URL}/distributors/distributorproductmapping`, data),
+}
+
 const agent = {
     Products,
     Contact,
+    Hospitals,
+    Distributors,
     Dashboard
 }
 

@@ -1,5 +1,5 @@
 import { auth } from "../../../../../auth";
-import { HospitalForm } from "@/components/root/hospital-form";
+import { DistributorForm } from "@/components/root/distributor-form";
 import { redirect } from "next/navigation";
 
 const HospitalAddPage = async () => {
@@ -10,7 +10,7 @@ const HospitalAddPage = async () => {
     }
 
     return (
-        <HospitalForm type={1} />
+        <DistributorForm type={1} />
     );
 }
 

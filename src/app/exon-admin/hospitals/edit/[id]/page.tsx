@@ -1,15 +1,15 @@
-import { getProduct } from "@/actions/products";
-import { auth } from "../../../../../../auth";
-import { ProductForm } from "@/components/root/product-form";
+import { getHospital } from "@/actions/hospitals";
+import { HospitalForm } from "@/components/root/hospital-form";
 import { redirect } from "next/navigation";
+import { auth } from "../../../../../../auth";
 
-interface ProductEditPageProps {
+interface HospitalEditPageProps {
     params: {
         id: string;
     };
 }
 
-const ProductEditPage = async ({ params }: ProductEditPageProps) => {
+const HospitalEditPage = async ({ params }: HospitalEditPageProps) => {
     const session = await auth()
 
     if (!session) {
@@ -17,11 +17,11 @@ const ProductEditPage = async ({ params }: ProductEditPageProps) => {
     }
     const { id } = params;
 
-    const { data }: any = await getProduct(id);
+    const { data }: any = await getHospital(id);
 
     return (
-        <ProductForm type={2} product={data} />
+        <HospitalForm type={2} hospital={data} />
     );
 }
 
-export default ProductEditPage;
+export default HospitalEditPage;
