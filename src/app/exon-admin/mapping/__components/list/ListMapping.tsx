@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { getAllDistributors } from '@/actions/distributor'
+import { HospitalScannerButton } from '@/app/exon-admin/__components/hospital-scanner-modal'
 
 export default function ListMapping() {
     const [search, setSearch] = useState('')
@@ -204,7 +205,7 @@ export default function ListMapping() {
 
                                 </div>
                                 <div className='flex items-center gap-4'>
-                                    <HospitalScannerButton asChild onSuccess={onSuccess}>
+                                    <HospitalScannerButton asChild onSuccess={onSuccessHospital}>
                                         <Button disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
                                             Scan barcode
                                         </Button>
@@ -259,7 +260,7 @@ export default function ListMapping() {
 
                                 </div>
                                 <div className='flex items-center gap-4'>
-                                    <HospitalScannerButton asChild onSuccess={onSuccess}>
+                                    <HospitalScannerButton asChild onSuccess={onSuccessDistributor}>
                                         <Button disabled={selectedDistributor ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
                                             Scan barcode
                                         </Button>
