@@ -204,11 +204,11 @@ export default function ListMapping() {
 
                                 </div>
                                 <div className='flex items-center gap-4'>
-                                    {/* <HospitalScannerButton asChild onSuccess={onSuccess}> */}
-                                    <Button onClick={() => onSuccessHospital('400201020924001')} disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
-                                        Scan barcode
-                                    </Button>
-                                    {/* </HospitalScannerButton> */}
+                                    <HospitalScannerButton asChild onSuccess={onSuccess}>
+                                        <Button disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                                            Scan barcode
+                                        </Button>
+                                    </HospitalScannerButton>
                                 </div>
                             </div>
 
@@ -259,11 +259,11 @@ export default function ListMapping() {
 
                                 </div>
                                 <div className='flex items-center gap-4'>
-                                    {/* <HospitalScannerButton asChild onSuccess={onSuccess}> */}
-                                    <Button onClick={() => onSuccessDistributor('400171020924010')} disabled={selectedDistributor ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
-                                        Scan barcode
-                                    </Button>
-                                    {/* </HospitalScannerButton> */}
+                                    <HospitalScannerButton asChild onSuccess={onSuccess}>
+                                        <Button disabled={selectedDistributor ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                                            Scan barcode
+                                        </Button>
+                                    </HospitalScannerButton>
                                 </div>
                             </div>
 
