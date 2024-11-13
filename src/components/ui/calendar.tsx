@@ -43,8 +43,8 @@ function Calendar({
             : "[&:has([aria-selected])]:rounded-md"
         ),
         day: cn(
-          buttonVariants({ variant: "ghost" }),
-          "h-8 w-8 p-0 font-normal aria-selected:opacity-100"
+          buttonVariants({ variant: "outline" }),
+          "h-8 w-8 p-0 font-normal text-black aria-selected:opacity-100 aria-selected:text-white"
         ),
         day_range_start: "day-range-start",
         day_range_end: "day-range-end",
