@@ -93,7 +93,7 @@ export default function RootLayout({
           content="Exon Therapeutics - Leading provider of innovative heart endostents and heart-related products."
         />
         <meta
-          http-equiv="Content-Security-Policy"
+          httpEquiv="Content-Security-Policy"
           content="upgrade-insecure-requests"
         />
         {/* Primary Keywords Related to Exon Therapeutics  */}
