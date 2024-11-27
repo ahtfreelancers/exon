@@ -101,10 +101,6 @@ export default function RootLayout({
           name="keywords"
           content="Exon Therapeutics, heart endostents, cardiovascular technology, heart health, medical devices, Infinity, Sleek, Swift, Intima, Endostent, heart stents"
         />
-        <meta
-          name="google-site-verification"
-          content="BpjkPP6X54mU5hDdLnPc-JuXtJFRMLb3F7bnYlq9Lfs"
-        />
         {/* Additional Keywords for Products  */}
         <meta
           name="keywords"
