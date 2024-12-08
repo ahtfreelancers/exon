@@ -139,6 +139,12 @@ const ProductTypes = {
     deleteProductType: (id: number) => requests.delete(`${API_BASE_URL}/producttypes/${id}`),
     updateProductType: (id: any, data: any) => requests.put(`${API_BASE_URL}/producttypes/${id}`, data),
 }
+const Invoice = {
+    getInvoice: (params: any) => requests.get(`${API_BASE_URL}/invoices`, params),
+    createInvoice: (data: any) => requests.post(`${API_BASE_URL}/invoices`, data),
+    getInvoiceById: (id: number) => requests.get(`${API_BASE_URL}/invoices/${id}`),
+    deleteInvoice: (id: number) => requests.delete(`${API_BASE_URL}/invoices/${id}`),
+}
 
 const agent = {
     Products,
@@ -146,7 +152,8 @@ const agent = {
     Hospitals,
     Distributors,
     Dashboard,
-    ProductTypes
+    ProductTypes,
+    Invoice
 }
 
 export default agent
