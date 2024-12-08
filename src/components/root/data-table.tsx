@@ -22,15 +22,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
-// import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
-// const statusEnum = {
-//   "0": 'Not In',
-//   "1": 'In',
-//   "2": 'Out',
-//   "3": 'Dispose',
-// }
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -69,6 +62,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [searchTerm, setSearchTerm] = useState(search || '')
+  const [expandedRows, setExpandedRows] = useState<{ [key: string]: boolean }>({})
 
   const table = useReactTable({
     data,
@@ -86,6 +80,7 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel()
   })
+console.log("data", data);
 
   useEffect(() => {
     table.setPageIndex(currentPage - 1) // TanStack Table uses zero-based index
@@ -100,44 +95,52 @@ export function DataTable<TData, TValue>({
 
   const totalPages = Math.ceil(pageCount / pageSize)
 
+  // Function to toggle row expansion
+  const toggleExpandRow = (rowId: string) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [rowId]: !prev[rowId],
+    }))
+  }
+
   // Function to render pagination buttons
   const renderPaginationButtons = () => {
-    const pageNumbers = [];
-    const totalPages = Math.ceil(pageCount / pageSize);
+    const pageNumbers = []
+    const totalPages = Math.ceil(pageCount / pageSize)
 
     // Add first page
-    pageNumbers.push(1);
+    pageNumbers.push(1)
 
     // Add ellipsis after the first page if currentPage is far from it
     if (currentPage > 4) {
-      pageNumbers.push('ellipsis-start');
+      pageNumbers.push('ellipsis-start')
     }
 
     // Determine the range of pages to display around the current page
-    const startPage = Math.max(2, currentPage - 1);
-    const endPage = Math.min(totalPages - 1, currentPage + 1);
+    const startPage = Math.max(2, currentPage - 1)
+    const endPage = Math.min(totalPages - 1, currentPage + 1)
 
     // Add pages between startPage and endPage
     for (let i = startPage; i <= endPage; i++) {
       if (!pageNumbers.includes(i)) {
-        pageNumbers.push(i);
+        pageNumbers.push(i)
       }
     }
 
     // Add ellipsis before the last page if necessary
     if (currentPage < totalPages - 3) {
-      pageNumbers.push('ellipsis-end');
+      pageNumbers.push('ellipsis-end')
     }
 
     // Add the last page (if there's more than one page)
     if (totalPages > 1) {
-      pageNumbers.push(totalPages);
+      pageNumbers.push(totalPages)
     }
 
     // Render the pagination buttons
     return pageNumbers.map((pageNumber: any, index: number) => {
       if (pageNumber === 'ellipsis-start' || pageNumber === 'ellipsis-end') {
-        return <span key={`ellipsis-${index}`} className="px-2">...</span>;
+        return <span key={`ellipsis-${index}`} className="px-2">...</span>
       }
 
       return (
@@ -149,11 +152,9 @@ export function DataTable<TData, TValue>({
         >
           {pageNumber}
         </Button>
-      );
-    });
-  };
-
-
+      )
+    })
+  }
 
   return (
     <>
@@ -225,19 +226,36 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map(row => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
+                <>
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                  >
+                    {/* <TableCell>
+                      <Button onClick={() => toggleExpandRow(row.id)}>
+                        <FiChevronDown className="h-4 w-4" />
+                      </Button>
+                    </TableCell> */}
+                    {row.getVisibleCells().map(cell => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                  {expandedRows[row.id] && (
+                    <TableRow key={`${row.id}-expanded`}>
+                      <TableCell colSpan={columns.length + 1}>
+                        {/* Render your expanded content here */}
+                        <div className="p-4 border-t">
+                          Expanded content for row {row.id}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
               ))
             ) : (
               <TableRow>

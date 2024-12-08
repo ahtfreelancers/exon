@@ -132,12 +132,21 @@ const Distributors = {
     distributorProductMapping: (data: any) => requests.post(`${API_BASE_URL}/distributors/distributorproductmapping`, data),
 }
 
+const ProductTypes = {
+    getProductTypes: (params: any) => requests.get(`${API_BASE_URL}/producttypes`, params),
+    createProductType: (data: any) => requests.post(`${API_BASE_URL}/producttypes`, createFormData(data)),
+    getProductTypeById: (id: number) => requests.get(`${API_BASE_URL}/producttypes/${id}`),
+    deleteProductType: (id: number) => requests.delete(`${API_BASE_URL}/producttypes/${id}`),
+    updateProductType: (id: any, data: any) => requests.put(`${API_BASE_URL}/producttypes/${id}`, data),
+}
+
 const agent = {
     Products,
     Contact,
     Hospitals,
     Distributors,
-    Dashboard
+    Dashboard,
+    ProductTypes
 }
 
 export default agent
