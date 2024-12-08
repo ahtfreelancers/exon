@@ -15,7 +15,7 @@ const navLinks = [
     { href: "/accessories", label: "Accessories" },
     { href: "/gallery", label: "Gallery" },
     { href: "/career", label: "Career" },
-    { href: "/contact", label: "Contact" },
+    // { href: "/contact", label: "Contact" },
 ];
 
 const categories = [

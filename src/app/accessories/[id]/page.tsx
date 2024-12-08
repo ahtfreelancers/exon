@@ -56,7 +56,7 @@ export default function AccessoriesPage() {
                             </ul>
                             <Link href={'/contact'}>
                                 <button className="px-10 md:px-20 3xl:px-[125px] py-2 md:py-4 3xl:py-6" data-aos="fade-right">
-                                    Enquiry Now
+                                    Download Now
                                 </button>
                             </Link>
                         </div>
