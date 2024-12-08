@@ -61,6 +61,16 @@ export default function DashboardWrapper() {
                                 {/* <p className="text-xs text-muted-foreground">+180.1% from last month</p> */}
                             </CardContent>
                         </Card>
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-sm font-medium">Not In Count</CardTitle>
+                                <MoveDown className="size-5" />
+                            </CardHeader>
+                            <CardContent>
+                                <div className="text-2xl font-bold mb-1">{data?.notInCount}</div>
+                                {/* <p className="text-xs text-muted-foreground">+180.1% from last month</p> */}
+                            </CardContent>
+                        </Card>
 
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

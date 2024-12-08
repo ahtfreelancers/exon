@@ -19,6 +19,12 @@ export const MedicineSchema = z.object({
     price: z.string().min(1, { message: "Price is required" }),
 })
 
+export const ProductTypeSchema = z.object({
+    name: z.string().min(1, { message: "Name is required" }),
+    description: z.string().min(1, { message: "Description is required" }),
+    price: z.string().min(1, { message: "Price is required" })
+})
+
 export const HospitalSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
     gstNumber: z.string().min(1, { message: "Gst Number is required" }),

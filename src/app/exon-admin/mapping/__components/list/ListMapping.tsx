@@ -205,11 +205,11 @@ export default function ListMapping() {
 
                                 </div>
                                 <div className='flex items-center gap-4'>
-                                    <HospitalScannerButton asChild onSuccess={onSuccessHospital}>
-                                        <Button disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                                    {/* <HospitalScannerButton asChild onSuccess={onSuccessHospital}> */}
+                                        <Button onClick={() => onSuccessHospital('150101030924002')} disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
                                             Scan barcode
                                         </Button>
-                                    </HospitalScannerButton>
+                                    {/* </HospitalScannerButton> */}
                                 </div>
                             </div>
 
