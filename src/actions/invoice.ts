@@ -13,6 +13,16 @@ export async function getAllInvoices(params: any) {
         };
     }
 }
+export async function getAllInvoicesPdf(id: any) {
+    try {
+        const response = await agent.Invoice.getInvoicePdf(id)
+        return handleResponse(response)
+    } catch (error) {
+        return {
+            error,
+        };
+    }
+}
 
 export async function addInvoice(data: any) {
     try {
