@@ -22,7 +22,6 @@ export default function ListInvoice() {
 
         try {
             const { data, isSuccess }: any = await getAllInvoices(params)
-            console.log("datadatadatadata", data.items);
 
             if (isSuccess) {
                 setData(data.items)
@@ -49,7 +48,7 @@ export default function ListInvoice() {
                     columns={columns(fetchInvoice)}
                     data={data}
                     buttonTitle={"Add Invoice"}
-                    buttonUrl={"/exon-admin/distributors/add"}
+                    buttonUrl={"/exon-admin/invoice/add"}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
                     setStatusFilter={() => { }}

@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-export type User = {
+export type Product = {
   id: string
   name: string
   brandName: string
@@ -56,7 +56,7 @@ const ActionsCell = ({ id, fetchProducts }: { id: string, fetchProducts: () => v
   );
 };
 
-export const columns = (fetchProducts: () => void): ColumnDef<User>[] => [
+export const columns = (fetchProducts: () => void): ColumnDef<Product>[] => [
   {
     accessorKey: 'itemNo',
     header: ({ column }) => (

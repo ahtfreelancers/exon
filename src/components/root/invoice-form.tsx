@@ -26,15 +26,88 @@ import {
     FormMessage
 } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { number } from 'zod'
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { Calendar as CalendarIcon } from "lucide-react"
+import { Calendar } from "@/components/ui/calendar"
 
-export default function ListMapping() {
+interface InvoiceItems {
+    id: number,
+    product: {
+        id: number,
+        itemNo: string,
+        itemDescription: string,
+        serialNumber: string,
+        lotNumber: string,
+        manufactureDate: string,
+        expirationDate: string,
+        productStatus: number
+    },
+    quantity: number,
+    rpuwg: number,
+    rpuwog: number,
+    discountType: number,
+    discount: number,
+    gst: string,
+    total: number
+}
+
+interface Invoice {
+    id: number,
+    hospital: {
+        id: number,
+        name: string,
+        gstNumber: string,
+        phoneNumber: string,
+        panNumber: string,
+        address: {
+            id?: number,
+            address1: string,
+            address2: string,
+            city: string,
+            state: string,
+            pinCode: string
+        }
+    },
+    distributor: number | null,
+    shipping: number,
+    packingCharge: number,
+    cess: number,
+    cgst: number,
+    sgst: number,
+    igst: number,
+    roundOffAmount: number,
+    grandTotal: number,
+    invoiceType: number,
+    invoiceItems: InvoiceItems[]
+    created: string
+    modified: string
+}
+
+interface InvoiceFormProps {
+    type: number;
+    invoice?: Invoice;
+    hospitals?: any;
+    distributors?: any;
+}
+
+const invoiceTypes = [
+    { id: '1', name: 'Pro-forma Invoice' },
+    { id: '2', name: 'Tax Invoice' }
+]
+
+export default function InvoiceForm({ type, invoice, hospitals, distributors }: InvoiceFormProps) {
     const [search, setSearch] = useState('')
 
-    const [hospitals, setHospitals] = useState([])
     const [selectedHospital, setSelectedHospital] = useState('')
     const [hospitalProducts, setHospitalProducts] = useState([])
 
-    const [distributors, setDistributors] = useState([])
+    const [productItems, setProductItems] = useState([])
+
     const [selectedDistributor, setSelectedDistributor] = useState('')
     const [distributorProducts, setDistributorProducts] = useState([])
 
@@ -50,67 +123,45 @@ export default function ListMapping() {
     }, []);
 
     const pageSize = 10
+    console.log('invoice', invoice?.invoiceItems);
+
+    useEffect(() => {
+        const combinedArray: any = invoice?.invoiceItems.map(item => {
+            const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
+            const calculateRpuwg = ((item.total * parseFloat(gstVal)) / 100)
+            return {
+            ...item,
+            ...item.product,
+            product: undefined,
+            rpuwog: item.total,
+            rpuwg: (item.total + calculateRpuwg),
+            gstAmount: calculateRpuwg
+        }});
+        setProductItems(combinedArray)
+    }, [invoice])
 
     const form = useForm({
         defaultValues: {
-            title: "",
-            documentDate: "",
-            partyName: "",
-            gstin: "",
-            addressline1: "",
-            addressline2: "",
-            country: "",
-            state: "",
-            city: "",
-            pincode: "",
-            shippingFreight: "",
-            packingCharge: "",
-            cess: "",
-            cgst: "",
-            sgst: "",
-            igst: "",
-            roundOff: "",
+            title: invoice?.invoiceType?.toString(),
+            documentDate: invoice?.created,
+            partyName: invoice?.hospital?.id?.toString(),
+            gstin: invoice?.hospital?.gstNumber,
+            addressline1: invoice?.hospital?.address?.address1,
+            addressline2: invoice?.hospital?.address?.address2,
+            country: "India",
+            state: invoice?.hospital?.address?.state,
+            city: invoice?.hospital?.address?.city,
+            pincode: invoice?.hospital?.address?.pinCode,
+            shippingFreight: invoice?.shipping,
+            packingCharge: invoice?.packingCharge,
+            cess: invoice?.cess,
+            cgst: invoice?.cgst,
+            sgst: invoice?.sgst,
+            igst: invoice?.igst,
+            roundOff: invoice?.roundOffAmount,
+            grandTotal: invoice?.grandTotal
         },
     });
-
-    const fetchHospitals = async () => {
-        let params = {
-            PageNumber: 1,
-            pageSize: 10
-        }
-
-        try {
-            const { data, isSuccess }: any = await getAllHospitals(params)
-            if (isSuccess) {
-                setHospitals(data.items)
-            }
-        } catch (err) {
-            console.log(`err`, err);
-            // setError(err.message || 'An error occurred')
-        }
-    }
-
-    const fetchDistributors = async () => {
-        let params = {
-            PageNumber: 1,
-            pageSize: 10
-        }
-
-        try {
-            const { data, isSuccess }: any = await getAllDistributors(params)
-            if (isSuccess) {
-                setDistributors(data.items)
-            }
-        } catch (err) {
-            console.log(`err`, err);
-            // setError(err.message || 'An error occurred')
-        }
-    }
-
-    useEffect(() => {
-        fetchHospitals()
-        fetchDistributors()
-    }, [])
 
     const onSuccessHospital = async (serialNumber: string) => {
         setIsLoading(true);
@@ -223,6 +274,20 @@ export default function ListMapping() {
 
     }
 
+    const handleGstChange = (id: string, newGst: string) => {
+        const newProductItems: any = productItems.map((item: any) => {
+            const gstVal = newGst.includes('%') ? newGst.replaceAll('%', '') : newGst
+            const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
+            return item.id === id ? { ...item, gst: newGst, rpuwog: parseFloat(item.total), rpuwg: (parseFloat(item.total) + calculateRpuwg), gstAmount: calculateRpuwg } : item
+          })
+        setProductItems(newProductItems);
+        
+        const calculateCgst = newProductItems.reduce((acc: any, item: any) => acc + parseFloat(item?.gstAmount), 0) 
+        
+        form.setValue('cgst', (parseFloat(calculateCgst) / 2))
+        form.setValue('sgst', (parseFloat(calculateCgst) / 2))
+      };
+
     return (
         <section className=''>
             <div className='container'>
@@ -245,7 +310,7 @@ export default function ListMapping() {
                                             <Select defaultValue={selectedHospital} onValueChange={(value: any) => {
                                                 setSelectedHospital && setSelectedHospital(value)
                                             }}>
-                                                <SelectTrigger className="w-[180px] text-black border-input">
+                                                <SelectTrigger className="w-[180px] font-normal text-black border-input">
                                                     <SelectValue placeholder="Select a hospital" />
                                                 </SelectTrigger>
                                                 <SelectContent className='bg-white'>
@@ -280,11 +345,20 @@ export default function ListMapping() {
                                                     <FormItem className='w-1/2'>
                                                         <FormLabel>Title:</FormLabel>
                                                         <FormControl>
-                                                            <Input
-                                                                className='!mt-0'
-                                                                {...field}
-                                                                disabled={isPending}
-                                                            />
+                                                            <Select defaultValue={field.value}>
+                                                                <SelectTrigger className="font-normal text-black border-input">
+                                                                    <SelectValue placeholder="Select a title" />
+                                                                </SelectTrigger>
+                                                                <SelectContent className='bg-white'>
+                                                                    <SelectGroup>
+                                                                        {invoiceTypes.map((item: any) => (
+                                                                            <SelectItem key={item.id} value={item.id} className='cursor-pointer'>
+                                                                                {item.name}
+                                                                            </SelectItem>
+                                                                        ))}
+                                                                    </SelectGroup>
+                                                                </SelectContent>
+                                                            </Select>
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -297,11 +371,25 @@ export default function ListMapping() {
                                                     <FormItem className='w-1/2'>
                                                         <FormLabel>Document date:</FormLabel>
                                                         <FormControl>
-                                                            <Input
-                                                                className='!mt-0'
-                                                                {...field}
-                                                                disabled={isPending}
-                                                            />
+                                                            <Popover>
+                                                                <PopoverTrigger asChild>
+                                                                    <Button
+                                                                        // variant={"outline"}
+                                                                        className="border border-input bg-transparent text-black flex w-full justify-start text-left font-normal"
+                                                                    >
+                                                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                                                        {field.value ? new Date(field.value).toLocaleDateString() : <span>Pick a date</span>}
+                                                                    </Button>
+                                                                </PopoverTrigger>
+                                                                <PopoverContent className="w-auto p-0">
+                                                                    <Calendar
+                                                                        mode="single"
+                                                                        selected={field.value ? new Date(field.value) : undefined}
+                                                                        onSelect={(date) => field.onChange(date?.toISOString())}
+                                                                    // initialFocus
+                                                                    />
+                                                                </PopoverContent>
+                                                            </Popover>
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -316,11 +404,20 @@ export default function ListMapping() {
                                                     <FormItem className='w-1/2'>
                                                         <FormLabel>Party Name:</FormLabel>
                                                         <FormControl>
-                                                            <Input
-                                                                className='!mt-0'
-                                                                {...field}
-                                                                disabled={isPending}
-                                                            />
+                                                            <Select defaultValue={field.value}>
+                                                                <SelectTrigger className="font-normal text-black border-input">
+                                                                    <SelectValue placeholder="Select a party name" />
+                                                                </SelectTrigger>
+                                                                <SelectContent className='bg-white'>
+                                                                    <SelectGroup>
+                                                                        {hospitals.map((item: any) => (
+                                                                            <SelectItem key={item.id} value={item.id} className='cursor-pointer'>
+                                                                                {item.name}
+                                                                            </SelectItem>
+                                                                        ))}
+                                                                    </SelectGroup>
+                                                                </SelectContent>
+                                                            </Select>
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -345,7 +442,9 @@ export default function ListMapping() {
                                             />
                                         </div>
 
-                                        <label>Billing Address</label>
+                                        <div className='pt-4 pb-2'>
+                                            Billing Address
+                                        </div>
 
                                         <div className='w-full flex gap-2'>
                                             <FormField
@@ -456,9 +555,9 @@ export default function ListMapping() {
                                     </div>
                                 </div>
 
-                                {/* <DataTable
-                                    columns={columns}
-                                    data={hospitalProducts}
+                                <DataTable
+                                    columns={columns(handleGstChange)}
+                                    data={productItems}
                                     buttonTitle=""
                                     buttonUrl={""}
                                     onSearch={setSearch}
@@ -471,7 +570,7 @@ export default function ListMapping() {
                                     pageSize={pageSize}
                                     isSearchEnable={false}
                                     isPaginationEnable={false}
-                                /> */}
+                                />
 
                                 <div className="border border-gray-300 rounded-lg p-4 mt-4">
                                     {/* <Form {...form}>
@@ -604,6 +703,24 @@ export default function ListMapping() {
                                                     </FormItem>
                                                 )}
                                             />
+                                            <FormField
+                                                control={form.control}
+                                                name="grandTotal"
+                                                render={({ field }) => (
+                                                    <FormItem className='w-full flex items-center justify-between mb-2'>
+                                                        <FormLabel>Grand Total:</FormLabel>
+                                                        <FormControl className='w-1/2'>
+                                                            <Input
+                                                                className='!mt-0'
+                                                                {...field}
+                                                                disabled={isPending}
+                                                            />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+
                                         </div>
 
                                     </div>

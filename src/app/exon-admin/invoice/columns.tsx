@@ -1,28 +1,20 @@
 'use client'
 
-import { deleteDistributor } from '@/actions/distributor';
+import { deleteInvoice } from '@/actions/invoice';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Eye, FilePenLine, Trash } from 'lucide-react';
 import Link from 'next/link';
-import { toast } from 'sonner';
+import { toast } from 'sonner'; 
 
-export type Distributor = {
-  id: number
-  name: string
-  gstNumber: string
-  phoneNumber: string
-  panNumber: string
-}
-
-const ActionsCell = ({ id, fetchDistributors }: { id: number, fetchDistributors: () => void }) => {
+const ActionsCell = ({ id, fetchInvoice }: { id: number, fetchInvoice: () => void }) => {
   const handleDelete = async () => {
     try {
-      const result: any = await deleteDistributor(id);
+      const result: any = await deleteInvoice(id);
       if (result.error) {
         toast.error(result.error)
       } else {
-        toast.success("Product deleted successfully")
-        fetchDistributors();
+        toast.success("Invoice deleted successfully")
+        fetchInvoice();
       }
     } catch (error) {
       console.error("Error deleting product", error);
@@ -31,10 +23,10 @@ const ActionsCell = ({ id, fetchDistributors }: { id: number, fetchDistributors:
 
   return (
     <div className="flex gap-[10px]">
-      <Link href={`/exon-admin/distributors/${id}`}>
+      <Link href={`/exon-admin/invoice/${id}`}>
         <Eye size={22} className="cursor-pointer" />
       </Link>
-      <Link href={`/exon-admin/distributors/edit/${id}`}>
+      <Link href={`/exon-admin/invoice/edit/${id}`}>
         <FilePenLine size={22} />
       </Link>
       <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
@@ -42,7 +34,7 @@ const ActionsCell = ({ id, fetchDistributors }: { id: number, fetchDistributors:
   );
 };
 
-export const columns = (fetchDistributors: () => void): ColumnDef<any>[] => [
+export const columns = (fetchInvoice: () => void): ColumnDef<any>[] => [
   {
     accessorKey: 'name',
     header: ({ column }) => (
@@ -271,13 +263,13 @@ export const columns = (fetchDistributors: () => void): ColumnDef<any>[] => [
     ),
     cell: ({ row }) => `₹${row.original.grandTotal}`,
   },
-  // {
-  //   id: 'actions',
-  //   header: () => (
-  //     <div className="flex items-center">Action</div>
-  //   ),
-  //   cell: ({ row }) => (
-  //     <ActionsCell id={row.original.id} fetchDistributors={fetchDistributors} />
-  //   ),
-  // },
+  {
+    id: 'actions',
+    header: () => (
+      <div className="flex items-center">Action</div>
+    ),
+    cell: ({ row }) => (
+      <ActionsCell id={row.original.id} fetchInvoice={fetchInvoice} />
+    ),
+  },
 ];

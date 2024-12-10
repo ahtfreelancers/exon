@@ -1,13 +1,14 @@
 'use client'
 
 import { deleteProduct } from '@/actions/products';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Eye, FilePenLine, Trash } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-export type User = {
+export type Mapping = {
   id: string
   name: string
   brandName: string
@@ -17,6 +18,15 @@ export type User = {
   expirationDate: string
   productStatus: number
   price: string
+  product: undefined
+  discount: number
+  discountType: number
+  gst: string
+  quantity: number
+  rpuwg: number
+  rpuwog: number
+  total: number
+
 }
 
 const statusEnum: any = {
@@ -24,6 +34,12 @@ const statusEnum: any = {
   "1": 'Out',
   "2": 'Dispose'
 }
+
+const gstList = [
+  { id: '5%', name: '5%' },
+  { id: '12%', name: '12%' },
+  { id: '18%', name: '18%' }
+]
 
 const ActionsCell = ({ id }: { id: string }) => {
   const { data: session } = useSession();
@@ -54,7 +70,7 @@ const ActionsCell = ({ id }: { id: string }) => {
   );
 };
 
-export const columns: ColumnDef<User>[] = [
+export const columns: (onGstChange: (id: string, newGst: string) => void) => ColumnDef<Mapping>[] = (onGstChange) => [
   {
     accessorKey: 'itemNo',
     header: ({ column }) => (
@@ -144,6 +160,111 @@ export const columns: ColumnDef<User>[] = [
         </>
       )
     },
+  },
+  {
+    accessorKey: 'discount',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Discount
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    )
+  },
+  {
+    accessorKey: 'discountType',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Discount Type
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    )
+  },
+  {
+    accessorKey: 'gst',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        GST
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    ),
+    cell: ({ row }) => {
+      const handleGstChange = (newValue: string) => {
+        onGstChange(row.original.id, newValue);
+      };
+      return (
+        <Select defaultValue={row.original.gst} onValueChange={handleGstChange}>
+          <SelectTrigger className="font-normal text-black border-input">
+            <SelectValue placeholder="Select a title" />
+          </SelectTrigger>
+          <SelectContent className='bg-white'>
+            <SelectGroup>
+              {gstList.map((item: any) => (
+                <SelectItem key={item.id} value={item.id} className='cursor-pointer'>
+                  {item.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      )
+    },
+  },
+  {
+    accessorKey: 'quantity',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Quantity
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    )
+  },
+  {
+    accessorKey: 'rpuwg',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        RPUWG
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    )
+  },
+  {
+    accessorKey: 'rpuwog',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        RPUWOG
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'total',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Total
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    ),
   },
   {
     accessorKey: 'productStatus',
