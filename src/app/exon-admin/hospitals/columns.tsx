@@ -6,7 +6,7 @@ import { ArrowUpDown, Eye, FilePenLine, Trash } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-export type User = {
+export type Hospital = {
   id: number
   name: string
   gstNumber: string
@@ -42,7 +42,7 @@ const ActionsCell = ({ id, fetchHospitals }: { id: number, fetchHospitals: () =>
   );
 };
 
-export const columns = (fetchHospitals: () => void): ColumnDef<User>[] => [
+export const columns = (fetchHospitals: () => void): ColumnDef<Hospital>[] => [
   {
     accessorKey: 'name',
     header: ({ column }) => (
