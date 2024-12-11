@@ -57,3 +57,14 @@ export async function deleteInvoice(id: any) {
         };
     }
 }
+export async function updateInvoice(id: any, data: any) {
+    try {
+        const response = await agent.Invoice.updateInvoice(id, data);
+        return handleResponse(response);
+    } catch (error) {
+        console.error("Update Invoice error", error);
+        return {
+            error,
+        };
+    }
+}
