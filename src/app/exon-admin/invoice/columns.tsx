@@ -1,6 +1,39 @@
 import { ColumnDef } from '@tanstack/react-table'
-import { ArrowUpDown, ReceiptText } from 'lucide-react';
+import { deleteDistributor } from '@/actions/distributor';
+import { ArrowUpDown, ReceiptText, Eye, FilePenLine, Trash } from 'lucide-react';
+import Link from 'next/link';
+import { toast } from 'sonner';
+const ActionsCell = ({ id, fetchInvoices, viewInvoice }: { id: number, fetchInvoices: () => void, viewInvoice: any }) => {
+  const handleDelete = async () => {
+    try {
+      const result: any = await deleteDistributor(id);
+      if (result.error) {
+        toast.error(result.error)
+      } else {
+        toast.success("Product deleted successfully")
+        fetchInvoices();
+      }
+    } catch (error) {
+      console.error("Error deleting product", error);
+    }
+  };
 
+  return (
+    <div className="flex gap-[10px]">
+      <div className="flex gap-2">
+        <ReceiptText
+          size={22}
+          className="cursor-pointer"
+          onClick={() => viewInvoice(id)}
+        />
+      </div>
+      <Link href={`/exon-admin/invoice/edit/${id}`}>
+        <FilePenLine size={22} />
+      </Link>
+      <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
+    </div>
+  );
+};
 export const columns = (
   fetchInvoices: () => void,
   viewInvoice: (id: number) => void
@@ -236,14 +269,6 @@ export const columns = (
     {
       id: 'actions',
       header: 'Actions',
-      cell: ({ row }: any) => (
-        <div className="flex gap-2">
-          <ReceiptText
-            size={22}
-            className="cursor-pointer"
-            onClick={() => viewInvoice(row.original.id)}
-          />
-        </div>
-      ),
+      cell: ({ row }) => <ActionsCell id={row.original.id} fetchInvoices={fetchInvoices} viewInvoice={viewInvoice} />,
     },
   ]

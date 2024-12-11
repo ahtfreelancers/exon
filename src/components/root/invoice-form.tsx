@@ -34,6 +34,8 @@ import {
 } from "@/components/ui/popover"
 import { Calendar as CalendarIcon } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
+import { updateInvoice } from '@/actions/invoice'
+import { useRouter } from 'next/navigation'
 
 interface InvoiceItems {
     id: number,
@@ -93,6 +95,7 @@ interface InvoiceFormProps {
     invoice?: Invoice;
     hospitals?: any;
     distributors?: any;
+    invoiceId?: any;
 }
 
 const invoiceTypes = [
@@ -100,9 +103,8 @@ const invoiceTypes = [
     { id: '2', name: 'Tax Invoice' }
 ]
 
-export default function InvoiceForm({ type, invoice, hospitals, distributors }: InvoiceFormProps) {
+export default function InvoiceForm({ type, invoice, hospitals, distributors, invoiceId }: InvoiceFormProps) {
     const [search, setSearch] = useState('')
-
     const [selectedHospital, setSelectedHospital] = useState('')
     const [hospitalProducts, setHospitalProducts] = useState([])
 
@@ -121,22 +123,24 @@ export default function InvoiceForm({ type, invoice, hospitals, distributors }: 
         localStorage.removeItem('hospitalProducts');
         localStorage.removeItem('distributorProducts');
     }, []);
+    const router = useRouter();
 
     const pageSize = 10
-    console.log('invoice', invoice?.invoiceItems);
 
     useEffect(() => {
         const combinedArray: any = invoice?.invoiceItems.map(item => {
             const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
             const calculateRpuwg = ((item.total * parseFloat(gstVal)) / 100)
             return {
-            ...item,
-            ...item.product,
-            product: undefined,
-            rpuwog: item.total,
-            rpuwg: (item.total + calculateRpuwg),
-            gstAmount: calculateRpuwg
-        }});
+                ...item,
+                ...item.product,
+                id: item.id,
+                product: undefined,
+                rpuwog: item.total,
+                rpuwg: (item.total + calculateRpuwg),
+                gstAmount: calculateRpuwg
+            }
+        });
         setProductItems(combinedArray)
     }, [invoice])
 
@@ -215,27 +219,27 @@ export default function InvoiceForm({ type, invoice, hospitals, distributors }: 
         }
     }
 
-    const onSaveHospital = async () => {
-        const newValues = hospitalProducts && hospitalProducts.map((item: any) => {
-            return {
-                productId: item.id,
-                hospitalId: Number(selectedHospital)
-            }
-        })
+    // const onSaveHospital = async () => {
+    //     const newValues = hospitalProducts && hospitalProducts.map((item: any) => {
+    //         return {
+    //             productId: item.id,
+    //             hospitalId: Number(selectedHospital)
+    //         }
+    //     })
 
-        try {
-            const response = await agent.Hospitals.hospitalProductMapping(newValues)
+    //     try {
+    //         const response = await agent.Hospitals.hospitalProductMapping(newValues)
 
-            if (response && response.isSuccess) {
-                localStorage.removeItem('hospitalProducts');
-                setHospitalProducts([])
-                setSelectedHospital('')
-                toast.success("Hospital products successfully mapping!")
-            }
-        } catch (error) {
-            console.error("An error occurred:", error);
-        }
-    }
+    //         if (response && response.isSuccess) {
+    //             localStorage.removeItem('hospitalProducts');
+    //             setHospitalProducts([])
+    //             setSelectedHospital('')
+    //             toast.success("Hospital products successfully mapping!")
+    //         }
+    //     } catch (error) {
+    //         console.error("An error occurred:", error);
+    //     }
+    // }
 
     const onSaveDistributor = async () => {
         const newValues = distributorProducts && distributorProducts.map((item: any) => {
@@ -260,8 +264,9 @@ export default function InvoiceForm({ type, invoice, hospitals, distributors }: 
     }
 
     const onSubmit = async (values: any) => {
-        const manufactureDate = new Date(values.manufactureDate)
-        const expirationDate = new Date(values.expirationDate)
+        const manufactureDate = new Date(values.manufactureDate);
+        const expirationDate = new Date(values.expirationDate);
+
         const formattedManufactureDate = `${manufactureDate.getUTCFullYear()}-${String(manufactureDate.getUTCMonth() + 1).padStart(2, '0')}-${String(manufactureDate.getUTCDate()).padStart(2, '0')}T${String(manufactureDate.getUTCHours()).padStart(2, '0')}:${String(manufactureDate.getUTCMinutes()).padStart(2, '0')}:${String(manufactureDate.getUTCSeconds()).padStart(2, '0')}.${String(manufactureDate.getUTCMilliseconds()).padStart(3, '0')}+00:00`;
         const formattedExpirationDate = `${expirationDate.getUTCFullYear()}-${String(expirationDate.getUTCMonth() + 1).padStart(2, '0')}-${String(expirationDate.getUTCDate()).padStart(2, '0')}T${String(expirationDate.getUTCHours()).padStart(2, '0')}:${String(expirationDate.getUTCMinutes()).padStart(2, '0')}:${String(expirationDate.getUTCSeconds()).padStart(2, '0')}.${String(expirationDate.getUTCMilliseconds()).padStart(3, '0')}+00:00`;
 
@@ -269,24 +274,56 @@ export default function InvoiceForm({ type, invoice, hospitals, distributors }: 
             ...values,
             price: parseFloat(values.price),
             manufactureDate: formattedManufactureDate,
-            expirationDate: formattedExpirationDate
-        }
+            expirationDate: formattedExpirationDate,
+        };
 
-    }
+        // Create the payload
+        const payload = {
+            hospitalId: selectedHospital,
+            distributorId: null,
+            shipping: newValues.shippingFreight || 0,
+            packingCharge: newValues.packingCharge || 0,
+            cess: newValues.cess || 0,
+            cgst: newValues.cgst || 0,
+            sgst: newValues.sgst || 0,
+            igst: newValues.igst || 0,
+            roundOffAmount: newValues.roundOff || 0,
+            grandTotal: newValues.grandTotal || 0,
+            invoiceType: 1,
+            invoiceItems: productItems.map((item: any) => ({
+                id: item.id,
+                invoiceId: 0, // Replace with the actual invoiceId if available
+                productId: item.id, // Assuming productId is the same as id
+                quantity: item.quantity,
+                rpuwg: item.rpuwg,
+                rpuwog: item.rpuwog,
+                discountType: item.discountType,
+                discount: item.discount,
+                gst: item.gst,
+                total: item.total,
+            })),
+        };
+        const response: any = await updateInvoice(invoiceId, payload)
+        if (response && response.isSuccess) {
+            form.reset();
+            toast.success("Invoice Updated Successfully")
+            router.push('/exon-admin/invoice')
+        }
+    };
 
     const handleGstChange = (id: string, newGst: string) => {
         const newProductItems: any = productItems.map((item: any) => {
             const gstVal = newGst.includes('%') ? newGst.replaceAll('%', '') : newGst
             const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
             return item.id === id ? { ...item, gst: newGst, rpuwog: parseFloat(item.total), rpuwg: (parseFloat(item.total) + calculateRpuwg), gstAmount: calculateRpuwg } : item
-          })
+        })
         setProductItems(newProductItems);
-        
-        const calculateCgst = newProductItems.reduce((acc: any, item: any) => acc + parseFloat(item?.gstAmount), 0) 
-        
+
+        const calculateCgst = newProductItems.reduce((acc: any, item: any) => acc + parseFloat(item?.gstAmount), 0)
+
         form.setValue('cgst', (parseFloat(calculateCgst) / 2))
         form.setValue('sgst', (parseFloat(calculateCgst) / 2))
-      };
+    };
 
     return (
         <section className=''>
@@ -316,7 +353,7 @@ export default function InvoiceForm({ type, invoice, hospitals, distributors }: 
                                                 <SelectContent className='bg-white'>
                                                     <SelectGroup>
                                                         {hospitals.map((item: any) => (
-                                                            <SelectItem key={item.id} value={item.id} className='cursor-pointer'>
+                                                            <SelectItem key={`${item.id}`} value={`${item.id}`} className='cursor-pointer'>
                                                                 {item.name}
                                                             </SelectItem>
                                                         ))}
@@ -352,7 +389,7 @@ export default function InvoiceForm({ type, invoice, hospitals, distributors }: 
                                                                 <SelectContent className='bg-white'>
                                                                     <SelectGroup>
                                                                         {invoiceTypes.map((item: any) => (
-                                                                            <SelectItem key={item.id} value={item.id} className='cursor-pointer'>
+                                                                            <SelectItem key={`${item.id}`} value={`${item.id}`} className='cursor-pointer'>
                                                                                 {item.name}
                                                                             </SelectItem>
                                                                         ))}
@@ -411,7 +448,7 @@ export default function InvoiceForm({ type, invoice, hospitals, distributors }: 
                                                                 <SelectContent className='bg-white'>
                                                                     <SelectGroup>
                                                                         {hospitals.map((item: any) => (
-                                                                            <SelectItem key={item.id} value={item.id} className='cursor-pointer'>
+                                                                            <SelectItem key={`${item.id}`} value={`${item.id}`} className='cursor-pointer'>
                                                                                 {item.name}
                                                                             </SelectItem>
                                                                         ))}
@@ -729,7 +766,18 @@ export default function InvoiceForm({ type, invoice, hospitals, distributors }: 
                                 </div>
 
                                 <div className='mt-4 flex justify-end'>
-                                    <Button onClick={onSaveHospital} disabled={hospitalProducts.length > 0 ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                                    {/* <Button onClick={onSaveHospital} disabled={hospitalProducts.length > 0 ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
+                                    <Link href={'/exon-admin/invoice'}>
+                                        <Button
+                                            disabled={isPending}
+                                            type="submit"
+                                            variant="secondary"
+                                            className="mr-[20px]"
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </Link>
+                                    <Button className='disabled:pointer-events-none disabled:opacity-50'>
                                         Save
                                     </Button>
                                 </div>
