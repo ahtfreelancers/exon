@@ -141,6 +141,7 @@ const ProductTypes = {
 }
 const Invoice = {
     getInvoice: (params: any) => requests.get(`${API_BASE_URL}/invoices`, params),
+    getInvoicePdf: (id: any) => requests.get(`${API_BASE_URL}/invoices/getInvoicePDF/${id}`),
     createInvoice: (data: any) => requests.post(`${API_BASE_URL}/invoices`, data),
     getInvoiceById: (id: number) => requests.get(`${API_BASE_URL}/invoices/${id}`),
     deleteInvoice: (id: number) => requests.delete(`${API_BASE_URL}/invoices/${id}`),
