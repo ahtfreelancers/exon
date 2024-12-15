@@ -137,7 +137,7 @@ const ProductTypes = {
     createProductType: (data: any) => requests.post(`${API_BASE_URL}/producttypes`, createFormData(data)),
     getProductTypeById: (id: number) => requests.get(`${API_BASE_URL}/producttypes/${id}`),
     deleteProductType: (id: number) => requests.delete(`${API_BASE_URL}/producttypes/${id}`),
-    updateProductType: (id: any, data: any) => requests.put(`${API_BASE_URL}/producttypes/${id}`, data),
+    updateProductType: (id: any, data: any) => requests.put(`${API_BASE_URL}/producttypes/${id}`, createFormData(data)),
 }
 const Invoice = {
     getInvoice: (params: any) => requests.get(`${API_BASE_URL}/invoices`, params),

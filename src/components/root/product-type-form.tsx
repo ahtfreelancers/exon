@@ -74,7 +74,7 @@ export const ProductTypeForm = ({ type, productType }: ProductTypeFormProps) => 
             name: productType?.name ?? "",
             description: productType?.description ?? "",
             pictureUrl: productType?.pictureUrl ?? [],
-            price: productType?.price ?? "",
+            price: productType?.price.toString() ?? "",
         }
     })
 
@@ -87,7 +87,7 @@ export const ProductTypeForm = ({ type, productType }: ProductTypeFormProps) => 
             price: values.price,
         }
         console.log("newValues", newValues);
-        
+
         if (type == 1) {
             try {
                 const response = await agent.ProductTypes.createProductType(newValues)
