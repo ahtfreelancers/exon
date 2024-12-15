@@ -129,17 +129,17 @@ function SpecificationSection({ title, details }: any) {
 }
 function TableSpecificationSection({ title, details, columns }: any) {
     return (
-        <div className="max-w-[750px] lg:max-w-[1000px] spbp:max-w-[1250px] 3xl:max-w-[1550px] mb-16 mx-auto">
+        <div className="w-full md:max-w-[750px] lg:max-w-[1000px] spbp:max-w-[1250px] 3xl:max-w-[1550px] mb-16 mx-auto">
             <h2 className="mb-6 md:mb-16 text-center" data-aos="fade-right">
                 Ordering Information
             </h2>
-            <div className={`gap-x-3 md:gap-x-5 bg-background gap-y-6 p-6 md:p-16 rounded-[30px] md:rounded-[66px] grid justify-center md:justify-start font-helvetica text-3xl font-medium text-[#5A5776] grid-cols-${columns}`}>
+            <div className={`gap-x-1 md:gap-x-5 overflow-x-auto w-full bg-background gap-y-6 p-6 md:p-16 rounded-[30px] md:rounded-[66px] grid justify-center md:justify-start font-helvetica text-3xl font-medium text-[#5A5776] grid-cols-${columns}`}>
                 {title && <h2 className={`mb-12 borderText font-helvetica !text-left font-bold text-[#5A5776] text-2xl lg:text-[44px] lg:leading-10 col-span-${columns}`} data-aos="fade-right">
                     {title}
                 </h2>}
                 {details.map((item: any, index: any) => (
                     <div key={index} className="col-span-1" data-aos="fade-left">
-                        <h5 className="text-[#5A5776] text-base md:text-2xl">{item}</h5>
+                        <h5 className="text-[#5A5776] text-sm md:text-2xl">{item}</h5>
                     </div>
                 ))}
             </div>
