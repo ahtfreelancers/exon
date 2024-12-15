@@ -191,7 +191,7 @@ export const columns = (
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </div>
       ),
-      cell: ({ row }) => `${row.original.invoiceItems[0].gst}`,
+      cell: ({ row }) => (row.original.cgst + row.original.sgst),
     },
     {
       accessorKey: 'cgst',

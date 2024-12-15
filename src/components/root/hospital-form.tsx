@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useEffect, useState, useTransition } from "react"
 import * as z from "zod"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -24,14 +24,9 @@ import { FormSuccess } from "@/components/form-success"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-
-import { Calendar } from "@/components/ui/calendar"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { Calendar as CalendarIcon } from "lucide-react"
+import { getAllProductTypes } from "@/actions/product-types"
+import { DataTable } from "./data-table"
+import { columns } from "@/app/exon-admin/hospitals/__components/columns"
 
 interface Hospital {
     id: number,
@@ -54,13 +49,49 @@ interface HospitalFormProps {
     type: number;
     hospital?: Hospital;
 }
-
+interface PriceRequestItem {
+    id: number;
+    hospitalId: number;
+    distributorId: number;
+    productTypeId: number;
+    lowestPrice: number;
+    highestPrice: number;
+    actualPrice: number;
+}
 export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const callbackUrl = searchParams.get("callbackUrl");
     const pathname = usePathname()
     const id = pathname.split("/").pop(); // Get the last part of the URL
+    const [data, setData] = useState<any[]>([]);
+    const [search, setSearch] = useState('')
+
+    const [pageIndex, setPageIndex] = useState(1)
+    const [pageCount, setPageCount] = useState(0)
+
+    const pageSize = 10
+    const fetchProductTypes = async () => {
+        let params = {
+            PageNumber: pageIndex,
+            pageSize: pageSize,
+            searchParam: search,
+        }
+
+        try {
+            const { data, isSuccess }: any = await getAllProductTypes(params)
+            if (isSuccess) {
+                setData(data.items)
+                setPageCount(data.totalCount)
+            }
+        } catch (err) {
+            console.log(`err`, err);
+            // setError(err.message || 'An error occurred')
+        }
+    }
+
+    useEffect(() => {
+        fetchProductTypes()
+    }, [search, pageIndex])
 
     const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
         ? "Email already in use with different provider!"
@@ -98,7 +129,16 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
                 state: values.state,
                 pinCode: values.pinCode,
                 addressType: 1
-            }
+            },
+            priceRequest: data.map((item) => ({
+                id: item.id,
+                hospitalId: item.hospitalId,
+                distributorId: item.distributorId,
+                productTypeId: item.productTypeId,
+                lowestPrice: item.lowestPrice,
+                highestPrice: item.highestPrice,
+                actualPrice: item.actualPrice,
+            })),
         }
 
         if (type == 1) {
@@ -125,7 +165,22 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
             }
         }
     }
+    const handleValueChange = (id: number, key: keyof PriceRequestItem, value: string | number) => {
+        const numericValue = Number(value);
 
+        if (isNaN(numericValue)) {
+            console.error(`Invalid value entered for ${key} in ID ${id}: ${value}`);
+            return;
+        }
+
+        setData((prevData) =>
+            prevData.map((item) =>
+                item.id === id ? { ...item, [key]: numericValue } : item
+            )
+        );
+
+        console.log(`Updated ${key} for ID ${id}: ${numericValue}`);
+    };
     return (
         <Form {...form}>
             <form
@@ -295,6 +350,24 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
                         )}
                     />
                 </div>
+                <DataTable
+                    columns={columns((id: any, key, value) =>
+                        handleValueChange(id, key as keyof PriceRequestItem, value)
+                    )}
+                    data={data}
+                    buttonTitle=""
+                    buttonUrl={""}
+                    onSearch={setSearch}
+                    onPageChange={setPageIndex}
+                    setStatusFilter={() => { }}
+                    pageCount={pageCount}
+                    isStatusFilterEnable={false}
+                    currentPage={pageIndex}
+                    search={search}
+                    pageSize={pageSize}
+                    isSearchEnable={false}
+                    isPaginationEnable={false}
+                />
                 <FormError message={error || urlError} />
                 <FormSuccess message={success} />
                 <Link href={'/exon-admin/hospitals'}>
