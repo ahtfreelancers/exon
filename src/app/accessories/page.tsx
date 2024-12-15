@@ -15,7 +15,7 @@ const products = [
       "Trigger release mechanism provides easy and quick deflation.",
       "Inclination of manometer provides easy and precise view of Pressure points.",
     ],
-    slug:"/accessories/inflad",
+    slug: "/accessories/inflad",
     image: "/accessories/infla-d-home.png", // Replace with the actual path to your image
   },
   {
@@ -28,7 +28,7 @@ const products = [
       "Excellent surface finish to prevent vascular spasm.",
       "Various tip configurations.",
     ],
-    slug:"/accessories/adc",
+    slug: "/accessories/adc",
     image: "/accessories/adc-home.png", // Replace with the actual path to your image
   },
   {
@@ -40,7 +40,7 @@ const products = [
       "Highly kink-resistant Entry port designed to prevent detachmen.",
       "Available in all French sizes.",
     ],
-    slug:"/accessories/guideplus",
+    slug: "/accessories/guideplus",
     image: "/accessories/guide-home.png", // Replace with the actual path to your image
   },
   {
@@ -50,7 +50,7 @@ const products = [
       "Three-stage valve creates maneuverability without any bleeding.",
       "Auto-closing mechanism ensures the device to move from semi-closed position to closed position automatically when contrast is injected from the sideon lumen.",
     ],
-    slug:"/accessories/yclick",
+    slug: "/accessories/yclick",
     image: "/accessories/yclick-home.png", // Replace with the actual path to your image
   },
   {
@@ -62,7 +62,7 @@ const products = [
       "Tapered hub inner diameter facilitates insertion of the guide wire.",
       "Needles of customized sizes are also available.",
     ],
-    slug:"/accessories/arrow",
+    slug: "/accessories/arrow",
     image: "/accessories/arrow-home.png", // Replace with the actual path to your image
   },
   {
@@ -74,7 +74,7 @@ const products = [
       "Presence of rotation adapters.",
       "Ease of inspection.",
     ],
-    slug:"/accessories/twoport",
+    slug: "/accessories/twoport",
     image: "/accessories/2port-home.png", // Replace with the actual path to your image
   },
   {
@@ -86,7 +86,7 @@ const products = [
       "Presence of rotation adapters.",
       "Ease of inspection.",
     ],
-    slug:"/accessories/threeport",
+    slug: "/accessories/threeport",
     image: "/accessories/3port-home.png", // Replace with the actual path to your image
   },
 ];
@@ -189,6 +189,7 @@ export default function Accessories() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {products.map((product, index) => (
             <div
+              key={index}
               // ref={(el) => setRef(el, index)}
               className="bg-white shadow px-10 py-12 rounded-[50px] text-center relative"
               data-aos="fade-up"
