@@ -18,17 +18,17 @@ const InvoiceEditPage = async ({ params }: InvoiceFormEditPageProps) => {
         return redirect('/exon-admin')
     }
     const { id } = params;
-    let hospitalParams = {
+    let listParams = {
         PageNumber: 1,
         pageSize: 10
     }
 
     const { data }: any = await getInvoice(id);
-    const { data: hospitals }: any = await getAllHospitals(hospitalParams)
-    const { data: distributors }: any = await getAllDistributors(params)
+    const { data: hospitals }: any = await getAllHospitals(listParams)
+    const { data: distributors }: any = await getAllDistributors(listParams)
 
     return (
-        <InvoiceForm type={2} invoice={data} hospitals={hospitals.items} distributors={distributors.items} invoiceId={id} />
+        <InvoiceForm type={2} invoice={data} hospitals={hospitals?.items} distributors={distributors?.items} invoiceId={id} />
     );
 }
 

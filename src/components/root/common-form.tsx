@@ -139,7 +139,6 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
     const router = useRouter();
 
     const pageSize = 10
-    console.log("distributors", distributors);
 
     useEffect(() => {
         const combinedArray: any = invoice?.invoiceItems.map(item => {
@@ -185,7 +184,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
     const onSuccessHospital = async (serialNumber: string) => {
         setIsLoading(true);
 
-        const isProductExist = hospitalProducts && hospitalProducts.find((item: any) => item?.serialNumber === serialNumber)
+        const isProductExist = productItems && productItems.find((item: any) => item?.serialNumber === serialNumber)
 
         if (isProductExist) {
             toast.error(serialNumber + "alreay exist in the system.")
@@ -195,9 +194,9 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
             if (isSuccess) {
                 console.log('Document added successfully');
-                setHospitalProducts(prevProduct => {
+                setProductItems(prevProduct => {
                     const updatedprevProduct: any = [...prevProduct, data];
-                    localStorage.setItem('hospitalProducts', JSON.stringify(updatedprevProduct));
+                    // localStorage.setItem('hospitalProducts', JSON.stringify(updatedprevProduct));
                     return updatedprevProduct;
                 })
             }
@@ -211,7 +210,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
     const onSuccessDistributor = async (serialNumber: string) => {
         setIsLoading(true);
 
-        const isProductExist = distributorProducts && distributorProducts.find((item: any) => item?.serialNumber === serialNumber)
+        const isProductExist = productItems && productItems.find((item: any) => item?.serialNumber === serialNumber)
 
         if (isProductExist) {
             toast.error(serialNumber + "alreay exist in the system.")
@@ -221,9 +220,9 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
             if (isSuccess) {
                 console.log('Document added successfully');
-                setDistributorProducts(prevProduct => {
+                setProductItems(prevProduct => {
                     const updatedprevProduct: any = [...prevProduct, data];
-                    localStorage.setItem('distributorProducts', JSON.stringify(updatedprevProduct));
+                    // localStorage.setItem('distributorProducts', JSON.stringify(updatedprevProduct));
                     return updatedprevProduct;
                 })
             }
@@ -282,32 +281,35 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         }
     };
 
-    const handleGstChange = (id: string, newGst: string) => {
-        const newProductItems: any = productItems.map((item: any) => {
-            const gstVal = newGst.includes('%') ? newGst.replaceAll('%', '') : newGst
-            const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
-            return item.id === id ? { ...item, gst: newGst, rpuwog: parseFloat(item.total), rpuwg: (parseFloat(item.total) + calculateRpuwg), gstAmount: calculateRpuwg } : item
-        })
-        setProductItems(newProductItems);
+    const onHandleChange = (id: string, newGst: string, type: string) => {
+        if (type === 'gst') {
+            const newProductItems: any = productItems.map((item: any) => {
+                const gstVal = newGst.includes('%') ? newGst.replaceAll('%', '') : newGst
+                const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
+                return item.id === id ? { ...item, gst: newGst, rpuwog: parseFloat(item.total), rpuwg: (parseFloat(item.total) + calculateRpuwg), gstAmount: calculateRpuwg } : item
+            })
+            setProductItems(newProductItems);
 
-        const calculateCgst = newProductItems.reduce((acc: any, item: any) => acc + parseFloat(item?.gstAmount), 0)
+            const calculateCgst = newProductItems.reduce((acc: any, item: any) => acc + parseFloat(item?.gstAmount), 0)
+            const totalBeforeRoundOff = newProductItems.reduce((acc: any, item: any) => acc + parseFloat(item?.rpuwg), 0)
+            const roundedTotal = Math.round(totalBeforeRoundOff * 100) / 100;
+            const roundOffAmount = roundedTotal - totalBeforeRoundOff;
 
-        form.setValue('cgst', (parseFloat(calculateCgst) / 2))
-        form.setValue('sgst', (parseFloat(calculateCgst) / 2))
+            form.setValue('cgst', (parseFloat(calculateCgst) / 2))
+            form.setValue('sgst', (parseFloat(calculateCgst) / 2))
+            form.setValue('roundOff', roundOffAmount)
+            form.setValue('grandTotal', roundedTotal)
+        }
+
+        if (type === 'discount') {
+            
+        }
     };
-    const handleDiscountTypeChange = (id: string, newGst: string) => {
-        const newProductItems: any = productItems.map((item: any) => {
-            const gstVal = newGst.includes('%') ? newGst.replaceAll('%', '') : newGst
-            const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
-            return item.id === id ? { ...item, gst: newGst, rpuwog: parseFloat(item.total), rpuwg: (parseFloat(item.total) + calculateRpuwg), gstAmount: calculateRpuwg } : item
-        })
-        setProductItems(newProductItems);
 
-        const calculateCgst = newProductItems.reduce((acc: any, item: any) => acc + parseFloat(item?.gstAmount), 0)
-
-        form.setValue('cgst', (parseFloat(calculateCgst) / 2))
-        form.setValue('sgst', (parseFloat(calculateCgst) / 2))
-    };
+    const handleDelete = (id: string) => {
+        const filteredProductItems = productItems.filter((item: any) => item.id !== Number(id));
+        setProductItems(filteredProductItems);
+    }
 
     return (
         <section className=''>
@@ -346,7 +348,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         </div>
                         <div className='flex items-center gap-4'>
                             {/* <HospitalScannerButton asChild onSuccess={onSuccessHospital}> */}
-                            <Button onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                            <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
                                 Scan barcode
                             </Button>
                             {/* </HospitalScannerButton> */}
@@ -581,7 +583,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                     </div>
 
                     <DataTable
-                        columns={columns(handleGstChange, handleDiscountTypeChange)}
+                        columns={columns(onHandleChange, handleDelete)}
                         data={productItems}
                         buttonTitle=""
                         buttonUrl={""}
@@ -616,7 +618,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={isPending}
+                                                    disabled={true}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -633,7 +635,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={isPending}
+                                                    disabled={true}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -650,7 +652,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={isPending}
+                                                    disabled={true}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -704,7 +706,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={isPending}
+                                                    disabled={true}
                                                 />
                                             </FormControl>
                                             <FormMessage />
