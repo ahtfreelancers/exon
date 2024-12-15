@@ -43,12 +43,13 @@ export function SideNav({ items, setOpen, className, isOpen }: SideNavProps) {
                         <AccordionItem value={item.label} className="border-none">
                             <AccordionTrigger
                                 className={cn(
-                                    buttonVariants({ variant: 'ghost' }),
-                                    'w-full group relative flex h-10 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline',
+                                    buttonVariants({ variant: "ghost" }),
+                                    "w-full group relative flex h-10 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline",
+                                    path.includes(item.href) && "bg-primary text-white font-semibold"
                                 )}
                             >
                                 <div className="flex items-center">
-                                    <item.icon className={cn('h-5 w-5')} />
+                                    <item.icon className={cn("h-5 w-5")} />
                                     {isOpen && (
                                         <span className="ml-2 text-sm duration-200">{item.label}</span>
                                     )}
@@ -68,12 +69,12 @@ export function SideNav({ items, setOpen, className, isOpen }: SideNavProps) {
                                             if (setOpen) setOpen(false);
                                         }}
                                         className={cn(
-                                            buttonVariants({ variant: 'ghost' }),
-                                            'group relative flex h-10 justify-start gap-x-1',
-                                            path === child.href && 'bg-muted hover:bg-muted',
+                                            buttonVariants({ variant: "ghost" }),
+                                            "group relative flex h-10 justify-start gap-x-1",
+                                            path.includes(child.href) && "bg-primary text-white font-semibold"
                                         )}
                                     >
-                                        <child.icon className={cn('h-5 w-5', child.color)} />
+                                        <child.icon className={cn("h-5 w-5", child.color)} />
                                         {isOpen && (
                                             <span className="ml-2 text-sm duration-200">{child.label}</span>
                                         )}
@@ -90,19 +91,19 @@ export function SideNav({ items, setOpen, className, isOpen }: SideNavProps) {
                             if (setOpen) setOpen(false);
                         }}
                         className={cn(
-                            buttonVariants({ variant: 'ghost' }),
-                            'group relative flex h-10 justify-start',
-                            path === item.href && 'bg-muted hover:bg-muted',
+                            buttonVariants({ variant: "ghost" }),
+                            "group relative flex h-10 justify-start px-4 py-2 duration-200 hover:bg-muted",
+                            path.includes(item.href) && "bg-primary text-white font-semibold"
                         )}
                     >
-                        <item.icon className={cn('h-5 w-5')} />
+                        <item.icon className={cn("h-5 w-5")} />
                         {isOpen && (
-                            <span className={cn('ml-2 text-sm duration-200', !isOpen && className)}>
+                            <span className={cn("ml-2 text-sm duration-200", !isOpen && className)}>
                                 {item.label}
                             </span>
                         )}
                     </Link>
-                ),
+                )
             )}
         </nav>
     );
