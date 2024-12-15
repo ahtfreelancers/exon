@@ -35,6 +35,10 @@ const statusEnum: any = {
   "2": 'Dispose'
 }
 
+const DiscountTypeList = [
+  { id: '1', name: '%' },
+  { id: '2', name: '₹' }
+]
 const gstList = [
   { id: '5%', name: '5%' },
   { id: '12%', name: '12%' },
@@ -70,7 +74,7 @@ const ActionsCell = ({ id }: { id: string }) => {
   );
 };
 
-export const columns: (onGstChange: (id: string, newGst: string) => void) => ColumnDef<Mapping>[] = (onGstChange) => [
+export const columns: (onGstChange: (id: string, newGst: string) => void, onDiscountTypeChange: (id: string, newGst: string) => void) => ColumnDef<Mapping>[] = (onGstChange, onDiscountTypeChange) => [
   {
     accessorKey: 'itemNo',
     header: ({ column }) => (
@@ -183,7 +187,28 @@ export const columns: (onGstChange: (id: string, newGst: string) => void) => Col
         Discount Type
         <ArrowUpDown className='ml-2 h-4 w-4' />
       </div>
-    )
+    ),
+    cell: ({ row }) => {
+      const handleDiscountType = (newValue: string) => {
+        onDiscountTypeChange(row.original.id, newValue);
+      };
+      return (
+        <Select defaultValue={row.original.gst} onValueChange={handleDiscountType}>
+          <SelectTrigger className="font-normal text-black border-input">
+            <SelectValue placeholder="Select a Discount Type" />
+          </SelectTrigger>
+          <SelectContent className='bg-white'>
+            <SelectGroup>
+              {DiscountTypeList.map((item: any) => (
+                <SelectItem key={item.id} value={item.id} className='cursor-pointer'>
+                  {item.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      )
+    },
   },
   {
     accessorKey: 'gst',

@@ -46,13 +46,9 @@ const ImageCell = ({ pictureUrl }: { pictureUrl: string }) => {
                             className="rounded-md"
                         />
                         <DialogClose asChild>
-                            <button
-                                className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none"
-                                aria-label="Close"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                <X size={24} />
-                            </button>
+                            <X size={24} onClick={() => setIsOpen(false)}
+                                className="absolute top-4 size-5 cursor-pointer right-4 text-gray-600 hover:text-gray-900 focus:outline-none"
+                            />
                         </DialogClose>
                     </div>
                 </DialogContent>
@@ -78,13 +74,13 @@ const ActionsCell = ({ id, fetchProductTypes }: { id: number, fetchProductTypes:
 
     return (
         <div className="flex gap-[10px]">
-            <Link href={`/exon-admin/product-types/${id}`}>
+            {/* <Link href={`/exon-admin/product-types/${id}`}>
                 <Eye size={22} className="cursor-pointer" />
-            </Link>
+            </Link> */}
             <Link href={`/exon-admin/product-types/edit/${id}`}>
                 <FilePenLine size={22} />
             </Link>
-            <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
+            {/* <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} /> */}
         </div>
     );
 };
@@ -125,7 +121,7 @@ export const columns = (fetchProductTypes: () => void): ColumnDef<ProductType>[]
                 <ArrowUpDown className='ml-2 h-4 w-4' />
             </div>
         ),
-        // cell: ({ row }) => <ImageCell pictureUrl={row.original.pictureUrl} />,
+        cell: ({ row }) => <ImageCell pictureUrl={row.original.pictureUrl} />,
     },
     {
         accessorKey: 'price',
