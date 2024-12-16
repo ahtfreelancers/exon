@@ -7,6 +7,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Eye, FilePenLine, Trash } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import React from 'react';
 import { toast } from 'sonner';
 
 export type Mapping = {
@@ -41,9 +42,16 @@ const DiscountTypeList = [
   { id: '2', name: '₹' }
 ]
 const gstList = [
+  { id: '0%', name: '0%' },
+  { id: '0.25%', name: '0.25%' },
+  { id: '1%', name: '1%' },
+  { id: '1.5%', name: '1.5%' },
+  { id: '3%', name: '3%' },
   { id: '5%', name: '5%' },
+  { id: '7.5%', name: '7.5%' },
   { id: '12%', name: '12%' },
-  { id: '18%', name: '18%' }
+  { id: '18%', name: '18%' },
+  { id: '28%', name: '28%' },
 ]
 
 const ActionsCell = ({ id, handleDelete }: { id: string, handleDelete: any }) => {
@@ -162,14 +170,17 @@ export const columns = (
       </div>
     ),
     cell: ({ row }) => {
-      const handleDiscount = (newValue: string) => {
-        onHandleChange(row.original.id, newValue, 'discount');
-      };
+      const [inputValue, setInputValue] = React.useState(row.original.discount);
+
+    const handleDiscount = (newValue: string) => {
+      setInputValue(newValue);
+      onHandleChange(row.original.id, newValue, 'discount');
+    };
       return (
         <Input
           className='!mt-0'
-          defaultValue={row.original.discount}
-          value={row.original.discount}
+          defaultValue={inputValue}
+          value={inputValue}
           onChange={(e) => handleDiscount(e.target.value)}
         />
       )
@@ -191,9 +202,9 @@ export const columns = (
         onHandleChange(row.original.id, newValue, 'discount-type');
       };
       return (
-        <Select defaultValue={row.original.gst} onValueChange={handleDiscountType}>
+        <Select defaultValue={row.original.discountType} onValueChange={handleDiscountType}>
           <SelectTrigger className="font-normal text-black border-input">
-            <SelectValue placeholder="Select a Discount Type" />
+            <SelectValue placeholder="" />
           </SelectTrigger>
           <SelectContent className='bg-white'>
             <SelectGroup>
@@ -226,7 +237,7 @@ export const columns = (
       return (
         <Select defaultValue={row.original.gst} onValueChange={handleGstChange}>
           <SelectTrigger className="font-normal text-black border-input">
-            <SelectValue placeholder="Select a title" />
+            <SelectValue placeholder="" />
           </SelectTrigger>
           <SelectContent className='bg-white'>
             <SelectGroup>
