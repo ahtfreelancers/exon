@@ -170,17 +170,14 @@ export const columns = (
       </div>
     ),
     cell: ({ row }) => {
-      const [inputValue, setInputValue] = React.useState(row.original.discount);
-
     const handleDiscount = (newValue: string) => {
-      setInputValue(newValue);
       onHandleChange(row.original.id, newValue, 'discount');
     };
       return (
         <Input
           className='!mt-0'
-          defaultValue={inputValue}
-          value={inputValue}
+          defaultValue={row.original.discount}
+          value={row.original.discount}
           onChange={(e) => handleDiscount(e.target.value)}
         />
       )
