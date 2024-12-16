@@ -24,6 +24,7 @@ import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -34,12 +35,14 @@ interface DataTableProps<TData, TValue> {
   onSearch: (value: string) => void
   onPageChange: (pageIndex: number) => void
   setStatusFilter?: (value: string) => void
+  onSelectDropdownChange?: (value: string) => void
   pageCount: number
   currentPage: number
   pageSize?: number
   isSearchEnable?: boolean
   isPaginationEnable?: boolean
   isStatusFilterEnable?: boolean
+  isInvoiceFilterEnable?: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -51,11 +54,13 @@ export function DataTable<TData, TValue>({
   onSearch,
   onPageChange,
   setStatusFilter,
+  onSelectDropdownChange,
   pageCount,
   currentPage,
   pageSize = 10,
   isSearchEnable = true,
   isStatusFilterEnable = false,
+  isInvoiceFilterEnable = false,
   isPaginationEnable = true
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
@@ -80,7 +85,7 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel()
   })
-console.log("data", data);
+  console.log("data", data);
 
   useEffect(() => {
     table.setPageIndex(currentPage - 1) // TanStack Table uses zero-based index
@@ -196,6 +201,35 @@ console.log("data", data);
                 <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("3")} value="dispose">Dispose</TabsTrigger>
               </TabsList>
             </Tabs>
+          </div>}
+          {isInvoiceFilterEnable && <div className='flex justify-center items-center gap-2'>
+            <Tabs defaultValue="1" className="w-[300px]">
+              <TabsList>
+                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("1")} value="1">Hospital</TabsTrigger>
+                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("2")} value="2">Disrtubator</TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <div>
+              <Select
+                defaultValue={"1"}
+                onValueChange={(value: any) => onSelectDropdownChange?.(value || "1")} // Use optional chaining
+              >
+                <SelectTrigger className="w-[180px] font-normal text-black border-input">
+                  <SelectValue placeholder={`Select a Hospital`} />
+                </SelectTrigger>
+                <SelectContent className='bg-white'>
+                  <SelectGroup>
+                    <SelectItem key={`1`} value={`1`} className='cursor-pointer'>
+                      Proforma
+                    </SelectItem>
+
+                    <SelectItem key={`2`} value={`2`} className='cursor-pointer'>
+                      Tax
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>}
           {buttonTitle && (
             <Link href={buttonUrl}>
