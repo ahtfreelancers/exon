@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/popover"
 import { Calendar as CalendarIcon } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
-import { updateInvoice } from '@/actions/invoice'
+import { addInvoice, updateInvoice } from '@/actions/invoice'
 import { useRouter } from 'next/navigation'
 
 interface InvoiceItems {
@@ -120,11 +120,8 @@ const invoiceTypes = [
 export default function CommonForm({ type, invoice, hospitals, distributors, invoiceId }: InvoiceFormProps) {
     const [search, setSearch] = useState('')
     const [selectedHospital, setSelectedHospital] = useState('')
-    const [hospitalProducts, setHospitalProducts] = useState([])
 
-    const [productItems, setProductItems] = useState([])
-
-    const [distributorProducts, setDistributorProducts] = useState([])
+    const [productItems, setProductItems] = useState<any[]>([])
 
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
@@ -132,10 +129,6 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
     const [isPending, startTransition] = useTransition();
     const [isLoading, setIsLoading] = useState(false)
 
-    useEffect(() => {
-        localStorage.removeItem('hospitalProducts');
-        localStorage.removeItem('distributorProducts');
-    }, []);
     const router = useRouter();
 
     const pageSize = 10
@@ -151,12 +144,12 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                 product: undefined,
                 rpuwog: item.total,
                 rpuwg: (item.total + calculateRpuwg),
+                gst: item.gst,
                 gstAmount: calculateRpuwg
             }
         });
         setProductItems(combinedArray)
     }, [invoice])
-    console.log("invoice", invoice);
 
     const form = useForm({
         defaultValues: {
@@ -181,6 +174,18 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         },
     });
 
+    const calclulateTotal = (items: any) => {
+        const calculateCgst = items.reduce((acc: any, item: any) => acc + parseFloat(item?.gstAmount), 0)
+        const totalBeforeRoundOff = items.reduce((acc: any, item: any) => acc + parseFloat(item?.rpuwg), 0)
+        const roundedTotal = Math.round(totalBeforeRoundOff * 100) / 100;
+        const roundOffAmount = roundedTotal - totalBeforeRoundOff;
+
+        form.setValue('cgst', (parseFloat(calculateCgst) / 2))
+        form.setValue('sgst', (parseFloat(calculateCgst) / 2))
+        form.setValue('roundOff', roundOffAmount)
+        form.setValue('grandTotal', roundedTotal)
+    }
+
     const onSuccessHospital = async (serialNumber: string) => {
         setIsLoading(true);
 
@@ -193,12 +198,59 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         try {
             const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
             if (isSuccess) {
+                if (!productItems) {
+                    const gstVal = ((data?.price * 5) / 100)
+                    
+                    const newStateProductItems = [{
+                        ...data,
+                        total: data?.price,
+                        quantity: 1,
+                        rpuwg: data?.price + gstVal,
+                        rpuwog: data?.price,
+                        gst: '5%',
+                        gstAmount: gstVal
+                    }]
+                    const newProductItems = [{
+                        ...data,
+                        total: data?.price,
+                        quantity: 1,
+                        rpuwg: data?.price + gstVal,
+                        rpuwog: data?.price,
+                        gst: 5,
+                        gstAmount: gstVal
+                    }]
+                    setProductItems(newStateProductItems)
+                    calclulateTotal(newProductItems)
+                } else {
+                    const gstVal = ((data?.price * 5) / 100)
+                    const newStateProductItems: any = [
+                        ...productItems,
+                        {
+                            ...data,
+                            total: data?.price,
+                            quantity: 1,
+                            rpuwg: data?.price + gstVal,
+                            rpuwog: data?.price,
+                            gst: '5%',
+                            gstAmount: gstVal
+                        }
+                    ];
+                    const newProductItems: any = [
+                        ...productItems,
+                        {
+                            ...data,
+                            total: data?.price,
+                            quantity: 1,
+                            rpuwg: data?.price + gstVal,
+                            rpuwog: data?.price,
+                            gst: 5,
+                            gstAmount: gstVal
+                        }
+                    ];
+                    setProductItems(newStateProductItems)
+                    calclulateTotal(newProductItems)
+                }
                 console.log('Document added successfully');
-                setProductItems(prevProduct => {
-                    const updatedprevProduct: any = [...prevProduct, data];
-                    // localStorage.setItem('hospitalProducts', JSON.stringify(updatedprevProduct));
-                    return updatedprevProduct;
-                })
             }
         } catch (error) {
             console.log('Error uploading document:', error);
@@ -219,12 +271,60 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         try {
             const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
             if (isSuccess) {
+                console.log("data", data);
                 console.log('Document added successfully');
-                setProductItems(prevProduct => {
-                    const updatedprevProduct: any = [...prevProduct, data];
-                    // localStorage.setItem('distributorProducts', JSON.stringify(updatedprevProduct));
-                    return updatedprevProduct;
-                })
+                if (!productItems) {
+                    const gstVal = ((data?.price * 5) / 100)
+
+                    const newStateProductItems = [{
+                        ...data,
+                        total: data?.price,
+                        quantity: 1,
+                        rpuwg: data?.price + gstVal,
+                        rpuwog: data?.price,
+                        gst: '5%',
+                        gstAmount: gstVal
+                    }]
+                    const newProductItems = [{
+                        ...data,
+                        total: data?.price,
+                        quantity: 1,
+                        rpuwg: data?.price + gstVal,
+                        rpuwog: data?.price,
+                        gst: 5,
+                        gstAmount: gstVal
+                    }]
+                    setProductItems(newStateProductItems)
+                    calclulateTotal(newProductItems)
+                } else {
+                    const gstVal = ((data?.price * 5) / 100)
+                    const newStateProductItems: any = [
+                        ...productItems,
+                        {
+                            ...data,
+                            total: data?.price,
+                            quantity: 1,
+                            rpuwg: data?.price + gstVal,
+                            rpuwog: data?.price,
+                            gst: '5%',
+                            gstAmount: gstVal
+                        }
+                    ];
+                    const newProductItems: any = [
+                        ...productItems,
+                        {
+                            ...data,
+                            total: data?.price,
+                            quantity: 1,
+                            rpuwg: data?.price + gstVal,
+                            rpuwog: data?.price,
+                            gst: 5,
+                            gstAmount: gstVal
+                        }
+                    ];
+                    setProductItems(newStateProductItems)
+                    calclulateTotal(newProductItems)
+                }
             }
         } catch (error) {
             console.log('Error uploading document:', error);
@@ -234,20 +334,10 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
     }
 
     const onSubmit = async (values: any) => {
-        const manufactureDate = new Date(values.manufactureDate);
-        const expirationDate = new Date(values.expirationDate);
-
-        const formattedManufactureDate = `${manufactureDate.getUTCFullYear()}-${String(manufactureDate.getUTCMonth() + 1).padStart(2, '0')}-${String(manufactureDate.getUTCDate()).padStart(2, '0')}T${String(manufactureDate.getUTCHours()).padStart(2, '0')}:${String(manufactureDate.getUTCMinutes()).padStart(2, '0')}:${String(manufactureDate.getUTCSeconds()).padStart(2, '0')}.${String(manufactureDate.getUTCMilliseconds()).padStart(3, '0')}+00:00`;
-        const formattedExpirationDate = `${expirationDate.getUTCFullYear()}-${String(expirationDate.getUTCMonth() + 1).padStart(2, '0')}-${String(expirationDate.getUTCDate()).padStart(2, '0')}T${String(expirationDate.getUTCHours()).padStart(2, '0')}:${String(expirationDate.getUTCMinutes()).padStart(2, '0')}:${String(expirationDate.getUTCSeconds()).padStart(2, '0')}.${String(expirationDate.getUTCMilliseconds()).padStart(3, '0')}+00:00`;
-
         const newValues = {
-            ...values,
-            price: parseFloat(values.price),
-            manufactureDate: formattedManufactureDate,
-            expirationDate: formattedExpirationDate,
+            ...values
         };
 
-        // Create the payload
         const payload = {
             hospitalId: selectedHospital,
             distributorId: null,
@@ -262,8 +352,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             invoiceType: 1,
             invoiceItems: productItems.map((item: any) => ({
                 id: item.id,
-                invoiceId: 0, // Replace with the actual invoiceId if available
-                productId: item.id, // Assuming productId is the same as id
+                invoiceId: 0,
+                productId: item.id,
                 quantity: item.quantity,
                 rpuwg: item.rpuwg,
                 rpuwog: item.rpuwog,
@@ -273,42 +363,107 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                 total: item.total,
             })),
         };
-        const response: any = await updateInvoice(invoiceId, payload)
-        if (response && response.isSuccess) {
-            form.reset();
-            toast.success("Invoice Updated Successfully")
-            router.push('/exon-admin/invoice')
+
+        if(invoiceId) {
+            const response: any = await updateInvoice(invoiceId, payload)
+            if (response && response.isSuccess) {
+                form.reset();
+                toast.success("Invoice Updated Successfully")
+                router.push('/exon-admin/invoice')
+            }
+        } else {
+            const response: any = await addInvoice(payload)
+            if (response && response.isSuccess) {
+                form.reset();
+                toast.success("Invoice Added Successfully")
+                router.push('/exon-admin/invoice')
+            }
         }
+        
     };
 
-    const onHandleChange = (id: string, newGst: string, type: string) => {
+    const onHandleChange = (id: string, value: string, type: string) => {
         if (type === 'gst') {
             const newProductItems: any = productItems.map((item: any) => {
-                const gstVal = newGst.includes('%') ? newGst.replaceAll('%', '') : newGst
+                const gstVal = value.includes('%') ? value.replaceAll('%', '') : value
                 const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
-                return item.id === id ? { ...item, gst: newGst, rpuwog: parseFloat(item.total), rpuwg: (parseFloat(item.total) + calculateRpuwg), gstAmount: calculateRpuwg } : item
+                return item.id === id ? { ...item, gst: value, rpuwog: parseFloat(item.total), rpuwg: (parseFloat(item.total) + calculateRpuwg), gstAmount: calculateRpuwg } : item
             })
             setProductItems(newProductItems);
 
-            const calculateCgst = newProductItems.reduce((acc: any, item: any) => acc + parseFloat(item?.gstAmount), 0)
-            const totalBeforeRoundOff = newProductItems.reduce((acc: any, item: any) => acc + parseFloat(item?.rpuwg), 0)
-            const roundedTotal = Math.round(totalBeforeRoundOff * 100) / 100;
-            const roundOffAmount = roundedTotal - totalBeforeRoundOff;
-
-            form.setValue('cgst', (parseFloat(calculateCgst) / 2))
-            form.setValue('sgst', (parseFloat(calculateCgst) / 2))
-            form.setValue('roundOff', roundOffAmount)
-            form.setValue('grandTotal', roundedTotal)
+            calclulateTotal(newProductItems)
         }
 
         if (type === 'discount') {
-            
+            const newProductItems: any = productItems.map((item: any) => {
+                const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
+                const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
+
+                let calculatedDiscount: any
+                if(item?.discountType === '1') {
+                    calculatedDiscount = ((parseFloat(item.total) * Number(value)) / 100)
+                }
+                if(item?.discountType === '2') {
+                    calculatedDiscount = value
+                }
+                const calculateTotal = (parseFloat(item.total) - parseFloat(calculatedDiscount))
+                return item.id === id ? { ...item, discount: value, total: calculateTotal, gstAmount: calculateRpuwg } : item
+            })
+            setProductItems(newProductItems);
+
+            calclulateTotal(newProductItems)
+        }
+
+        if (type === 'discount-type') {
+            const newProductItems: any = productItems.map((item: any) => {
+                const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
+                const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
+                let calculatedDiscount: any
+                if(value === '1') {
+                    calculatedDiscount = ((parseFloat(item.total) * Number(item?.discount)) / 100)
+                }
+                if(value === '2') {
+                    calculatedDiscount = item?.discount
+                }
+                const calculateTotal = (parseFloat(item.total) - parseFloat(calculatedDiscount))
+                return item.id === id ? { ...item, discountType: value, total: calculateTotal, gstAmount: calculateRpuwg } : item
+            })
+            setProductItems(newProductItems);
+
+            calclulateTotal(newProductItems)
         }
     };
 
     const handleDelete = (id: string) => {
         const filteredProductItems = productItems.filter((item: any) => item.id !== Number(id));
         setProductItems(filteredProductItems);
+    }
+
+    const onSelectDropdownChange = (value: any) => {
+        setSelectedHospital && setSelectedHospital(value)
+
+        if (type === 1) {
+            const filteredHospitals = hospitals.find((item: any) => item.id == Number(value))
+
+            form.setValue('gstin', filteredHospitals?.gstNumber)
+            form.setValue('addressline1', filteredHospitals?.address?.address1)
+            form.setValue('addressline2', filteredHospitals?.address?.address2)
+            form.setValue('country', 'India')
+            form.setValue('state', filteredHospitals?.address?.state)
+            form.setValue('city', filteredHospitals?.address?.city)
+            form.setValue('pincode', filteredHospitals?.address?.pinCode)
+        }
+        if (type === 2) {
+            const filteredDistributors = distributors.find((item: any) => item.id == Number(value))
+
+            form.setValue('gstin', filteredDistributors?.gstNumber)
+            form.setValue('addressline1', filteredDistributors?.address?.address1)
+            form.setValue('addressline2', filteredDistributors?.address?.address2)
+            form.setValue('country', 'India')
+            form.setValue('state', filteredDistributors?.address?.state)
+            form.setValue('city', filteredDistributors?.address?.city)
+            form.setValue('pincode', filteredDistributors?.address?.pinCode)
+        }
     }
 
     return (
@@ -321,9 +476,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                     <div className='mb-6 flex justify-between items-center'>
                         <div className='flex items-center gap-4'>
                             <div className='flex items-center gap-2'>
-                                <Select defaultValue={selectedHospital} onValueChange={(value: any) => {
-                                    setSelectedHospital && setSelectedHospital(value)
-                                }}>
+                                <Select defaultValue={selectedHospital} onValueChange={(value: any) => onSelectDropdownChange(value)}>
                                     <SelectTrigger className="w-[180px] font-normal text-black border-input">
                                         <SelectValue placeholder={`Select a ${type == 1 ? "Hospital" : "Distributor"}`} />
                                     </SelectTrigger>
