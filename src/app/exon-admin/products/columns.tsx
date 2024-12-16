@@ -2,11 +2,13 @@
 
 import { deleteProduct } from '@/actions/products';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, Eye, FilePenLine, Trash } from 'lucide-react';
+import { ArrowUpDown, Eye, FilePenLine, Trash, X } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import Image from 'next/image';
+import { Dialog, DialogClose, DialogContent, DialogOverlay, DialogTrigger } from '@radix-ui/react-dialog';
 
 export type Product = {
   id: string;
@@ -18,6 +20,8 @@ export type Product = {
   expirationDate: string;
   productStatus: number;
   price: string;
+  modified: string;
+  pictureUrl: string;
 };
 
 const statusEnum: any = {
@@ -87,7 +91,45 @@ const ActionsCell = ({ id, fetchProducts }: { id: string; fetchProducts: () => v
     </div>
   );
 };
+const ImageCell = ({ pictureUrl }: { pictureUrl: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
+  return (
+    <>
+      <Image
+        src={pictureUrl ?? ''}
+        alt="Product Image"
+        width={50}
+        height={50}
+        className="cursor-pointer rounded-md shadow-md"
+        onClick={() => setIsOpen(true)}
+      />
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogOverlay className="fixed inset-0 bg-black/60 z-[9999999]" />
+        <DialogContent
+          className="fixed z-[9999999] inset-0 m-auto flex max-w-3xl w-full h-auto max-h-[80vh] bg-white rounded-lg p-6 shadow-lg"
+        >
+          <div className="relative w-full h-full z-[9999999]">
+            <Image
+              src={pictureUrl ?? ''}
+              alt="Product Image"
+              layout="fill"
+              objectFit="contain"
+              className="rounded-md"
+            />
+            <DialogClose asChild>
+              <X
+                size={24}
+                onClick={() => setIsOpen(false)}
+                className="absolute top-4 right-4 text-gray-600 hover:text-gray-900 focus:outline-none cursor-pointer"
+              />
+            </DialogClose>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+};
 export const columns = (fetchProducts: () => void): ColumnDef<Product>[] => [
   {
     accessorKey: 'itemNo',
@@ -114,6 +156,19 @@ export const columns = (fetchProducts: () => void): ColumnDef<Product>[] => [
     ),
   },
   {
+    accessorKey: 'pictureUrl',
+    header: ({ column }) => (
+      <div
+        className="flex items-center"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Picture
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </div>
+    ),
+    cell: ({ row }) => <ImageCell pictureUrl={row.original.pictureUrl} />,
+  },
+  {
     accessorKey: 'serialNumber',
     header: ({ column }) => (
       <div
@@ -121,6 +176,18 @@ export const columns = (fetchProducts: () => void): ColumnDef<Product>[] => [
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
         Serial Number
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'price',
+    header: ({ column }) => (
+      <div
+        className="flex items-center"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Price
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </div>
     ),
@@ -183,6 +250,38 @@ export const columns = (fetchProducts: () => void): ColumnDef<Product>[] => [
       </div>
     ),
     cell: ({ row }) => <>{statusEnum[`${row.original.productStatus}`]}</>,
+    filterFn: (row, columnId, value) => row.getValue(columnId) === value,
+  },
+  {
+    accessorKey: 'modifiedBy',
+    header: ({ column }) => (
+      <div
+        className="flex items-center"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Modified By
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </div>
+    ),
+    filterFn: (row, columnId, value) => row.getValue(columnId) === value,
+  },
+  {
+    accessorKey: 'modified',
+    header: ({ column }) => (
+      <div
+        className="flex items-center"
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Updated Date
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </div>
+    ),
+    cell: ({ row }) => {
+      const date = new Date(row.original.modified);
+      const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+      const formattedTime = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+      return <>{`${formattedDate} ${formattedTime}`}</>;
+    },
     filterFn: (row, columnId, value) => row.getValue(columnId) === value,
   },
   {
