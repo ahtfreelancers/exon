@@ -26,7 +26,7 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { getAllProductTypes } from "@/actions/product-types"
 import { DataTable } from "./data-table"
-import { columns } from "@/app/exon-admin/hospitals/__components/columns"
+import { columns, Mapping } from "@/app/exon-admin/hospitals/__components/columns"
 
 interface Hospital {
     id: number,
@@ -165,7 +165,7 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
             }
         }
     }
-    const handleValueChange = (id: number, key: keyof PriceRequestItem, value: string | number) => {
+    const handleValueChange = (id: string, key: keyof Mapping, value: string | number) => {
         const numericValue = Number(value);
 
         if (isNaN(numericValue)) {
@@ -351,9 +351,7 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
                     />
                 </div>
                 <DataTable
-                    columns={columns((id: any, key, value) =>
-                        handleValueChange(id, key as keyof PriceRequestItem, value)
-                    )}
+                    columns={columns(handleValueChange)}
                     data={data}
                     buttonTitle=""
                     buttonUrl={""}
