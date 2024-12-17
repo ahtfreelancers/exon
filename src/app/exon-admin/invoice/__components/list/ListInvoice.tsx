@@ -14,11 +14,16 @@ export default function ListInvoice() {
     const [modalOpen, setModalOpen] = useState(false)
     const [invoicePdf, setInvoicePdf] = useState('')
     const pageSize = 10
+    const [productStatus, setProductStatus] = useState('1')
+    const [invoiceType, setInvoiceType] = useState('1')
+
     const fetchInvoice = async () => {
         let params = {
             PageNumber: pageIndex,
             pageSize: pageSize,
             searchParam: search,
+            InvoiceRequestType: Number(productStatus) ?? null,
+            InvoiceType: Number(invoiceType) ?? null,
         }
 
         try {
@@ -31,7 +36,14 @@ export default function ListInvoice() {
             console.log(`Error fetching invoices`, err)
         }
     }
-
+    const setStatusFilter = (value: string) => {
+        setPageIndex(1)
+        setProductStatus(value)
+    }
+    const onSelectDropdownChange = (value: string) => {
+        setPageIndex(1)
+        setInvoiceType(value)
+    }
     const viewInvoice = async (id: number) => {
         try {
             const { data }: any = await getAllInvoicesPdf(id)
@@ -44,7 +56,7 @@ export default function ListInvoice() {
 
     useEffect(() => {
         fetchInvoice()
-    }, [search, pageIndex])
+    }, [search, pageIndex, productStatus, invoiceType])
 
     return (
         <section>
@@ -60,9 +72,11 @@ export default function ListInvoice() {
                     buttonUrl={"/exon-admin/invoice/add"}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
-                    setStatusFilter={() => { }}
                     pageCount={pageCount}
+                    setStatusFilter={setStatusFilter}
+                    onSelectDropdownChange={onSelectDropdownChange}
                     isStatusFilterEnable={false}
+                    isInvoiceFilterEnable={true}
                     currentPage={pageIndex}
                     search={search}
                     pageSize={pageSize}
