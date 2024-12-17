@@ -178,7 +178,7 @@ export const columns = (
           className='!mt-0'
           defaultValue={row.original.discount}
           value={row.original.discount}
-          onChange={(e) => handleDiscount(e.target.value)}
+          onBlur={(e) => handleDiscount(e.target.value)}
         />
       )
     },
