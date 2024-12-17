@@ -90,9 +90,13 @@ export const columns: (handleValueChange: (id: string, key: keyof Mapping, value
     ),
     cell: ({ row }) => {
       return (
-        <Input type="number" defaultValue={row.original.price} min={1} placeholder="Actual Price" onChange={(e) =>
-          handleValueChange(row.original.id, 'price', Number(e.target.value))
-        } />
+        <Input
+          type="number"
+          defaultValue={row.original.price}
+          min={1}
+          placeholder="Actual Price"
+          onBlur={(e) => handleValueChange(row.original.id, 'price', Number(e.target.value))}
+        />
       )
     },
   },
@@ -110,7 +114,7 @@ export const columns: (handleValueChange: (id: string, key: keyof Mapping, value
     cell: ({ row }) => {
 
       return (
-        <Input type="number" min={1} placeholder="Lowest Price" onChange={(e) =>
+        <Input type="number" min={1} placeholder="Lowest Price" onBlur={(e) =>
           handleValueChange(row.original.id, 'lowestPrice', Number(e.target.value))
         } />
       )
@@ -129,7 +133,7 @@ export const columns: (handleValueChange: (id: string, key: keyof Mapping, value
     ),
     cell: ({ row }) => {
       return (
-        <Input type="number" min={1} placeholder="Highest Price" onChange={(e) =>
+        <Input type="number" min={1} placeholder="Highest Price" onBlur={(e) =>
           handleValueChange(row.original.id, 'highestPrice', Number(e.target.value))
         } />
       )

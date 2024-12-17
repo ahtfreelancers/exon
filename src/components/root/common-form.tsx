@@ -119,7 +119,7 @@ const invoiceTypes = [
 
 export default function CommonForm({ type, invoice, hospitals, distributors, invoiceId }: InvoiceFormProps) {
     const [search, setSearch] = useState('')
-    const [selectedHospital, setSelectedHospital] = useState('')
+    const [selectedHospital, setSelectedHospital] = useState(invoice?.hospital?.id?.toString() ?? '')
 
     const [productItems, setProductItems] = useState<any[]>([])
 
