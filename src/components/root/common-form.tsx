@@ -200,7 +200,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             if (isSuccess) {
                 if (!productItems) {
                     const gstVal = ((data?.price * 5) / 100)
-                    
+
                     const newStateProductItems = [{
                         ...data,
                         total: data?.price,
@@ -364,7 +364,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             })),
         };
 
-        if(invoiceId) {
+        if (invoiceId) {
             const response: any = await updateInvoice(invoiceId, payload)
             if (response && response.isSuccess) {
                 form.reset();
@@ -379,7 +379,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                 router.push('/exon-admin/invoice')
             }
         }
-        
+
     };
 
     const onHandleChange = (id: string, value: string, type: string) => {
@@ -400,10 +400,10 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                 const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
 
                 let calculatedDiscount: any
-                if(item?.discountType === '1') {
+                if (item?.discountType === '1') {
                     calculatedDiscount = ((parseFloat(item.total) * Number(value)) / 100)
                 }
-                if(item?.discountType === '2') {
+                if (item?.discountType === '2') {
                     calculatedDiscount = value
                 }
                 const calculateTotal = (parseFloat(item.total) - parseFloat(calculatedDiscount))
@@ -419,10 +419,10 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                 const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
                 const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
                 let calculatedDiscount: any
-                if(value === '1') {
+                if (value === '1') {
                     calculatedDiscount = ((parseFloat(item.total) * Number(item?.discount)) / 100)
                 }
-                if(value === '2') {
+                if (value === '2') {
                     calculatedDiscount = item?.discount
                 }
                 const calculateTotal = (parseFloat(item.total) - parseFloat(calculatedDiscount))
@@ -500,11 +500,11 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                             </div>
                         </div>
                         <div className='flex items-center gap-4'>
-                            {/* <HospitalScannerButton asChild onSuccess={onSuccessHospital}> */}
-                            <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
-                                Scan barcode
-                            </Button>
-                            {/* </HospitalScannerButton> */}
+                            <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}>
+                                <Button type='button' disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                                    Scan barcode
+                                </Button>
+                            </HospitalScannerButton>
                         </div>
                     </div>
 
