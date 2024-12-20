@@ -82,18 +82,24 @@ export default function InvoiceForm({ type, invoice, hospitals, distributors, in
     return (
         <section className=''>
             <div className='container'>
-                <Tabs defaultValue="hospitalmapping">
-                    <TabsList>
-                        <TabsTrigger value="hospitalmapping">Hospital Mapping</TabsTrigger>
-                        <TabsTrigger value="distributormapping">Distributor Mapping</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="hospitalmapping" className='p-4'>
-                        <CommonForm type={1} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} />
-                    </TabsContent>
-                    <TabsContent value="distributormapping" className='p-4'>
-                        <CommonForm type={2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} />
-                    </TabsContent>
-                </Tabs>
+                {
+                    invoiceId ? (
+                        <CommonForm type={invoice?.hospital?.id ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={null} />
+                    ) : (
+                        <Tabs defaultValue="hospitalmapping">
+                            <TabsList>
+                                <TabsTrigger value="hospitalmapping">Hospital Mapping</TabsTrigger>
+                                <TabsTrigger value="distributormapping">Distributor Mapping</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="hospitalmapping" className='p-4'>
+                                <CommonForm type={1} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} />
+                            </TabsContent>
+                            <TabsContent value="distributormapping" className='p-4'>
+                                <CommonForm type={2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} />
+                            </TabsContent>
+                        </Tabs>
+                    )
+                }
             </div>
         </section>
     )

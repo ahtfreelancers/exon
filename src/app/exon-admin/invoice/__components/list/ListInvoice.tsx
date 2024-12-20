@@ -28,6 +28,8 @@ export default function ListInvoice() {
 
         try {
             const { data, isSuccess }: any = await getAllInvoices(params)
+            console.log("data", data);
+            
             if (isSuccess) {
                 setData(data.items)
                 setPageCount(data.totalCount)
