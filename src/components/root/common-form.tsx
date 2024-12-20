@@ -397,9 +397,6 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
 
         if (typeName === 'discount') {
             const newProductItems: any = productItems.map((item: any) => {
-                const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
-                const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
-
                 let calculatedDiscount: any
                 if (item?.discountType === '1') {
                     calculatedDiscount = ((parseFloat(item.total) * Number(value)) / 100)
@@ -408,6 +405,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                     calculatedDiscount = value
                 }
                 const calculateTotal = (parseFloat(item.total) - parseFloat(calculatedDiscount))
+                const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
+                const calculateRpuwg = ((calculateTotal * parseFloat(gstVal)) / 100)
                 return item.id === id ? { ...item, discount: value, total: calculateTotal, gstAmount: calculateRpuwg } : item
             })
             setProductItems(newProductItems);
@@ -417,8 +416,6 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
 
         if (typeName === 'discount-type') {
             const newProductItems: any = productItems.map((item: any) => {
-                const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
-                const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
                 let calculatedDiscount: any
                 if (value === '1') {
                     calculatedDiscount = ((parseFloat(item.total) * Number(item?.discount)) / 100)
@@ -427,6 +424,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                     calculatedDiscount = item?.discount
                 }
                 const calculateTotal = (parseFloat(item.total) - parseFloat(calculatedDiscount))
+                const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
+                const calculateRpuwg = ((calculateTotal * parseFloat(gstVal)) / 100)
                 return item.id === id ? { ...item, discountType: value, total: calculateTotal, gstAmount: calculateRpuwg } : item
             })
             setProductItems(newProductItems);

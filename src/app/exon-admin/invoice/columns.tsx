@@ -49,7 +49,7 @@ export const columns = (
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </div>
       ),
-      cell: ({ row }) => `${row.original.invoiceType == 1 ? "Tax Invoice" : "Pro-forma Invoice"}`,
+      cell: ({ row }) => `${row.original.invoiceType == 1 ? "Pro-forma Invoice" : "Tax Invoice"}`,
     },
     {
       accessorKey: 'hospital',

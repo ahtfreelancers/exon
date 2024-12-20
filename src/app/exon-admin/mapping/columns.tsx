@@ -177,7 +177,6 @@ export const columns = (
         <Input
           className='!mt-0'
           defaultValue={row.original.discount}
-          value={row.original.discount}
           onBlur={(e) => handleDiscount(e.target.value)}
         />
       )
