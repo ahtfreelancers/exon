@@ -119,7 +119,7 @@ const invoiceTypes = [
 
 export default function CommonForm({ type, invoice, hospitals, distributors, invoiceId }: InvoiceFormProps) {
     const [search, setSearch] = useState('')
-    const [selectedHospital, setSelectedHospital] = useState(invoice?.hospital?.id?.toString() ?? '')
+    const [selectedHospital, setSelectedHospital] = useState(type === 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString())
 
     const [productItems, setProductItems] = useState<any[]>([])
 
@@ -176,6 +176,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
 
     const calclulateTotal = (items: any) => {
         const calculateCgst = items.reduce((acc: any, item: any) => acc + parseFloat(item?.gstAmount), 0)
+        const calculateTotal = items.reduce((acc: any, item: any) => acc + parseFloat(item?.total), 0)
         const totalBeforeRoundOff = items.reduce((acc: any, item: any) => acc + parseFloat(item?.rpuwg), 0)
         const roundedTotal = Math.round(totalBeforeRoundOff * 100) / 100;
         const roundOffAmount = roundedTotal - totalBeforeRoundOff;
@@ -183,7 +184,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         form.setValue('cgst', (parseFloat(calculateCgst) / 2))
         form.setValue('sgst', (parseFloat(calculateCgst) / 2))
         form.setValue('roundOff', roundOffAmount)
-        form.setValue('grandTotal', roundedTotal)
+        form.setValue('grandTotal', (parseFloat(calculateTotal) + parseFloat(calculateCgst)))
     }
 
     const onSuccessHospital = async (serialNumber: string) => {
@@ -339,8 +340,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         };
 
         const payload = {
-            hospitalId: selectedHospital,
-            distributorId: null,
+            hospitalId: type === 1 ? selectedHospital : null,
+            distributorId: type === 2 ? selectedHospital : null,
             shipping: newValues.shippingFreight || 0,
             packingCharge: newValues.packingCharge || 0,
             cess: newValues.cess || 0,
@@ -382,8 +383,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
 
     };
 
-    const onHandleChange = (id: string, value: string, type: string) => {
-        if (type === 'gst') {
+    const onHandleChange = (id: string, value: string, typeName: string) => {
+        if (typeName === 'gst') {
             const newProductItems: any = productItems.map((item: any) => {
                 const gstVal = value.includes('%') ? value.replaceAll('%', '') : value
                 const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
@@ -394,7 +395,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             calclulateTotal(newProductItems)
         }
 
-        if (type === 'discount') {
+        if (typeName === 'discount') {
             const newProductItems: any = productItems.map((item: any) => {
                 const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
                 const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
@@ -414,7 +415,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             calclulateTotal(newProductItems)
         }
 
-        if (type === 'discount-type') {
+        if (typeName === 'discount-type') {
             const newProductItems: any = productItems.map((item: any) => {
                 const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
                 const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
@@ -500,11 +501,11 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                             </div>
                         </div>
                         <div className='flex items-center gap-4'>
-                            <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}>
-                                <Button type='button' disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                            {/* <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}> */}
+                                <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
                                     Scan barcode
                                 </Button>
-                            </HospitalScannerButton>
+                            {/* </HospitalScannerButton> */}
                         </div>
                     </div>
 

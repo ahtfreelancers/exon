@@ -150,8 +150,17 @@ export const columns = (
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </div>
       ),
-      cell: ({ row }) =>
-        `${row.original.hospital.address.address1}, ${row.original.hospital.address.address2}, ${row.original.hospital.address.city}, ${row.original.hospital.address.state} - ${row.original.hospital.address.pinCode}`,
+      cell: ({ row }) => {
+        const hospital = row.original.hospital;
+        const distributor = row.original.distributor;
+
+        if (hospital && hospital.address) {
+          return `${row.original.hospital.address.address1}, ${row.original.hospital.address.address2}, ${row.original.hospital.address.city}, ${row.original.hospital.address.state} - ${row.original.hospital.address.pinCode}`
+        } else if (distributor && distributor.address) {
+          return `${row.original.distributor.address.address1}, ${row.original.distributor.address.address2}, ${row.original.distributor.address.city}, ${row.original.distributor.address.state} - ${row.original.distributor.address.pinCode}`
+        }
+        return '';
+      }
     },
     {
       accessorKey: 'hospital.address',
@@ -164,8 +173,17 @@ export const columns = (
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </div>
       ),
-      cell: ({ row }) =>
-        `${row.original.hospital.address.address1}, ${row.original.hospital.address.address2}, ${row.original.hospital.address.city}, ${row.original.hospital.address.state} - ${row.original.hospital.address.pinCode}`,
+      cell: ({ row }) => {
+        const hospital = row.original.hospital;
+        const distributor = row.original.distributor;
+
+        if (hospital && hospital.address) {
+          return `${row.original.hospital.address.address1}, ${row.original.hospital.address.address2}, ${row.original.hospital.address.city}, ${row.original.hospital.address.state} - ${row.original.hospital.address.pinCode}`
+        } else if (distributor && distributor.address) {
+          return `${row.original.distributor.address.address1}, ${row.original.distributor.address.address2}, ${row.original.distributor.address.city}, ${row.original.distributor.address.state} - ${row.original.distributor.address.pinCode}`
+        }
+        return '';
+      }
     },
     {
       accessorKey: 'invoiceItems',
