@@ -20,37 +20,7 @@ export type Mapping = {
   price: string
   highestPrice: string
   lowestPrice: string
-
 }
-
-const ActionsCell = ({ id }: { id: string }) => {
-  const { data: session } = useSession();
-
-  const handleDelete = async () => {
-    try {
-      const result: any = await deleteProduct(id);
-      if (result.error) {
-        toast.error(result.error)
-      } else {
-        toast.success("Product deleted successfully")
-      }
-    } catch (error) {
-      console.error("Error deleting product", error);
-    }
-  };
-
-  return (
-    <div className="flex gap-[10px]">
-      <Link href={`/exon-admin/products/${id}`}>
-        <Eye size={22} className="cursor-pointer" />
-      </Link>
-      <Link href={`/exon-admin/products/edit/${id}`}>
-        <FilePenLine size={22} />
-      </Link>
-      <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
-    </div>
-  );
-};
 
 export const columns: (handleValueChange: (id: string, key: keyof Mapping, value: number | string) => void) => ColumnDef<Mapping>[] = (handleValueChange) => [
   {
@@ -114,14 +84,16 @@ export const columns: (handleValueChange: (id: string, key: keyof Mapping, value
     cell: ({ row }) => {
 
       return (
-        <Input type="number" min={1} placeholder="Lowest Price" onBlur={(e) =>
-          handleValueChange(row.original.id, 'lowestPrice', Number(e.target.value))
-        } />
+        <Input type="number" min={1}
+          defaultValue={row.original.lowestPrice}
+          placeholder="Lowest Price" onBlur={(e) =>
+            handleValueChange(row.original.id, 'lowestPrice', Number(e.target.value))
+          } />
       )
     },
   },
   {
-    accessorKey: 'Highest Price',
+    accessorKey: 'highestPrice',
     header: ({ column }) => (
       <div
         className='flex items-center'
@@ -133,9 +105,11 @@ export const columns: (handleValueChange: (id: string, key: keyof Mapping, value
     ),
     cell: ({ row }) => {
       return (
-        <Input type="number" min={1} placeholder="Highest Price" onBlur={(e) =>
-          handleValueChange(row.original.id, 'highestPrice', Number(e.target.value))
-        } />
+        <Input type="number" min={1}
+          defaultValue={row.original.highestPrice}
+          placeholder="Highest Price" onBlur={(e) =>
+            handleValueChange(row.original.id, 'highestPrice', Number(e.target.value))
+          } />
       )
     },
   },

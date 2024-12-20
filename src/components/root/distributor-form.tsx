@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useEffect, useState, useTransition } from "react"
 import * as z from "zod"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -24,6 +24,9 @@ import { FormSuccess } from "@/components/form-success"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
+import { DataTable } from "./data-table"
+import { columns, Mapping } from "@/app/exon-admin/hospitals/__components/columns"
+import { getAllProductTypes } from "@/actions/product-types"
 
 interface Distributor {
     id: number,
@@ -53,7 +56,33 @@ export const DistributorForm = ({ type, distributor }: DistributorFormProps) => 
     const callbackUrl = searchParams.get("callbackUrl");
     const pathname = usePathname()
     const id = pathname.split("/").pop(); // Get the last part of the URL
+    const [data, setData] = useState<any[]>([]);
+    const [search, setSearch] = useState('')
+    const [pageIndex, setPageIndex] = useState(1)
+    const [pageCount, setPageCount] = useState(0)
+    const pageSize = 10
+    const fetchProductTypes = async () => {
+        let params = {
+            PageNumber: pageIndex,
+            pageSize: pageSize,
+            searchParam: search,
+        }
 
+        try {
+            const { data, isSuccess }: any = await getAllProductTypes(params)
+            if (isSuccess) {
+                setData(data.items)
+                setPageCount(data.totalCount)
+            }
+        } catch (err) {
+            console.log(`err`, err);
+            // setError(err.message || 'An error occurred')
+        }
+    }
+
+    useEffect(() => {
+        fetchProductTypes()
+    }, [search, pageIndex])
     const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
         ? "Email already in use with different provider!"
         : ""
@@ -83,14 +112,20 @@ export const DistributorForm = ({ type, distributor }: DistributorFormProps) => 
             phoneNumber: values.phoneNumber,
             panNumber: values.panNumber,
             address: {
-                id: distributor?.address?.id ?? 0,
+                // id: distributor?.address?.id ?? 0,
                 address1: values.address1,
                 address2: values.address2,
                 city: values.city,
                 state: values.state,
                 pinCode: values.pinCode,
                 addressType: 1
-            }
+            },
+            priceRequest: data.map((item) => ({
+                productTypeId: item.id,
+                lowestPrice: item.lowestPrice,
+                highestPrice: item.highestPrice,
+                actualPrice: item.price,
+            })),
         }
 
         if (type == 1) {
@@ -117,7 +152,25 @@ export const DistributorForm = ({ type, distributor }: DistributorFormProps) => 
             }
         }
     }
+    const handleValueChange = (
+        id: string,
+        key: keyof Mapping,
+        value: string | number
+    ) => {
+        const numericValue = Number(value);
 
+        if (isNaN(numericValue)) {
+            console.error(`Invalid value for ${key} in ID ${id}: ${value}`);
+            return;
+        }
+
+        setData((prevData) =>
+            prevData.map((item) =>
+                item.id === id ? { ...item, [key]: numericValue } : item
+            )
+        );
+        console.log(`Updated ${key} for ID ${id}: ${numericValue}`);
+    };
     return (
         <Form {...form}>
             <form
@@ -287,6 +340,22 @@ export const DistributorForm = ({ type, distributor }: DistributorFormProps) => 
                         )}
                     />
                 </div>
+                <DataTable
+                    columns={columns(handleValueChange)}
+                    data={data}
+                    buttonTitle=""
+                    buttonUrl={""}
+                    onSearch={setSearch}
+                    onPageChange={setPageIndex}
+                    setStatusFilter={() => { }}
+                    pageCount={pageCount}
+                    isStatusFilterEnable={false}
+                    currentPage={pageIndex}
+                    search={search}
+                    pageSize={pageSize}
+                    isSearchEnable={false}
+                    isPaginationEnable={false}
+                />
                 <FormError message={error || urlError} />
                 <FormSuccess message={success} />
                 <Link href={'/exon-admin/distributors'}>
