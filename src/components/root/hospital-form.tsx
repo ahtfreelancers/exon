@@ -68,6 +68,7 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
 
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
+    console.log("hospital data", data);
 
     const pageSize = 10
     const fetchProductTypes = async () => {
@@ -122,7 +123,7 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
             phoneNumber: values.phoneNumber,
             panNumber: values.panNumber,
             address: {
-                id: hospital?.address?.id ?? 0,
+                // id: hospital?.address?.id ?? 0,
                 address1: values.address1,
                 address2: values.address2,
                 city: values.city,
@@ -131,13 +132,10 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
                 addressType: 1
             },
             priceRequest: data.map((item) => ({
-                id: item.id,
-                hospitalId: item.hospitalId,
-                distributorId: item.distributorId,
-                productTypeId: item.productTypeId,
+                productTypeId: item.id,
                 lowestPrice: item.lowestPrice,
                 highestPrice: item.highestPrice,
-                actualPrice: item.actualPrice,
+                actualPrice: item.price,
             })),
         }
 
@@ -165,11 +163,15 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
             }
         }
     }
-    const handleValueChange = (id: string, key: keyof Mapping, value: string | number) => {
+    const handleValueChange = (
+        id: string,
+        key: keyof Mapping,
+        value: string | number
+    ) => {
         const numericValue = Number(value);
 
         if (isNaN(numericValue)) {
-            console.error(`Invalid value entered for ${key} in ID ${id}: ${value}`);
+            console.error(`Invalid value for ${key} in ID ${id}: ${value}`);
             return;
         }
 
@@ -178,7 +180,6 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
                 item.id === id ? { ...item, [key]: numericValue } : item
             )
         );
-
         console.log(`Updated ${key} for ID ${id}: ${numericValue}`);
     };
     return (
