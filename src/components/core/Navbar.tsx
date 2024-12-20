@@ -160,17 +160,17 @@ export default function Navbar() {
                                                     </li>
                                                 ))}
                                             </ul>
-                                            <div className="w-60 flex items-center justify-center relative group">
+                                            <div className="w-60 ">
                                                 <Image
                                                     src={selectedProduct.image}
                                                     alt={selectedProduct.name}
                                                     width={280}
                                                     height={200}
-                                                    className="rounded-lg cursor-pointer transition-transform duration-300 transform group-hover:scale-105"
+                                                    className="rounded-lg cursor-pointer transition-transform duration-300 transform group-hover:scale-105 mb-2"
                                                 />
                                                 <Link href={selectedProduct.link}>
-                                                    <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                        <span className="text-white font-semibold text-lg">View More</span>
+                                                    <div className="rounded-lg flex items-center justify-center">
+                                                        <span className="text-primary font-semibold text-lg hover:underline">Know More</span>
                                                     </div>
                                                 </Link>
                                             </div>
