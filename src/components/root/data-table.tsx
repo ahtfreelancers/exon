@@ -206,7 +206,7 @@ export function DataTable<TData, TValue>({
             <Tabs defaultValue="1" className="w-[300px]">
               <TabsList>
                 <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("1")} value="1">Hospital</TabsTrigger>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("2")} value="2">Disrtubator</TabsTrigger>
+                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("2")} value="2">Distributor</TabsTrigger>
               </TabsList>
             </Tabs>
             <div>
