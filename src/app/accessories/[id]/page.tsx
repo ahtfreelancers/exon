@@ -134,7 +134,7 @@ function TableSpecificationSection({ title, details, columns }: any) {
                 Ordering Information
             </h2>
             <div className={`gap-x-1 md:gap-x-5 overflow-x-auto w-full bg-background gap-y-6 p-6 md:p-16 rounded-[30px] md:rounded-[66px] grid justify-center md:justify-start font-helvetica text-3xl font-medium text-[#5A5776] grid-cols-${columns}`}>
-                {title && <h2 className={`mb-12 borderText font-helvetica !text-left font-bold text-[#5A5776] text-2xl lg:text-[44px] lg:leading-10 col-span-${columns}`} data-aos="fade-right">
+                {title && <h2 className={`mb-12 borderText font-helvetica !text-left font-bold text-[#5A5776] text-2xl lg:text-[44px] lg:leading-10 col-span-${columns || 2} `} data-aos="fade-right">
                     {title}
                 </h2>}
                 {details.map((item: any, index: any) => (
