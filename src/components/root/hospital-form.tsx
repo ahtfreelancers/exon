@@ -58,7 +58,7 @@ interface PriceRequestItem {
     highestPrice: number;
     actualPrice: number;
 }
-export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
+export const HospitalForm = ({ type, hospital }: any) => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname()
@@ -68,7 +68,7 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
 
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
-    console.log("hospital data", data);
+    console.log("hospital data", hospital);
 
     const pageSize = 10
     const fetchProductTypes = async () => {
@@ -91,7 +91,12 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
     }
 
     useEffect(() => {
-        fetchProductTypes()
+        if (type == 1) {
+            fetchProductTypes()
+        }
+        else {
+            setData(hospital?.hospitalDistributorPriceMappings)
+        }
     }, [search, pageIndex])
 
     const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
@@ -114,6 +119,7 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
             city: hospital?.address?.city ?? "",
             state: hospital?.address?.state ?? "",
             pinCode: hospital?.address?.pinCode ?? "",
+            addressId: hospital?.address?.id ?? 0,
         }
     })
     const onSubmit = async (values: z.infer<typeof HospitalSchema>) => {
@@ -124,6 +130,7 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
             panNumber: values.panNumber,
             address: {
                 // id: hospital?.address?.id ?? 0,
+                ...(type !== 1 && { id: values?.addressId ?? 0 }), // Include `id` only if type !== 1
                 address1: values.address1,
                 address2: values.address2,
                 city: values.city,
@@ -131,8 +138,17 @@ export const HospitalForm = ({ type, hospital }: HospitalFormProps) => {
                 pinCode: values.pinCode,
                 addressType: 1
             },
-            priceRequest: data.map((item) => ({
+            priceRequest: type === 1
+            ? data.map((item) => ({
                 productTypeId: item.id,
+                lowestPrice: item.lowestPrice,
+                highestPrice: item.highestPrice,
+                actualPrice: item.price,
+            }))
+            : data.map((item) => ({
+                id: item.id,
+                productTypeId: item.productTypeId,
+                hospitalId: item.hospitalId,
                 lowestPrice: item.lowestPrice,
                 highestPrice: item.highestPrice,
                 actualPrice: item.price,

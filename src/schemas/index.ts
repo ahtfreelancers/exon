@@ -35,6 +35,7 @@ export const HospitalSchema = z.object({
     city: z.string().min(1, { message: "City is required" }),
     state: z.string().min(1, { message: "State is required" }),
     pinCode: z.string().min(1, { message: "Pincode is required" }),
+    addressId: z.number().optional(),
 })
 
 export const DistributorSchema = z.object({
@@ -47,4 +48,5 @@ export const DistributorSchema = z.object({
     city: z.string().min(1, { message: "City is required" }),
     state: z.string().min(1, { message: "State is required" }),
     pinCode: z.string().min(1, { message: "Pincode is required" }),
+    addressId: z.number().optional(),
 })
