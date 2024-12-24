@@ -50,7 +50,7 @@ interface DistributorFormProps {
     distributor?: Distributor;
 }
 
-export const DistributorForm = ({ type, distributor }: DistributorFormProps) => {
+export const DistributorForm = ({ type, distributor }: any) => {
     const searchParams = useSearchParams();
     const router = useRouter();
     const callbackUrl = searchParams.get("callbackUrl");
@@ -81,7 +81,12 @@ export const DistributorForm = ({ type, distributor }: DistributorFormProps) => 
     }
 
     useEffect(() => {
-        fetchProductTypes()
+        if (type == 1) {
+            fetchProductTypes()
+        }
+        else {
+            setData(distributor?.hospitalDistributorPriceMappings)
+        }
     }, [search, pageIndex])
     const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
         ? "Email already in use with different provider!"
@@ -89,6 +94,7 @@ export const DistributorForm = ({ type, distributor }: DistributorFormProps) => 
 
     const [error, setError] = useState<string | undefined>("")
     const [success, setSuccess] = useState<string | undefined>("")
+    console.log("distributor", distributor);
 
     const [isPending, startTransition] = useTransition();
     const form = useForm<z.infer<typeof DistributorSchema>>({
@@ -103,30 +109,42 @@ export const DistributorForm = ({ type, distributor }: DistributorFormProps) => 
             city: distributor?.address?.city ?? "",
             state: distributor?.address?.state ?? "",
             pinCode: distributor?.address?.pinCode ?? "",
+            addressId: distributor?.address?.id ?? 0,
         }
     })
     const onSubmit = async (values: z.infer<typeof DistributorSchema>) => {
+        console.log("values", values);
+
         const newValues = {
             name: values.name,
             gstNumber: values.gstNumber,
             phoneNumber: values.phoneNumber,
             panNumber: values.panNumber,
             address: {
-                // id: distributor?.address?.id ?? 0,
+                ...(type !== 1 && { id: values?.addressId ?? 0 }), // Include `id` only if type !== 1
                 address1: values.address1,
                 address2: values.address2,
                 city: values.city,
                 state: values.state,
                 pinCode: values.pinCode,
-                addressType: 1
+                addressType: 1,
             },
-            priceRequest: data.map((item) => ({
-                productTypeId: item.id,
-                lowestPrice: item.lowestPrice,
-                highestPrice: item.highestPrice,
-                actualPrice: item.price,
-            })),
-        }
+            priceRequest: type === 1
+                ? data.map((item) => ({
+                    productTypeId: item.id,
+                    lowestPrice: item.lowestPrice,
+                    highestPrice: item.highestPrice,
+                    actualPrice: item.price,
+                }))
+                : data.map((item) => ({
+                    id: item.id,
+                    productTypeId: item.productTypeId,
+                    distributorId: item.distributorId,
+                    lowestPrice: item.lowestPrice,
+                    highestPrice: item.highestPrice,
+                    actualPrice: item.actualPrice,
+                })),
+        };
 
         if (type == 1) {
             try {

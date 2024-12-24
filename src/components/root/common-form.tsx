@@ -500,11 +500,11 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                             </div>
                         </div>
                         <div className='flex items-center gap-4'>
-                            {/* <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}> */}
-                                <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
-                                    Scan barcode
-                                </Button>
-                            {/* </HospitalScannerButton> */}
+                            <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}>
+                                {/* <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
+                                Scan barcode
+                                {/* </Button> */}
+                            </HospitalScannerButton>
                         </div>
                     </div>
 
