@@ -17,7 +17,7 @@ export type Mapping = {
   manufactureDate: string
   expirationDate: string
   productStatus: number
-  price: string
+  actualPrice: string
   highestPrice: string
   lowestPrice: string
 }
@@ -48,7 +48,7 @@ export const columns: (handleValueChange: (id: string, key: keyof Mapping, value
   //   ),
   // },
   {
-    accessorKey: 'price',
+    accessorKey: 'actualPrice',
     header: ({ column }) => (
       <div
         className='flex items-center'
@@ -62,10 +62,10 @@ export const columns: (handleValueChange: (id: string, key: keyof Mapping, value
       return (
         <Input
           type="number"
-          defaultValue={row.original.price}
+          defaultValue={row.original.actualPrice}
           min={1}
           placeholder="Actual Price"
-          onBlur={(e) => handleValueChange(row.original.id, 'price', Number(e.target.value))}
+          onBlur={(e) => handleValueChange(row.original.id, 'actualPrice', Number(e.target.value))}
         />
       )
     },

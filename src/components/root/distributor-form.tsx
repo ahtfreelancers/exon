@@ -134,7 +134,7 @@ export const DistributorForm = ({ type, distributor }: any) => {
                     productTypeId: item.id,
                     lowestPrice: item.lowestPrice,
                     highestPrice: item.highestPrice,
-                    actualPrice: item.price,
+                    actualPrice: item.actualPrice,
                 }))
                 : data.map((item) => ({
                     id: item.id,

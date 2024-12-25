@@ -143,7 +143,7 @@ export const HospitalForm = ({ type, hospital }: any) => {
                 productTypeId: item.id,
                 lowestPrice: item.lowestPrice,
                 highestPrice: item.highestPrice,
-                actualPrice: item.price,
+                actualPrice: item.actualPrice,
             }))
             : data.map((item) => ({
                 id: item.id,
@@ -151,7 +151,7 @@ export const HospitalForm = ({ type, hospital }: any) => {
                 hospitalId: item.hospitalId,
                 lowestPrice: item.lowestPrice,
                 highestPrice: item.highestPrice,
-                actualPrice: item.price,
+                actualPrice: item.actualPrice,
             })),
         }
 
