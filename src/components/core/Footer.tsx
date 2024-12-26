@@ -9,11 +9,16 @@ export default function Footer() {
             <div className="bg-primary py-10 px-3 sm:px-5 md:px-[52px] rounded-2xl md:rounded-[72px] font-openSans">
                 <div className="sm:px-4">
                     <div className="bg-white rounded-xl md:rounded-[52px] shadow-lg pt-6 md:pt-[110px] pb-14 3xl:pb-[75px] px-9 sm:px-12 md:px-16 xl:px-28 3xl:px-44">
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-[34px] sm:gap-[80px] md:gap-16 3xl:gap-[140px] md-5 md:mb-28 3xl:mb-[200px]">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-[34px] sm:gap-[80px] md:gap-16 3xl:gap-[100px] md-5 md:mb-28 3xl:mb-[200px]">
                             <div>
                                 <h4 className="text-left mb-6 sm:mb- 3xl:mb-12">Exon</h4>
-                                <p className="text-left mt-2 text-xs 2xl:text-sm font-openSans">
-                                    Exon Therapeutics LLP is committed to innovate the heart health technology at the forefront. We have created an ecosystem for invention and growth, all under one umbrella.
+                                <p className="text-left mt-2 text-xs 2xl:text-sm font-openSans mb-5 md:mb-7">
+                                    ISO 13485:2016 & ISO 9001:2015 Certified Company
+                                </p>
+                                <p className="text-left text-xs 2xl:text-sm font-openSans">
+                                    Address: 201-202, Krishna Complex,
+                                    Panjava Street, Kadarsha Nal,
+                                    Nanpura, Surat, Gujarat-395001
                                 </p>
                             </div>
                             <div>
