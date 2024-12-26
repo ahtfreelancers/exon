@@ -49,7 +49,7 @@ export default function ProductPage() {
                     </div>
                 </section>
             </div>
-            <section className="pt-[124px] px-5">
+            <section className="py-[124px] px-5">
                 <h2 className="text-center mb-[68px]" data-aos="fade-up">Technical Specification</h2>
                 <SpecificationSection title={stentSpecification.title} details={stentSpecification.details} />
 
@@ -58,7 +58,7 @@ export default function ProductPage() {
                     <SpecificationSection title={deliverySystems.title} details={deliverySystems.details} />
                 )}
 
-                {description && <ProductDescription description={description} />}
+                <ProductDescription description={description} />
 
                 {/* Render guidewireCompatibilityData only if it exists */}
                 {guidewireCompatibilityData && (
@@ -85,9 +85,9 @@ export default function ProductPage() {
                     </div>
                 )}
             </section>
-            {/* <section className="lg:p-5">
+            <section className="lg:p-5">
                 <ProductSlider />
-            </section> */}
+            </section>
             <ContactUs />
         </main>
     );
@@ -96,7 +96,7 @@ export default function ProductPage() {
 function SpecificationSection({ title, details }: any) {
     return (
         <div className="max-w-[750px] lg:max-w-[1000px] spbp:max-w-[1250px] 3xl:max-w-[1550px] mb-16 mx-auto bg-background gap-x-3 md:gap-x-[158px] gap-y-6 p-6 md:p-16 rounded-[30px] md:rounded-[66px] grid grid-cols-2 justify-center md:justify-start font-helvetica text-3xl font-medium text-[#5A5776]">
-            {title && <h2 className="mb-12 borderText font-helvetica !text-left font-bold text-[#5A5776] text-2xl lg:text-[44px] col-span-2 lg:leading-10" data-aos="fade-right">
+            {title && <h2 className="mb-12 borderText font-helvetica !text-left font-bold text-[#5A5776] text-2xl lg:text-[44px] col-span-2" data-aos="fade-right">
                 {title}
             </h2>}
             {details.map((item: any, index: any) => (
