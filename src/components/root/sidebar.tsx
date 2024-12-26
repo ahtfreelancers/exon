@@ -7,6 +7,8 @@ import {
     ChevronsLeft,
     Contact,
     Folder,
+    HomeIcon,
+    Hospital,
 } from "lucide-react";
 import { FaTasks } from "react-icons/fa";
 import Link from "next/link";
@@ -22,14 +24,18 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
     const [status, setStatus] = useState(false);
 
     const sidebarItems = [
+        { href: "/exon-admin/dashboard", label: "Dashboard", icon: HomeIcon },
         { href: "/exon-admin/products", label: "Products", icon: Folder },
         { href: "/exon-admin/contact", label: "Contact", icon: Contact },
+        { href: "/exon-admin/hospitals", label: "Hospitals", icon: Hospital },
+        { href: "/exon-admin/distributors", label: "Distributors", icon: Contact },
+        { href: "/exon-admin/mapping", label: "Mapping", icon: Contact },
     ];
 
     const handleToggle = () => {
         setStatus(true);
         setIsOpen(!isOpen);
-        Setopen(!isOpen); // Update Setopen with the new state
+        Setopen(!isOpen);
         setTimeout(() => setStatus(false), 500);
     };
 
@@ -44,12 +50,12 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
         >
             <div className="flex h-[55px] items-center border-b justify-between px-3 w-full">
                 <Link className="flex items-center gap-2 font-semibold ml-1 justify-center w-full" href="/">
-                    {/* <Image
-                        src="/images/logo.png"
+                    <Image
+                        src="/home/logo.svg"
                         alt="Exon Logo"
                         width={100} // adjust width as needed
                         height={100} // adjust height as needed
-                    /> */}
+                    />
                 </Link>
             </div>
             <ChevronsLeft
