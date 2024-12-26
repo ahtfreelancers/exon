@@ -57,8 +57,7 @@ export default function Footer() {
                                 </div>
                             </div>
                         </div>
-                        <h2 className="mt-8 text-xl sm:text-2xl text-center mb-3 font-openSans text-secondary font-extrabold ">ISO Certified Company</h2>
-                        <div className="text-center font-semibold text-black text-[10px] sm:text-xs 3xl:text-lg">Exon © 2024 | All rights reserved</div>
+                        <div className="mt-8 text-center font-semibold text-[#6E6E6E] text-[10px] sm:text-xs 3xl:text-lg">Exon © 2024 | All rights reserved</div>
                     </div>
                 </div>
                 <div className="py-5 md:py-16 3xl:py-[94px] bg-[#12A89D] rounded-[10px] md:rounded-[52px] mt-[32px] flex justify-center">

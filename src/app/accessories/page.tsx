@@ -3,7 +3,6 @@ import Navbar from "@/components/core/Navbar";
 import { useScreens } from "@/hooks/useScreens";
 import { Hexagon, Star, Triangle } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRef } from "react";
 
 const products = [
@@ -15,8 +14,7 @@ const products = [
       "Trigger release mechanism provides easy and quick deflation.",
       "Inclination of manometer provides easy and precise view of Pressure points.",
     ],
-    slug: "/accessories/inflad",
-    image: "/accessories/infla-d-home.png", // Replace with the actual path to your image
+    image: "/accessories/inflad.png", // Replace with the actual path to your image
   },
   {
     name: "ADC",
@@ -28,8 +26,7 @@ const products = [
       "Excellent surface finish to prevent vascular spasm.",
       "Various tip configurations.",
     ],
-    slug: "/accessories/adc",
-    image: "/accessories/adc-home.png", // Replace with the actual path to your image
+    image: "/accessories/adc.png", // Replace with the actual path to your image
   },
   {
     name: "GUIDE PLUS",
@@ -40,8 +37,7 @@ const products = [
       "Highly kink-resistant Entry port designed to prevent detachmen.",
       "Available in all French sizes.",
     ],
-    slug: "/accessories/guideplus",
-    image: "/accessories/guide-home.png", // Replace with the actual path to your image
+    image: "/accessories/guideplus.png", // Replace with the actual path to your image
   },
   {
     name: "Y - CLICK",
@@ -50,8 +46,7 @@ const products = [
       "Three-stage valve creates maneuverability without any bleeding.",
       "Auto-closing mechanism ensures the device to move from semi-closed position to closed position automatically when contrast is injected from the sideon lumen.",
     ],
-    slug: "/accessories/yclick",
-    image: "/accessories/yclick-home.png", // Replace with the actual path to your image
+    image: "/accessories/yclick.png", // Replace with the actual path to your image
   },
   {
     name: "ARROW",
@@ -62,8 +57,7 @@ const products = [
       "Tapered hub inner diameter facilitates insertion of the guide wire.",
       "Needles of customized sizes are also available.",
     ],
-    slug: "/accessories/arrow",
-    image: "/accessories/arrow-home.png", // Replace with the actual path to your image
+    image: "/accessories/arrow.png", // Replace with the actual path to your image
   },
   {
     name: "2 - PORT",
@@ -74,8 +68,7 @@ const products = [
       "Presence of rotation adapters.",
       "Ease of inspection.",
     ],
-    slug: "/accessories/twoport",
-    image: "/accessories/2port-home.png", // Replace with the actual path to your image
+    image: "/accessories/port2.png", // Replace with the actual path to your image
   },
   {
     name: "3 - PORT",
@@ -86,9 +79,9 @@ const products = [
       "Presence of rotation adapters.",
       "Ease of inspection.",
     ],
-    slug: "/accessories/threeport",
-    image: "/accessories/3port-home.png", // Replace with the actual path to your image
+    image: "/accessories/port3.png", // Replace with the actual path to your image
   },
+  // Add more products as needed
 ];
 
 export default function Accessories() {
@@ -185,50 +178,31 @@ export default function Accessories() {
           </div>
         </div> */}
       </section>
-      <section className="px-6 py-12 md:px-12 spbp:px-24 bg-[#F1F8FD] pb-[100px]" ref={productSliderRef}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <section className="px-6 md:px-12 spbp:px-24 bg-white pb-[100px]" ref={productSliderRef}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {products.map((product, index) => (
-            <div
-              key={index}
-              // ref={(el) => setRef(el, index)}
-              className="bg-white shadow px-10 py-12 rounded-[50px] text-center relative"
-              data-aos="fade-up"
-            // style={{ height: maxHeight ? `${maxHeight}px` : 'auto' }} 
-            >
-              <h2 className="text-xl md:text-2xl font-bold text-black font-helvetica mb-1 text-center">{product?.name}</h2>
-              <h4 className="text-base md:text-lg font-normal text-gray-600 mb-4 text-center">{product?.title}</h4>
-              {/* <h4 className="text-lg text-[#6D6D6D] font-semibold font-helvetica mb-14">{slide.description}</h4> */}
-              <img src={product.image} alt={`Product Image ${index + 1}`} className="mx-auto mb-4" />
-              <Link href={product.slug}>
-                <button
-                  className="mt-4 py-2 px-8 font-medium md:font-bold text-base rounded-b-none sm:px-10 md:px-6 lg:px-5 3xl:px-[42px] rounded-t-[28px] md:rounded-t-full absolute bottom-0 left-1/2 transform -translate-x-1/2"
-                >
-                  Know More
-                </button>
-              </Link>
+            <div key={index} className="bg-white rounded-lg overflow-hidden transition transform hover:scale-105" data-aos="fade-up">
+              <div className="relative h-[250px] md:h-[280px] lg:h-[300px]">
+                <Image
+                  src={product?.image}
+                  alt={product?.name}
+                  layout="fill"
+                  objectFit="cover"
+                  className="w-full h-full"
+                />
+              </div>
+              <div className="p-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2 text-center">{product?.name}</h2>
+                <h4 className="text-lg md:text-xl font-semibold text-gray-600 mb-4 text-center">{product?.title}</h4>
+                <ul className="list-disc ml-6 text-gray-700">
+                  {product?.features.map((feature, i) => (
+                    <li key={i} className="text-sm md:text-base mb-2">
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            // <div key={index} className="bg-white rounded-lg overflow-hidden transition transform hover:scale-105" data-aos="fade-up">
-            //   <div className="relative h-[250px] md:h-[280px] lg:h-[300px]">
-            //     <Image
-            //       src={product?.image}
-            //       alt={product?.name}
-            //       layout="fill"
-            //       objectFit="cover"
-            //       className="w-full h-full"
-            //     />
-            //   </div>
-            //   <div className="p-6">
-            //     <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-2 text-center">{product?.name}</h2>
-            //     <h4 className="text-lg md:text-xl font-semibold text-gray-600 mb-4 text-center">{product?.title}</h4>
-            //     <ul className="list-disc ml-6 text-gray-700">
-            //       {product?.features.map((feature, i) => (
-            //         <li key={i} className="text-sm md:text-base mb-2">
-            //           {feature}
-            //         </li>
-            //       ))}
-            //     </ul>
-            //   </div>
-            // </div>
           ))}
         </div>
       </section>
