@@ -38,8 +38,8 @@ export function CalendarDateRangePicker({
                     <Button
                         id="date"
                         className={cn(
-                            "w-[260px] justify-start text-left font-normal",
-                            !fromDate && !toDate && "text-muted-foreground"
+                            "w-[260px] justify-start text-left font-normal !bg-white",
+                            !fromDate && !toDate && "text-black"
                         )}
                     >
                         <CalendarIcon className="mr-2 h-4 w-4" />
