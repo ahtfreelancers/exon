@@ -27,6 +27,7 @@ import Link from "next/link"
 import { getAllProductTypes } from "@/actions/product-types"
 import { DataTable } from "./data-table"
 import { columns, Mapping } from "@/app/exon-admin/hospitals/__components/columns"
+import { toast } from "sonner"
 
 interface Hospital {
     id: number,
@@ -139,20 +140,20 @@ export const HospitalForm = ({ type, hospital }: any) => {
                 addressType: 1
             },
             priceRequest: type === 1
-            ? data.map((item) => ({
-                productTypeId: item.id,
-                lowestPrice: item.lowestPrice,
-                highestPrice: item.highestPrice,
-                actualPrice: item.actualPrice,
-            }))
-            : data.map((item) => ({
-                id: item.id,
-                productTypeId: item.productTypeId,
-                hospitalId: item.hospitalId,
-                lowestPrice: item.lowestPrice,
-                highestPrice: item.highestPrice,
-                actualPrice: item.actualPrice,
-            })),
+                ? data.map((item) => ({
+                    productTypeId: item.id,
+                    lowestPrice: item.lowestPrice,
+                    highestPrice: item.highestPrice,
+                    actualPrice: item.actualPrice,
+                }))
+                : data.map((item) => ({
+                    id: item.id,
+                    productTypeId: item.productTypeId,
+                    hospitalId: item.hospitalId,
+                    lowestPrice: item.lowestPrice,
+                    highestPrice: item.highestPrice,
+                    actualPrice: item.actualPrice,
+                })),
         }
 
         if (type == 1) {
@@ -191,10 +192,29 @@ export const HospitalForm = ({ type, hospital }: any) => {
             return;
         }
 
+        if (numericValue === 0) {
+            toast.error(`${key} cannot be 0.`);
+            return;
+        }
+
         setData((prevData) =>
-            prevData.map((item) =>
-                item.id === id ? { ...item, [key]: numericValue } : item
-            )
+            prevData.map((item) => {
+                if (item.id === id) {
+                    const updatedItem = { ...item, [key]: numericValue };
+
+                    if (
+                        updatedItem.highestPrice &&
+                        updatedItem.lowestPrice &&
+                        Number(updatedItem.highestPrice) < Number(updatedItem.lowestPrice)
+                    ) {
+                        toast.error('Highest Price must be greater than Lowest Price');
+                        return item; // Keep the old value
+                    }
+
+                    return updatedItem;
+                }
+                return item;
+            })
         );
         console.log(`Updated ${key} for ID ${id}: ${numericValue}`);
     };
