@@ -19,13 +19,12 @@ export type Mapping = {
   highestPrice: string;
   lowestPrice: string;
 };
-
+const actualPriceRefs = useRef<Record<string, HTMLInputElement | null>>({});
+const lowestPriceRefs = useRef<Record<string, HTMLInputElement | null>>({});
+const highestPriceRefs = useRef<Record<string, HTMLInputElement | null>>({});
 export const columns: (
   handleValueChange: (id: string, key: keyof Mapping, value: number | string) => void
 ) => ColumnDef<Mapping>[] = (handleValueChange) => {
-  const actualPriceRefs = useRef<Record<string, HTMLInputElement | null>>({});
-  const lowestPriceRefs = useRef<Record<string, HTMLInputElement | null>>({});
-  const highestPriceRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const handleTabPress = (
     e: React.KeyboardEvent<HTMLInputElement>,
