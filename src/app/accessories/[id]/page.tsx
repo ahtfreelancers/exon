@@ -2,16 +2,15 @@
 
 import ContactUs from "@/components/core/ContactUs";
 import Navbar from "@/components/core/Navbar";
-import ProductSlider from "@/components/core/ProductSlider";
 import Image from "next/image";
-import { productData } from "@/data/productData";
+import { accessoriesData } from "@/data/accessoriesData";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 // Type definition for product keys
-type ProductKey = keyof typeof productData;
+type ProductKey = keyof typeof accessoriesData;
 
-export default function ProductPage() {
+export default function AccessoriesPage() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
 
@@ -20,13 +19,13 @@ export default function ProductPage() {
     const normalizedProductId = Array.isArray(productId) ? productId[0]?.toUpperCase() : productId?.toUpperCase();
 
     // Ensure normalizedProductId is defined and a valid key before using it as an index
-    const product = normalizedProductId && productData[normalizedProductId as ProductKey];
+    const product = normalizedProductId && accessoriesData[normalizedProductId as ProductKey];
 
     if (!product) {
-        return <div>Product not found</div>;
+        return <div>Accessories not found</div>;
     }
 
-    const { productName, productImage, description, content, stentSpecification, title, deliverySystems, guidewireCompatibilityData } = product;
+    const { productName, productImage, description, content, stentSpecification, title, tableSpecification, deliverySystems, guidewireCompatibilityData } = product;
 
     return (
         <main className="relative bg-white">
@@ -35,7 +34,7 @@ export default function ProductPage() {
                 <section className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 md:gap-20 xl:gap-24 justify-center">
                     <div className="relative h-[400px] spbp:h-[640px] 2xl:h-[940px]" data-aos="fade-right">
                         <Image
-                            src={`/about/${productImage}`}
+                            src={`/accessories/${productImage}`}
                             alt="Featured Product"
                             layout="fill"
                             objectFit="contain"
@@ -45,20 +44,41 @@ export default function ProductPage() {
                         <h3 className="text-2xl mb-4 font-helvetica text-[#162D3E] font-medium">
                             <span className="text-4xl font-medium block md:inline">{productName}</span> {title}
                         </h3>
-                        <p className="text-base text-left lg:text-2xl text-[#919191] font-medium" dangerouslySetInnerHTML={{ __html: content }} />
+                        <div className="max-w-[1024px] mx-auto mb-10 md:mb-20">
+                            {content &&
+                                <p className="text-base text-[#162D3E] text-left lg:text-2xl mb-2 font-medium" dangerouslySetInnerHTML={{ __html: content }} />
+                            }
+                            <h3 className="text-2xl mb-2 font-helvetica">Features:</h3>
+                            <ul className="pl-5 mb-8">
+                                {description.map((para: any, index: any) => (
+                                    <li key={index} className="text-base md:text-2xl text-left font-helvetica text-textSecondary mb-1 font-medium list-disc" data-aos="fade-right" dangerouslySetInnerHTML={{ __html: para }} />
+                                ))}
+                            </ul>
+                            <Link href={'/contact'}>
+                                <button className="px-10 md:px-20 3xl:px-[125px] py-2 md:py-4 3xl:py-6" data-aos="fade-right">
+                                    Download Now
+                                </button>
+                            </Link>
+                        </div>
                     </div>
                 </section>
             </div>
             <section className="pt-[124px] px-5">
-                <h2 className="text-center mb-[68px]" data-aos="fade-up">Technical Specification</h2>
-                <SpecificationSection title={stentSpecification.title} details={stentSpecification.details} />
+
+                {stentSpecification &&
+                    <><h2 className="text-center mb-[68px]" data-aos="fade-up">{stentSpecification?.heading}</h2>
+                        <SpecificationSection title={stentSpecification.title} details={stentSpecification.details} />
+                    </>}
 
                 {/* Render deliverySystems only if it exists */}
+                {tableSpecification && (
+                    <TableSpecificationSection title={tableSpecification.title} details={tableSpecification.details} columns={tableSpecification.columns} />
+                )}
                 {deliverySystems && (
                     <SpecificationSection title={deliverySystems.title} details={deliverySystems.details} />
                 )}
 
-                {description && <ProductDescription description={description} />}
+                {/* {description && <ProductDescription description={description} />} */}
 
                 {/* Render guidewireCompatibilityData only if it exists */}
                 {guidewireCompatibilityData && (
@@ -107,21 +127,40 @@ function SpecificationSection({ title, details }: any) {
         </div>
     );
 }
-
-function ProductDescription({ description }: any) {
+function TableSpecificationSection({ title, details, columns }: any) {
     return (
-        <div className="max-w-[1024px] mx-auto mb-10 md:mb-20">
-            <h2 className="mb-6 md:mb-16 borderText" data-aos="fade-right">
-                Product Description
+        <div className="w-full md:max-w-[750px] lg:max-w-[1000px] spbp:max-w-[1250px] 3xl:max-w-[1550px] mb-16 mx-auto">
+            <h2 className="mb-6 md:mb-16 text-center" data-aos="fade-right">
+                Ordering Information
             </h2>
-            {description.map((para: any, index: any) => (
-                <p key={index} className="text-base md:text-2xl text-left font-helvetica text-textSecondary mb-4" data-aos="fade-right" dangerouslySetInnerHTML={{ __html: para }} />
-            ))}
-            <Link href={'/contact'}>
-                <button className="px-10 md:px-20 3xl:px-[125px] py-2 md:py-4 3xl:py-6" data-aos="fade-right">
-                    Enquiry Now
-                </button>
-            </Link>
-        </div>
+            <div className={`gap-x-1 md:gap-x-5 overflow-x-auto w-full bg-background gap-y-6 p-6 md:p-16 rounded-[30px] md:rounded-[66px] grid justify-center md:justify-start font-helvetica text-3xl font-medium text-[#5A5776] grid-cols-${columns}`}>
+                {title && <h2 className={`mb-12 borderText font-helvetica !text-left font-bold text-[#5A5776] text-2xl lg:text-[44px] lg:leading-10 col-span-${columns}`} data-aos="fade-right">
+                    {title}
+                </h2>}
+                {details.map((item: any, index: any) => (
+                    <div key={index} className="col-span-1" data-aos="fade-left">
+                        <h5 className="text-[#5A5776] text-sm md:text-2xl">{item}</h5>
+                    </div>
+                ))}
+            </div>
+        </div >
     );
 }
+
+// function ProductDescription({ description }: any) {
+//     return (
+//         <div className="max-w-[1024px] mx-auto mb-10 md:mb-20">
+//             <h2 className="mb-6 md:mb-16 borderText" data-aos="fade-right">
+//                 Product Description
+//             </h2>
+//             {description.map((para: any, index: any) => (
+//                 <p key={index} className="text-base md:text-2xl text-left font-helvetica text-textSecondary mb-4" data-aos="fade-right" dangerouslySetInnerHTML={{ __html: para }} />
+//             ))}
+//             <Link href={'/contact'}>
+//                 <button className="px-10 md:px-20 3xl:px-[125px] py-2 md:py-4 3xl:py-6" data-aos="fade-right">
+//                     Enquiry Now
+//                 </button>
+//             </Link>
+//         </div>
+//     );
+// }
