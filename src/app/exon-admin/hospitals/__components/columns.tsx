@@ -35,18 +35,6 @@ export const columns: (handleValueChange: (id: string, key: keyof Mapping, value
       </div>
     ),
   },
-  // {
-  //   accessorKey: 'description',
-  //   header: ({ column }) => (
-  //     <div
-  //       className='flex items-center'
-  //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-  //     >
-  //       Description
-  //       <ArrowUpDown className='ml-2 h-4 w-4' />
-  //     </div>
-  //   ),
-  // },
   {
     accessorKey: 'actualPrice',
     header: ({ column }) => (

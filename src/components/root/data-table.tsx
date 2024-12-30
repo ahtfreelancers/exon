@@ -214,20 +214,20 @@ export function DataTable<TData, TValue>({
         <div className='flex gap-4'>
           {isStatusFilterEnable && <div className='flex items-center gap-2'>
             <Tabs defaultValue="all" className="w-[400px]">
-              <TabsList>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("")} value="all">All</TabsTrigger>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("0")} value="notin">Not In</TabsTrigger>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("1")} value="in">In</TabsTrigger>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("2")} value="out">Out</TabsTrigger>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("3")} value="dispose">Dispose</TabsTrigger>
+              <TabsList className=''>
+                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("")} value="all">All</TabsTrigger>
+                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("0")} value="notin">Not In</TabsTrigger>
+                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("1")} value="in">In</TabsTrigger>
+                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("2")} value="out">Out</TabsTrigger>
+                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("3")} value="dispose">Dispose</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>}
           {isInvoiceFilterEnable && <div className='flex justify-center items-center gap-2'>
             <Tabs defaultValue="1" className="w-[300px]">
               <TabsList>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("1")} value="1">Hospital</TabsTrigger>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("2")} value="2">Distributor</TabsTrigger>
+                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("1")} value="1">Hospital</TabsTrigger>
+                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("2")} value="2">Distributor</TabsTrigger>
               </TabsList>
             </Tabs>
             <div>
