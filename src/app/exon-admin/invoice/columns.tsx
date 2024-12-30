@@ -3,6 +3,10 @@ import { deleteDistributor } from '@/actions/distributor';
 import { ArrowUpDown, ReceiptText, Eye, FilePenLine, Trash } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import {
+  BookType
+} from "lucide-react";
+
 const ActionsCell = ({ id, fetchInvoices, viewInvoice }: { id: number, fetchInvoices: () => void, viewInvoice: any }) => {
   const handleDelete = async () => {
     try {
@@ -27,10 +31,13 @@ const ActionsCell = ({ id, fetchInvoices, viewInvoice }: { id: number, fetchInvo
           onClick={() => viewInvoice(id)}
         />
       </div>
-      <Link href={`/exon-admin/invoice/edit/${id}`}>
+      {/* <Link href={`/exon-admin/invoice/edit/${id}`}>
         <FilePenLine size={22} />
-      </Link>
+      </Link> */}
       <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
+      <Link href={`/exon-admin/invoice/add?convertId=${id}`}>
+      <BookType size={22} />
+      </Link>
     </div>
   );
 };

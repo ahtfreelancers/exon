@@ -71,20 +71,19 @@ interface Invoice {
 }
 
 interface InvoiceFormProps {
-    type: number;
     invoice?: Invoice;
     hospitals?: any;
     distributors?: any;
     invoiceId?: any;
 }
 
-export default function InvoiceForm({ type, invoice, hospitals, distributors, invoiceId }: InvoiceFormProps) {
+export default function InvoiceForm({ invoice, hospitals, distributors, invoiceId }: InvoiceFormProps) {
     return (
         <section className=''>
             <div className='container'>
                 {
                     invoiceId ? (
-                        <CommonForm type={invoice?.hospital?.id ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={null} />
+                        <CommonForm type={invoice?.hospital?.id ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} />
                     ) : (
                         <Tabs defaultValue="hospitalmapping">
                             <TabsList>
