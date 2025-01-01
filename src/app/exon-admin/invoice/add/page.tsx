@@ -5,8 +5,9 @@ import { auth } from "../../../../../auth";
 import { getAllHospitals } from "@/actions/hospitals";
 import { getAllDistributors } from "@/actions/distributor";
 
-const InvoiceEditPage = async () => {
+const InvoiceAddPage = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
     const session = await auth()
+    const { convertId } = searchParams;
 
     if (!session) {
         return redirect('/exon-admin')
@@ -17,12 +18,13 @@ const InvoiceEditPage = async () => {
         pageSize: 10
     }
 
+    const { data }: any = await getInvoice(convertId);
     const { data: hospitals }: any = await getAllHospitals(params)
     const { data: distributors }: any = await getAllDistributors(params)
 
     return (
-        <InvoiceForm type={2} hospitals={hospitals?.items} distributors={distributors?.items} />
+        <InvoiceForm invoice={data} invoiceId={convertId ?? null} hospitals={hospitals?.items} distributors={distributors?.items} />
     );
 }
 
-export default InvoiceEditPage;
+export default InvoiceAddPage;

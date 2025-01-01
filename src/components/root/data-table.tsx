@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   ColumnDef,
   flexRender,
@@ -43,6 +43,9 @@ interface DataTableProps<TData, TValue> {
   isPaginationEnable?: boolean
   isStatusFilterEnable?: boolean
   isInvoiceFilterEnable?: boolean
+  isMultiSelectEnabled?: boolean;
+  onSelectedRowsChange?: (selectedRows: TData[]) => void;
+  isDisableTable?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -61,13 +64,17 @@ export function DataTable<TData, TValue>({
   isSearchEnable = true,
   isStatusFilterEnable = false,
   isInvoiceFilterEnable = false,
-  isPaginationEnable = true
+  isPaginationEnable = true,
+  isMultiSelectEnabled = false,
+  onSelectedRowsChange,
+  isDisableTable = false
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [searchTerm, setSearchTerm] = useState(search || '')
   const [expandedRows, setExpandedRows] = useState<{ [key: string]: boolean }>({})
+  const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>({});
 
   const table = useReactTable({
     data,
@@ -85,10 +92,43 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel()
   })
-  console.log("data", data);
+
+  const allRowsSelected = data?.length > 0 && data?.every((_, index) => selectedRows[index]);
+  const someRowsSelected = data?.some((_, index) => selectedRows[index]) && !allRowsSelected;
+
+  const selectAllCheckboxRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    table.setPageIndex(currentPage - 1) // TanStack Table uses zero-based index
+    if (selectAllCheckboxRef.current) {
+      selectAllCheckboxRef.current.indeterminate = someRowsSelected;
+    }
+  }, [someRowsSelected]);
+
+  const handleSelectAll = () => {
+    const newSelection = allRowsSelected
+      ? {}
+      : Object.fromEntries(data?.map((_, index) => [index, true]));
+    setSelectedRows(newSelection);
+  };
+
+  const handleSelectRow = (rowId: string) => {
+    setSelectedRows((prev) => ({
+      ...prev,
+      [rowId]: !prev[rowId],
+    }));
+  };
+
+  useEffect(() => {
+    if (data.length === 0 || Object.keys(selectedRows).length === 0) {
+      return;
+    }
+
+    const selectedData = data?.filter((_, index) => selectedRows[index]);
+    onSelectedRowsChange?.(selectedData);
+  }, [selectedRows, data]);
+
+  useEffect(() => {
+    table.setPageIndex(currentPage - 1)
   }, [currentPage, table])
 
   useEffect(() => {
@@ -177,21 +217,6 @@ export function DataTable<TData, TValue>({
         </div>
         <div className='flex gap-4'>
           {isStatusFilterEnable && <div className='flex items-center gap-2'>
-            {/* <label className='font-medium'>Filter:</label>
-            <Select onValueChange={(value: any) => setStatusFilter && setStatusFilter(value)}>
-              <SelectTrigger className="w-[180px] text-black border-input">
-                <SelectValue placeholder="Select a status" />
-              </SelectTrigger>
-              <SelectContent className='bg-white'>
-                <SelectGroup>
-                  {Object.entries(statusEnum).map(([key, value]) => (
-                    <SelectItem key={key} value={key} className='cursor-pointer'>
-                      {value}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select> */}
             <Tabs defaultValue="all" className="w-[400px]">
               <TabsList className=''>
                 <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("")} value="all">All</TabsTrigger>
@@ -244,6 +269,16 @@ export function DataTable<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
+                {isMultiSelectEnabled && (
+                  <TableHead>
+                    <input
+                      type="checkbox"
+                      ref={selectAllCheckboxRef}
+                      checked={allRowsSelected}
+                      onChange={handleSelectAll}
+                    />
+                  </TableHead>
+                )}
                 {headerGroup.headers.map(header => (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
@@ -259,7 +294,7 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
+              table.getRowModel().rows.map((row, rowIndex) => (
                 <>
                   <TableRow
                     key={row.id}
@@ -270,11 +305,21 @@ export function DataTable<TData, TValue>({
                         <FiChevronDown className="h-4 w-4" />
                       </Button>
                     </TableCell> */}
+                    {isMultiSelectEnabled && (
+                      <TableCell>
+                        <input
+                          type="checkbox"
+                          checked={!!selectedRows[rowIndex]}
+                          onChange={() => handleSelectRow(rowIndex.toString())}
+                        />
+                      </TableCell>
+                    )}
                     {row.getVisibleCells().map(cell => (
                       <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
+                        {isDisableTable && cell.column.id !== 'checkbox' ? (
+                          <span className="text-gray-500 pointer-events-none">{flexRender(cell.column.columnDef.cell, cell.getContext())}</span>
+                        ) : (
+                          flexRender(cell.column.columnDef.cell, cell.getContext())
                         )}
                       </TableCell>
                     ))}

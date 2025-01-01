@@ -122,33 +122,38 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
     const [selectedHospital, setSelectedHospital] = useState(type === 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString())
 
     const [productItems, setProductItems] = useState<any[]>([])
+    const [invoiceType, setInvoiceType] = useState<string>('')
 
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
 
     const [isPending, startTransition] = useTransition();
     const [isLoading, setIsLoading] = useState(false)
+    const [selectedTableRows, setSelectedTableRows] = useState<any[]>([])
 
     const router = useRouter();
 
     const pageSize = 10
 
     useEffect(() => {
-        const combinedArray: any = invoice?.invoiceItems.map(item => {
-            const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
-            const calculateRpuwg = ((item.total * parseFloat(gstVal)) / 100)
-            return {
-                ...item,
-                ...item.product,
-                id: item.id,
-                product: undefined,
-                rpuwog: item.total,
-                rpuwg: (item.total + calculateRpuwg),
-                gst: item.gst,
-                gstAmount: calculateRpuwg
-            }
-        });
-        setProductItems(combinedArray)
+        if(invoice?.invoiceItems && invoice?.invoiceItems?.length > 0) {
+            const combinedArray: any = invoice?.invoiceItems.map(item => {
+                const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
+                const calculateRpuwg = ((item.total * parseFloat(gstVal)) / 100)
+                return {
+                    ...item,
+                    ...item.product,
+                    productId: item.product.id,
+                    id: item.id,
+                    product: undefined,
+                    rpuwog: item.total,
+                    rpuwg: (item.total + calculateRpuwg),
+                    gst: item.gst,
+                    gstAmount: calculateRpuwg
+                }
+            });
+            setProductItems(combinedArray)
+        }
     }, [invoice])
 
     const form = useForm({
@@ -174,7 +179,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         },
     });
 
-    const calclulateTotal = (items: any) => {
+    const calculateTotal = (items: any) => {
         const calculateCgst = items.reduce((acc: any, item: any) => acc + parseFloat(item?.gstAmount), 0)
         const calculateTotal = items.reduce((acc: any, item: any) => acc + parseFloat(item?.total), 0)
         const totalBeforeRoundOff = items.reduce((acc: any, item: any) => acc + parseFloat(item?.rpuwg), 0)
@@ -198,59 +203,40 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         }
         try {
             const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
+            console.log("data", data);
+            console.log("productItems", productItems);
+            
             if (isSuccess) {
-                if (!productItems) {
-                    const gstVal = ((data?.price * 5) / 100)
-
-                    const newStateProductItems = [{
+                const gstVal = ((data?.price * 5) / 100)
+                const newStateProductItems: any = [
+                    ...productItems,
+                    {
                         ...data,
                         total: data?.price,
                         quantity: 1,
                         rpuwg: data?.price + gstVal,
                         rpuwog: data?.price,
                         gst: '5%',
-                        gstAmount: gstVal
-                    }]
-                    const newProductItems = [{
+                        gstAmount: gstVal,
+                        productId: data.id,
+                    }
+                ];
+                const newProductItems: any = [
+                    ...productItems,
+                    {
                         ...data,
                         total: data?.price,
                         quantity: 1,
                         rpuwg: data?.price + gstVal,
                         rpuwog: data?.price,
                         gst: 5,
-                        gstAmount: gstVal
-                    }]
-                    setProductItems(newStateProductItems)
-                    calclulateTotal(newProductItems)
-                } else {
-                    const gstVal = ((data?.price * 5) / 100)
-                    const newStateProductItems: any = [
-                        ...productItems,
-                        {
-                            ...data,
-                            total: data?.price,
-                            quantity: 1,
-                            rpuwg: data?.price + gstVal,
-                            rpuwog: data?.price,
-                            gst: '5%',
-                            gstAmount: gstVal
-                        }
-                    ];
-                    const newProductItems: any = [
-                        ...productItems,
-                        {
-                            ...data,
-                            total: data?.price,
-                            quantity: 1,
-                            rpuwg: data?.price + gstVal,
-                            rpuwog: data?.price,
-                            gst: 5,
-                            gstAmount: gstVal
-                        }
-                    ];
-                    setProductItems(newStateProductItems)
-                    calclulateTotal(newProductItems)
-                }
+                        gstAmount: gstVal,
+                        productId: data.id,
+                    }
+                ];
+                setProductItems(newStateProductItems)
+                calculateTotal(newProductItems)
+
                 console.log('Document added successfully');
             }
         } catch (error) {
@@ -274,58 +260,36 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             if (isSuccess) {
                 console.log("data", data);
                 console.log('Document added successfully');
-                if (!productItems) {
-                    const gstVal = ((data?.price * 5) / 100)
 
-                    const newStateProductItems = [{
+                const gstVal = ((data?.price * 5) / 100)
+                const newStateProductItems: any = [
+                    ...productItems,
+                    {
                         ...data,
                         total: data?.price,
                         quantity: 1,
                         rpuwg: data?.price + gstVal,
                         rpuwog: data?.price,
                         gst: '5%',
-                        gstAmount: gstVal
-                    }]
-                    const newProductItems = [{
+                        gstAmount: gstVal,
+                        productId: data.id,
+                    }
+                ];
+                const newProductItems: any = [
+                    ...productItems,
+                    {
                         ...data,
                         total: data?.price,
                         quantity: 1,
                         rpuwg: data?.price + gstVal,
                         rpuwog: data?.price,
                         gst: 5,
-                        gstAmount: gstVal
-                    }]
-                    setProductItems(newStateProductItems)
-                    calclulateTotal(newProductItems)
-                } else {
-                    const gstVal = ((data?.price * 5) / 100)
-                    const newStateProductItems: any = [
-                        ...productItems,
-                        {
-                            ...data,
-                            total: data?.price,
-                            quantity: 1,
-                            rpuwg: data?.price + gstVal,
-                            rpuwog: data?.price,
-                            gst: '5%',
-                            gstAmount: gstVal
-                        }
-                    ];
-                    const newProductItems: any = [
-                        ...productItems,
-                        {
-                            ...data,
-                            total: data?.price,
-                            quantity: 1,
-                            rpuwg: data?.price + gstVal,
-                            rpuwog: data?.price,
-                            gst: 5,
-                            gstAmount: gstVal
-                        }
-                    ];
-                    setProductItems(newStateProductItems)
-                    calclulateTotal(newProductItems)
-                }
+                        gstAmount: gstVal,
+                        productId: data.id,
+                    }
+                ];
+                setProductItems(newStateProductItems)
+                calculateTotal(newProductItems)
             }
         } catch (error) {
             console.log('Error uploading document:', error);
@@ -340,26 +304,33 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         };
 
         const payload = {
-            hospitalId: type === 1 ? selectedHospital : null,
-            distributorId: type === 2 ? selectedHospital : null,
-            shipping: newValues.shippingFreight || 0,
-            packingCharge: newValues.packingCharge || 0,
-            cess: newValues.cess || 0,
-            cgst: newValues.cgst || 0,
-            sgst: newValues.sgst || 0,
-            igst: newValues.igst || 0,
-            roundOffAmount: newValues.roundOff || 0,
-            grandTotal: newValues.grandTotal || 0,
-            invoiceType: 1,
-            invoiceItems: productItems.map((item: any) => ({
-                id: item.id,
-                invoiceId: 0,
-                productId: item.id,
+            hospitalId: type === 1 ? parseInt(selectedHospital as string) : null,
+            distributorId: type === 2 ? parseInt(selectedHospital as string) : null,
+            shipping: newValues.shippingFreight ?? 0,
+            packingCharge: newValues.packingCharge ?? 0,
+            cess: newValues.cess ?? 0,
+            cgst: newValues.cgst ?? 0,
+            sgst: newValues.sgst ?? 0,
+            igst: newValues.igst ?? 0,
+            roundOffAmount: newValues.roundOff ?? 0,
+            grandTotal: newValues.grandTotal ?? 0,
+            invoiceType: invoiceId ? 2 : Number(invoiceType),
+            invoiceItems: invoiceId ? selectedTableRows.map((item: any) => ({
+                productId: item.productId ?? 0,
                 quantity: item.quantity,
                 rpuwg: item.rpuwg,
                 rpuwog: item.rpuwog,
-                discountType: item.discountType,
-                discount: item.discount,
+                discountType: item.discountType ?? 0,
+                discount: item.discount ?? 0,
+                gst: item.gst,
+                total: item.total,
+            })) : productItems.map((item: any) => ({
+                productId: item.productId ?? 0,
+                quantity: item.quantity,
+                rpuwg: item.rpuwg,
+                rpuwog: item.rpuwog,
+                discountType: item.discountType ?? 0,
+                discount: item.discount ?? 0,
                 gst: item.gst,
                 total: item.total,
             })),
@@ -392,7 +363,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             })
             setProductItems(newProductItems);
 
-            calclulateTotal(newProductItems)
+            calculateTotal(newProductItems)
         }
 
         if (typeName === 'discount') {
@@ -411,26 +382,30 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             })
             setProductItems(newProductItems);
 
-            calclulateTotal(newProductItems)
+            calculateTotal(newProductItems)
         }
 
         if (typeName === 'discount-type') {
             const newProductItems: any = productItems.map((item: any) => {
-                let calculatedDiscount: any
-                if (value === '1') {
-                    calculatedDiscount = ((parseFloat(item.total) * Number(item?.discount)) / 100)
+                if (item?.discount) {
+                    let calculatedDiscount: any
+                    if (value === '1') {
+                        calculatedDiscount = ((parseFloat(item.total) * Number(item?.discount)) / 100)
+                    }
+                    if (value === '2') {
+                        calculatedDiscount = item?.discount
+                    }
+                    const calculateTotal = (parseFloat(item.total) - parseFloat(calculatedDiscount))
+                    const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
+                    const calculateRpuwg = ((calculateTotal * parseFloat(gstVal)) / 100)
+                    return item.id === id ? { ...item, discountType: value, total: calculateTotal, gstAmount: calculateRpuwg } : item
+                } else {
+                    return item.id === id ? { ...item, discountType: value } : item
                 }
-                if (value === '2') {
-                    calculatedDiscount = item?.discount
-                }
-                const calculateTotal = (parseFloat(item.total) - parseFloat(calculatedDiscount))
-                const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
-                const calculateRpuwg = ((calculateTotal * parseFloat(gstVal)) / 100)
-                return item.id === id ? { ...item, discountType: value, total: calculateTotal, gstAmount: calculateRpuwg } : item
             })
             setProductItems(newProductItems);
 
-            calclulateTotal(newProductItems)
+            calculateTotal(newProductItems)
         }
     };
 
@@ -476,7 +451,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                     <div className='mb-6 flex justify-between items-center'>
                         <div className='flex items-center gap-4'>
                             <div className='flex items-center gap-2'>
-                                <Select defaultValue={selectedHospital} onValueChange={(value: any) => onSelectDropdownChange(value)}>
+                                <Select defaultValue={selectedHospital} disabled={invoiceId ? true : false} onValueChange={(value: any) => onSelectDropdownChange(value)}>
                                     <SelectTrigger className="w-[180px] font-normal text-black border-input">
                                         <SelectValue placeholder={`Select a ${type == 1 ? "Hospital" : "Distributor"}`} />
                                     </SelectTrigger>
@@ -484,12 +459,12 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                         <SelectGroup>
                                             {type == 1
                                                 ?
-                                                hospitals.map((item: any) => (
+                                                hospitals && hospitals?.map((item: any) => (
                                                     <SelectItem key={`${item.id}`} value={`${item.id}`} className='cursor-pointer'>
                                                         {item.name}
                                                     </SelectItem>
                                                 )) :
-                                                distributors.map((item: any) => (
+                                                distributors && distributors?.map((item: any) => (
                                                     <SelectItem key={`${item.id}`} value={`${item.id}`} className='cursor-pointer'>
                                                         {item.name}
                                                     </SelectItem>))
@@ -500,12 +475,12 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                             </div>
                         </div>
                         <div className='flex items-center gap-4'>
-                            <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}>
-                                {/* <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
-                                <Button type='button' disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
-                                    Scan barcode
-                                </Button>
-                            </HospitalScannerButton>
+                            {/* <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}> */}
+                            <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital && !invoiceId ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                                {/* <Button type='button' disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
+                                Scan barcode
+                            </Button>
+                            {/* </HospitalScannerButton> */}
                         </div>
                     </div>
 
@@ -519,7 +494,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                         <FormItem className='w-1/2'>
                                             <FormLabel>Title:</FormLabel>
                                             <FormControl>
-                                                <Select defaultValue={field.value}>
+                                                <Select defaultValue={field.value} onValueChange={(value: string) => setInvoiceType(value)} disabled={invoiceId ? true : false}>
                                                     <SelectTrigger className="font-normal text-black border-input">
                                                         <SelectValue placeholder="Select a title" />
                                                     </SelectTrigger>
@@ -546,7 +521,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                             <FormLabel>Document date:</FormLabel>
                                             <FormControl>
                                                 <Popover>
-                                                    <PopoverTrigger asChild>
+                                                    <PopoverTrigger asChild disabled={invoiceId ? true : false}>
                                                         <Button
                                                             // variant={"outline"}
                                                             className="border border-input bg-transparent text-black flex w-full justify-start text-left font-normal"
@@ -578,7 +553,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                         <FormItem className='w-1/2'>
                                             <FormLabel>Party Name:</FormLabel>
                                             <FormControl>
-                                                <Select defaultValue={field.value}>
+                                                <Select defaultValue={field.value} disabled={invoiceId ? true : false}>
                                                     <SelectTrigger className="font-normal text-black border-input">
                                                         <SelectValue placeholder="Select a party name" />
                                                     </SelectTrigger>
@@ -751,6 +726,9 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         pageSize={pageSize}
                         isSearchEnable={false}
                         isPaginationEnable={false}
+                        isMultiSelectEnabled={true}
+                        onSelectedRowsChange={(selectedRows) => setSelectedTableRows(selectedRows)}
+                        isDisableTable={invoiceId ? true : false}
                     />
 
                     <div className="border border-gray-300 rounded-lg p-4 mt-4">
@@ -826,7 +804,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={isPending}
+                                                    disabled={invoiceId ? true : false}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -843,7 +821,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={isPending}
+                                                    disabled={invoiceId ? true : false}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -877,7 +855,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={isPending}
+                                                    disabled={invoiceId ? true : false}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -894,7 +872,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={isPending}
+                                                    disabled={invoiceId ? true : false}
                                                 />
                                             </FormControl>
                                             <FormMessage />
