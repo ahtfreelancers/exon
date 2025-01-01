@@ -1,22 +1,12 @@
 'use client'
 
-import { getAllHospitals } from '@/actions/hospitals'
+import { addInvoice, updateInvoice } from '@/actions/invoice'
 import { getProductBySerialNumber } from '@/actions/products'
-import agent from '@/app/api/axios'
+import { HospitalScannerButton } from '@/app/exon-admin/__components/hospital-scanner-modal'
 import { columns } from '@/app/exon-admin/mapping/columns'
 import { DataTable } from '@/components/root/data-table'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useEffect, useState, useTransition } from 'react'
-import { toast } from 'sonner'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { getAllDistributors } from '@/actions/distributor'
-import { HospitalScannerButton } from '@/app/exon-admin/__components/hospital-scanner-modal'
-import { Input } from '@/components/ui/input'
-import { FormError } from '@/components/form-error'
-import { FormSuccess } from '@/components/form-success'
-import Link from 'next/link'
-import { useForm } from "react-hook-form"
+import { Calendar } from "@/components/ui/calendar"
 import {
     Form,
     FormControl,
@@ -25,17 +15,19 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { number } from 'zod'
+import { Input } from '@/components/ui/input'
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Calendar as CalendarIcon } from "lucide-react"
-import { Calendar } from "@/components/ui/calendar"
-import { addInvoice, updateInvoice } from '@/actions/invoice'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState, useTransition } from 'react'
+import { useForm } from "react-hook-form"
+import { toast } from 'sonner'
 
 interface InvoiceItems {
     id: number,
@@ -136,7 +128,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
     const pageSize = 10
 
     useEffect(() => {
-        if(invoice?.invoiceItems && invoice?.invoiceItems?.length > 0) {
+        if (invoice?.invoiceItems && invoice?.invoiceItems?.length > 0) {
             const combinedArray: any = invoice?.invoiceItems.map(item => {
                 const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
                 const calculateRpuwg = ((item.total * parseFloat(gstVal)) / 100)
@@ -203,9 +195,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         }
         try {
             const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
-            console.log("data", data);
-            console.log("productItems", productItems);
-            
+
             if (isSuccess) {
                 const gstVal = ((data?.price * 5) / 100)
                 const newStateProductItems: any = [
@@ -236,8 +226,6 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                 ];
                 setProductItems(newStateProductItems)
                 calculateTotal(newProductItems)
-
-                console.log('Document added successfully');
             }
         } catch (error) {
             console.log('Error uploading document:', error);
@@ -258,9 +246,6 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         try {
             const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
             if (isSuccess) {
-                console.log("data", data);
-                console.log('Document added successfully');
-
                 const gstVal = ((data?.price * 5) / 100)
                 const newStateProductItems: any = [
                     ...productItems,
@@ -475,12 +460,12 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                             </div>
                         </div>
                         <div className='flex items-center gap-4'>
-                            {/* <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}> */}
-                            <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital && !invoiceId ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
-                                {/* <Button type='button' disabled={selectedHospital ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
-                                Scan barcode
-                            </Button>
-                            {/* </HospitalScannerButton> */}
+                            <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}>
+                                {/* <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital && !invoiceId ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
+                                <Button type='button' disabled={selectedHospital && !invoiceId ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                                    Scan barcode
+                                </Button>
+                            </HospitalScannerButton>
                         </div>
                     </div>
 
