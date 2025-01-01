@@ -119,9 +119,13 @@ export function DataTable<TData, TValue>({
   };
 
   useEffect(() => {
+    if (data.length === 0 || Object.keys(selectedRows).length === 0) {
+      return;
+    }
+
     const selectedData = data?.filter((_, index) => selectedRows[index]);
     onSelectedRowsChange?.(selectedData);
-  }, [selectedRows, data, onSelectedRowsChange]);
+  }, [selectedRows, data]);
 
   useEffect(() => {
     table.setPageIndex(currentPage - 1)

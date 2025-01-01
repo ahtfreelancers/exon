@@ -122,6 +122,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
     const [selectedHospital, setSelectedHospital] = useState(type === 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString())
 
     const [productItems, setProductItems] = useState<any[]>([])
+    const [invoiceType, setInvoiceType] = useState<string>('')
 
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
@@ -216,7 +217,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         rpuwg: data?.price + gstVal,
                         rpuwog: data?.price,
                         gst: '5%',
-                        gstAmount: gstVal
+                        gstAmount: gstVal,
+                        productId: data.id,
                     }
                 ];
                 const newProductItems: any = [
@@ -228,7 +230,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         rpuwg: data?.price + gstVal,
                         rpuwog: data?.price,
                         gst: 5,
-                        gstAmount: gstVal
+                        gstAmount: gstVal,
+                        productId: data.id,
                     }
                 ];
                 setProductItems(newStateProductItems)
@@ -268,7 +271,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         rpuwg: data?.price + gstVal,
                         rpuwog: data?.price,
                         gst: '5%',
-                        gstAmount: gstVal
+                        gstAmount: gstVal,
+                        productId: data.id,
                     }
                 ];
                 const newProductItems: any = [
@@ -280,7 +284,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         rpuwg: data?.price + gstVal,
                         rpuwog: data?.price,
                         gst: 5,
-                        gstAmount: gstVal
+                        gstAmount: gstVal,
+                        productId: data.id,
                     }
                 ];
                 setProductItems(newStateProductItems)
@@ -299,33 +304,33 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         };
 
         const payload = {
-            hospitalId: type === 1 ? selectedHospital : null,
-            distributorId: type === 2 ? selectedHospital : null,
-            shipping: newValues.shippingFreight || 0,
-            packingCharge: newValues.packingCharge || 0,
-            cess: newValues.cess || 0,
-            cgst: newValues.cgst || 0,
-            sgst: newValues.sgst || 0,
-            igst: newValues.igst || 0,
-            roundOffAmount: newValues.roundOff || 0,
-            grandTotal: newValues.grandTotal || 0,
-            invoiceType: newValues.title,
+            hospitalId: type === 1 ? parseInt(selectedHospital as string) : null,
+            distributorId: type === 2 ? parseInt(selectedHospital as string) : null,
+            shipping: newValues.shippingFreight ?? 0,
+            packingCharge: newValues.packingCharge ?? 0,
+            cess: newValues.cess ?? 0,
+            cgst: newValues.cgst ?? 0,
+            sgst: newValues.sgst ?? 0,
+            igst: newValues.igst ?? 0,
+            roundOffAmount: newValues.roundOff ?? 0,
+            grandTotal: newValues.grandTotal ?? 0,
+            invoiceType: invoiceId ? 2 : Number(invoiceType),
             invoiceItems: invoiceId ? selectedTableRows.map((item: any) => ({
-                productId: item.productId,
+                productId: item.productId ?? 0,
                 quantity: item.quantity,
                 rpuwg: item.rpuwg,
                 rpuwog: item.rpuwog,
-                discountType: item.discountType,
-                discount: item.discount,
+                discountType: item.discountType ?? 0,
+                discount: item.discount ?? 0,
                 gst: item.gst,
                 total: item.total,
             })) : productItems.map((item: any) => ({
-                productId: item.productId,
+                productId: item.productId ?? 0,
                 quantity: item.quantity,
                 rpuwg: item.rpuwg,
                 rpuwog: item.rpuwog,
-                discountType: item.discountType,
-                discount: item.discount,
+                discountType: item.discountType ?? 0,
+                discount: item.discount ?? 0,
                 gst: item.gst,
                 total: item.total,
             })),
@@ -489,7 +494,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                         <FormItem className='w-1/2'>
                                             <FormLabel>Title:</FormLabel>
                                             <FormControl>
-                                                <Select defaultValue={field.value} disabled={invoiceId ? true : false}>
+                                                <Select defaultValue={field.value} onValueChange={(value: string) => setInvoiceType(value)} disabled={invoiceId ? true : false}>
                                                     <SelectTrigger className="font-normal text-black border-input">
                                                         <SelectValue placeholder="Select a title" />
                                                     </SelectTrigger>
