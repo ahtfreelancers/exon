@@ -11,6 +11,7 @@ import { ArrowUpIcon } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -197,6 +198,7 @@ export default function RootLayout({
         <>
           {!pathname.includes("exon-admin") ? (
             <>
+              <Toaster position="top-center" />
               {children}
               {showFooter && <Footer />}
               <div className="fixed bottom-4 right-4 flex flex-col gap-4 z-[9999999]">
@@ -224,7 +226,7 @@ export default function RootLayout({
               </div>
             </>
           ) : (
-            <>{children}</>
+            <> <Toaster position="top-center" />{children}</>
           )}
         </>
       </body>

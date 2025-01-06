@@ -3,6 +3,7 @@
 export const productData = {
     INFINITY: {
         productImage: "infinity.png",
+        productType: 2,
         productName: "INFINITY",
         title: "SIROLIMUS-ELUTING CORONARY STENT SYSTEM",
         content: "The INFINITY Sirolimus-Eluting Coronary Stent System is a state-of-the-art device used in interventional cardiology to treat coronary artery disease (CAD). It features a fully biodegradable, biocompatible polymer (PLGA) with a precise sirolimus loading density of 1.2 ± 0.2 µg/mm and a uniform 6 µm coating. The stent is designed for consistent drug release, promoting optimal neointimal coverage and reducing the risk of In-Stent Restenosis (ISR) and late thrombosis. Mounted on a hydrophilic-coated PTCA catheter, the system ensures safe and effective stent deployment.",
@@ -83,6 +84,7 @@ export const productData = {
     },
     SLEEK: {
         productImage: "sleek.png",
+        productType: 4,
         productName: "SLEEK",
         title: "NC BALLOON CATHETER (POST DIALATION CATHETER)",
         content: "The SLEEK NC Balloon Catheter is a high-performance post-dilatation catheter designed for precise control and durability in coronary interventions. It features a non-compliant balloon that delivers focused and consistent inflation, making it ideal for achieving optimal stent expansion. The catheter offers excellent trackability, allowing it to navigate complex and tortuous anatomies with ease. Its sleek, low-profile design minimizes the risk of collisions with stent struts, ensuring safer and more effective procedures.",
@@ -139,6 +141,7 @@ export const productData = {
     },
     SWIFT: {
         productImage: "swift.png",
+        productType: 5,
         productName: "SWIFT",
         title: "SC BALLOON CATHETER (PRE - DIALATION CATHETER)",
         content: "The SWIFT SC Balloon Catheter is a semi-compliant pre-dilatation catheter engineered for optimal crossability and pushability. Its flexible, tapered tip and advanced hydrophilic coating ensure seamless navigation through challenging and tortuous anatomies, reducing the risk of vessel trauma. The catheter's high radiopacity, facilitated by integrated markers, allows for precise positioning and real-time monitoring during the procedure. Designed with a low-profile, the SWIFT SC Balloon Catheter offers reliable performance in complex lesions, making it an essential tool for effective pre-dilatation and optimal stent delivery.",
@@ -205,6 +208,7 @@ export const productData = {
     },
     INTIMA: {
         productImage: "intima.png",
+        productType: 3,
         productName: "INTIMA",
         title: "Everolimus-Eluting Coronary Stent System",
         content: "The INTIMA Everolimus-Eluting Coronary Stent System features ultra-thin 60μm struts with a 3μm uniform drug coating for precise, controlled release. It offers excellent radial strength, minimal recoil, and early endothelialization, ideal for complex coronary interventions. The biodegradable polymer ensures biocompatibility while reducing the risk of in-stent restenosis. Its advanced design allows for smooth navigation through challenging anatomies, making it a reliable choice for both routine and complex procedures.",
@@ -281,6 +285,7 @@ export const productData = {
     },
     ENDOSTENT: {
         productImage: "endostent.png",
+        productType: 1,
         productName: "ENDOSTENT",
         title: "Sirolimus-Eluting Coronary Stent System",
         content: "The ENDOSTENT Sirolimus-Eluting Coronary Stent System is engineered to advance coronary interventions with a focus on early endothelialization and effective drug delivery. Featuring ultra-thin struts (63 μm) that minimize recoil and provide high radial strength, this stent ensures optimal vessel support and reduced foreshortening (<2%). The stent is coated with sirolimus, with a precise 6 μm thickness for controlled, sustained drug release over 90 to 120 days, promoting long-term vessel patency. Available in a range of diameters(2.25 to 4.00 mm) and lengths(10 to 48 mm), the ENDOSTENT offers versatile sizing to accommodate various anatomical needs. Its design includes both open and closed cell configurations to enhance flexibility and conformability.",
