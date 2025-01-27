@@ -24,7 +24,7 @@ export type Product = {
   pictureUrl: string;
 };
 
-const statusEnum: any = {
+const statusEnum: Record<string, string> = {
   "0": 'Not In',
   "1": 'In',
   "2": 'Out',
@@ -130,163 +130,185 @@ const ImageCell = ({ pictureUrl }: { pictureUrl: string }) => {
     </>
   );
 };
-export const columns = (fetchProducts: () => void): ColumnDef<Product>[] => [
-  {
-    accessorKey: 'itemNo',
-    header: ({ column }) => (
-      <div
-        className="flex items-center"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Item No
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'itemDescription',
-    header: ({ column }) => (
-      <div
-        className="flex items-center"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Item Description
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'pictureUrl',
-    header: ({ column }) => (
-      <div
-        className="flex items-center"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Picture
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </div>
-    ),
-    cell: ({ row }) => <ImageCell pictureUrl={row.original.pictureUrl} />,
-  },
-  {
-    accessorKey: 'serialNumber',
-    header: ({ column }) => (
-      <div
-        className="flex items-center"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Serial Number
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'price',
-    header: ({ column }) => (
-      <div
-        className="flex items-center"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Price
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'lotNumber',
-    header: ({ column }) => (
-      <div
-        className="flex items-center"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Lot Number
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </div>
-    ),
-  },
-  {
-    accessorKey: 'manufactureDate',
-    header: ({ column }) => (
-      <div
-        className="flex items-center"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Manufacture Date
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </div>
-    ),
-    cell: ({ row }) => {
-      const date = new Date(row.original.manufactureDate);
-      const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
-      return <>{formattedDate}</>;
+export const columns = (fetchProducts: () => void, statusFilter: string, setStatusFilter: (value: string) => void, setPageIndex: (value: number) => void): ColumnDef<Product>[] => {
+  return [
+    {
+      accessorKey: 'itemNo',
+      header: ({ column }) => (
+        <div
+          className="flex items-center w-[125px] font-bold"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Item No
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      ),
     },
-  },
-  {
-    accessorKey: 'expirationDate',
-    header: ({ column }) => (
-      <div
-        className="flex items-center"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Expiration Date
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </div>
-    ),
-    cell: ({ row }) => {
-      const date = new Date(row.original.expirationDate);
-      const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
-      return <>{formattedDate}</>;
+    {
+      accessorKey: 'itemDescription',
+      header: ({ column }) => (
+        <div
+          className="flex items-center w-[140px] font-bold"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Item Description
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      ),
     },
-  },
-  {
-    accessorKey: 'productStatus',
-    header: ({ column }) => (
-      <div
-        className="flex items-center"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Status
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </div>
-    ),
-    cell: ({ row }) => <>{statusEnum[`${row.original.productStatus}`]}</>,
-    filterFn: (row, columnId, value) => row.getValue(columnId) === value,
-  },
-  {
-    accessorKey: 'modifiedBy',
-    header: ({ column }) => (
-      <div
-        className="flex items-center"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Modified By
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </div>
-    ),
-    filterFn: (row, columnId, value) => row.getValue(columnId) === value,
-  },
-  {
-    accessorKey: 'modified',
-    header: ({ column }) => (
-      <div
-        className="flex items-center"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Updated Date
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </div>
-    ),
-    cell: ({ row }) => {
-      const date = new Date(row.original.modified);
-      const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
-      const formattedTime = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
-      return <>{`${formattedDate} ${formattedTime}`}</>;
+    {
+      accessorKey: 'pictureUrl',
+      header: ({ column }) => (
+        <div
+          className="flex items-center font-bold"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Picture
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      ),
+      cell: ({ row }) => <ImageCell pictureUrl={row.original.pictureUrl} />,
     },
-    filterFn: (row, columnId, value) => row.getValue(columnId) === value,
-  },
-  {
-    id: 'actions',
-    header: () => <div className="flex items-center">Action</div>,
-    cell: ({ row }) => <ActionsCell id={row.original.id} fetchProducts={fetchProducts} />,
-  },
-];
+    {
+      accessorKey: 'serialNumber',
+      header: ({ column }) => (
+        <div
+          className="flex items-center w-[125px] font-bold"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Serial Number
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'productStatus',
+      header: ({ column }) => (
+        <div
+          className="flex items-center font-bold"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <select
+            className="ml-2 p-1 border rounded-md"
+            value={statusFilter}
+            onChange={(e) => {
+              setPageIndex(1)
+              setStatusFilter(e.target.value)
+            }}
+          >
+            <option value="">All</option>
+            {Object.entries(statusEnum).map(([key, value]) => (
+              <option key={key} value={key}>
+                {value}
+              </option>
+            ))}
+          </select>
+        </div>
+      ),
+      // Apply the filter logic here
+      cell: ({ row }) => <>{statusEnum[row.original.productStatus]}</>,
+      filterFn: (row, columnId, value) => {
+        const status = row.getValue(columnId);
+        if (value === "") return true; // No filter applied
+        return status === value;
+      },
+    },
+    {
+      accessorKey: 'price',
+      header: ({ column }) => (
+        <div
+          className="flex items-center font-bold"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Price
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'lotNumber',
+      header: ({ column }) => (
+        <div
+          className="flex items-center w-[110px] font-bold"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Lot Number
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'manufactureDate',
+      header: ({ column }) => (
+        <div
+          className="flex items-center w-[145px] font-bold"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Manufacture Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      ),
+      cell: ({ row }) => {
+        const date = new Date(row.original.manufactureDate);
+        const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+        return <>{formattedDate}</>;
+      },
+    },
+    {
+      accessorKey: 'expirationDate',
+      header: ({ column }) => (
+        <div
+          className="flex items-center w-[130px] font-bold"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Expiration Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      ),
+      cell: ({ row }) => {
+        const date = new Date(row.original.expirationDate);
+        const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+        return <>{formattedDate}</>;
+      },
+    },
+    {
+      accessorKey: 'modifiedBy',
+      header: ({ column }) => (
+        <div
+          className="flex items-center w-[110px] font-bold"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Modified By
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      ),
+      filterFn: (row, columnId, value) => row.getValue(columnId) === value,
+    },
+    {
+      accessorKey: 'modified',
+      header: ({ column }) => (
+        <div
+          className="flex items-center w-[130px] font-bold"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Updated Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </div>
+      ),
+      cell: ({ row }) => {
+        const date = new Date(row.original.modified);
+        const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+        const formattedTime = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+        return <>{`${formattedDate} ${formattedTime}`}</>;
+      },
+      filterFn: (row, columnId, value) => row.getValue(columnId) === value,
+    },
+    {
+      id: 'actions',
+      header: () => <div className="flex items-center font-bold">Action</div>,
+      cell: ({ row }) => <ActionsCell id={row.original.id} fetchProducts={fetchProducts} />,
+    },
+  ]
+};

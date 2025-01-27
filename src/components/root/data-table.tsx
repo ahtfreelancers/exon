@@ -34,14 +34,12 @@ interface DataTableProps<TData, TValue> {
   search?: string
   onSearch: (value: string) => void
   onPageChange: (pageIndex: number) => void
-  setStatusFilter?: (value: string) => void
   onSelectDropdownChange?: (value: string) => void
   pageCount: number
   currentPage: number
   pageSize?: number
   isSearchEnable?: boolean
   isPaginationEnable?: boolean
-  isStatusFilterEnable?: boolean
   isInvoiceFilterEnable?: boolean
   isMultiSelectEnabled?: boolean;
   onSelectedRowsChange?: (selectedRows: TData[]) => void;
@@ -56,13 +54,11 @@ export function DataTable<TData, TValue>({
   search,
   onSearch,
   onPageChange,
-  setStatusFilter,
   onSelectDropdownChange,
   pageCount,
   currentPage,
   pageSize = 10,
   isSearchEnable = true,
-  isStatusFilterEnable = false,
   isInvoiceFilterEnable = false,
   isPaginationEnable = true,
   isMultiSelectEnabled = false,
@@ -216,24 +212,7 @@ export function DataTable<TData, TValue>({
           )}
         </div>
         <div className='flex gap-4'>
-          {isStatusFilterEnable && <div className='flex items-center gap-2'>
-            <Tabs defaultValue="all" className="w-[400px]">
-              <TabsList className=''>
-                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("")} value="all">All</TabsTrigger>
-                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("0")} value="notin">Not In</TabsTrigger>
-                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("1")} value="in">In</TabsTrigger>
-                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("2")} value="out">Out</TabsTrigger>
-                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("3")} value="dispose">Dispose</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>}
           {isInvoiceFilterEnable && <div className='flex justify-center items-center gap-2'>
-            <Tabs defaultValue="1" className="w-[300px]">
-              <TabsList>
-                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("1")} value="1">Hospital</TabsTrigger>
-                <TabsTrigger className='data-[state=active]:text-white data-[state=active]:bg-secondary' onClick={() => setStatusFilter && setStatusFilter("2")} value="2">Distributor</TabsTrigger>
-              </TabsList>
-            </Tabs>
             <div>
               <Select
                 defaultValue={"1"}

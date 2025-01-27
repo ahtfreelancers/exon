@@ -30,14 +30,12 @@ export default function DashboardWrapper() {
     return (
         <>
             <div className="flex-col bg-white">
-                <div className="flex-1 space-y-4 p-8 pt-2">
+                <div className="flex-1 space-y-4">
                     <div className="flex items-center justify-between space-y-2">
-                        <h2 className="text-3xl font-bold ">
-                            Hello Exon Therapeutics Team <span role="img" aria-label="waving hand">👋</span>
+                        <h2 className="text-2xl font-bold">
+                            Hello, Exon Therapeutics Team <span role="img" aria-label="waving hand">👋</span>
                         </h2>
                     </div>
-                    {/* <h2 className="text-xl font-bold tracking-tight">
-                    </h2> */}
                     {/* Cards Section */}
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                         <Card>
@@ -46,7 +44,7 @@ export default function DashboardWrapper() {
                                 <Recycle className="size-5" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold mb-1">{data?.disposeCount}</div>
+                                <div className="text-xl font-bold mb-1">{data?.disposeCount}</div>
                                 {/* <p className="text-xs text-muted-foreground">+20.1% from last month</p> */}
                             </CardContent>
                         </Card>
@@ -57,7 +55,7 @@ export default function DashboardWrapper() {
                                 <MoveDown className="size-5" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold mb-1">{data?.inCount}</div>
+                                <div className="text-xl font-bold mb-1">{data?.inCount}</div>
                                 {/* <p className="text-xs text-muted-foreground">+180.1% from last month</p> */}
                             </CardContent>
                         </Card>
@@ -67,7 +65,7 @@ export default function DashboardWrapper() {
                                 <MoveDown className="size-5" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold mb-1">{data?.notInCount}</div>
+                                <div className="text-xl font-bold mb-1">{data?.notInCount}</div>
                                 {/* <p className="text-xs text-muted-foreground">+180.1% from last month</p> */}
                             </CardContent>
                         </Card>
@@ -78,7 +76,7 @@ export default function DashboardWrapper() {
                                 <MoveUp className="size-5" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold mb-1">{data?.outCount}</div>
+                                <div className="text-xl font-bold mb-1">{data?.outCount}</div>
                                 {/* <p className="text-xs text-muted-foreground">+19% from last month</p> */}
                             </CardContent>
                         </Card>
@@ -89,7 +87,7 @@ export default function DashboardWrapper() {
                                 <Undo2 className="size-5" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold mb-1">
+                                <div className="text-xl font-bold mb-1">
                                     {data?.returnCount}
                                 </div>
                                 {/* <p className="text-xs text-muted-foreground">+201 since last hour</p> */}

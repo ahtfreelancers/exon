@@ -3,7 +3,7 @@
 import { getAllInvoices, getAllInvoicesPdf } from '@/actions/invoice'
 import { columns } from '@/app/exon-admin/invoice/columns'
 import { DataTable } from '@/components/root/data-table'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 export default function ListInvoice() {
@@ -14,22 +14,22 @@ export default function ListInvoice() {
     const [modalOpen, setModalOpen] = useState(false)
     const [invoicePdf, setInvoicePdf] = useState('')
     const pageSize = 10
-    const [productStatus, setProductStatus] = useState('1')
+    const [productTypeFilter, setProductTypeFilter] = useState('1')
     const [invoiceType, setInvoiceType] = useState('1')
 
-    const fetchInvoice = async () => {
+    const fetchInvoice = useCallback(async () => {
         let params = {
             PageNumber: pageIndex,
             pageSize: pageSize,
             searchParam: search,
-            InvoiceRequestType: Number(productStatus) ?? null,
+            InvoiceRequestType: Number(productTypeFilter) ?? null,
             InvoiceType: Number(invoiceType) ?? null,
         }
 
         try {
             const { data, isSuccess }: any = await getAllInvoices(params)
             console.log("data", data);
-            
+
             if (isSuccess) {
                 setData(data.items)
                 setPageCount(data.totalCount)
@@ -37,11 +37,12 @@ export default function ListInvoice() {
         } catch (err) {
             console.log(`Error fetching invoices`, err)
         }
-    }
-    const setStatusFilter = (value: string) => {
-        setPageIndex(1)
-        setProductStatus(value)
-    }
+    }, [search, pageIndex, productTypeFilter, invoiceType]);
+
+    useEffect(() => {
+        fetchInvoice();
+    }, [fetchInvoice]);
+
     const onSelectDropdownChange = (value: string) => {
         setPageIndex(1)
         setInvoiceType(value)
@@ -56,28 +57,20 @@ export default function ListInvoice() {
         }
     }
 
-    useEffect(() => {
-        fetchInvoice()
-    }, [search, pageIndex, productStatus, invoiceType])
-
     return (
         <section>
             <div className='container'>
-                <div className='flex justify-between'>
-                    <h1 className='mb-6 text-2xl font-bold'>Invoice</h1>
-                </div>
+                <h1 className='mb-2 text-2xl font-bold'>Invoice</h1>
 
                 <DataTable
-                    columns={columns(fetchInvoice, viewInvoice)}
+                    columns={columns(fetchInvoice, viewInvoice, productTypeFilter, setProductTypeFilter, setPageIndex)}
                     data={data}
                     buttonTitle={"Add Invoice"}
                     buttonUrl={"/exon-admin/invoice/add"}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
                     pageCount={pageCount}
-                    setStatusFilter={setStatusFilter}
                     onSelectDropdownChange={onSelectDropdownChange}
-                    isStatusFilterEnable={false}
                     isInvoiceFilterEnable={true}
                     currentPage={pageIndex}
                     search={search}

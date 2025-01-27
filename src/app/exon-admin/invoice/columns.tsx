@@ -7,6 +7,11 @@ import {
   BookType
 } from "lucide-react";
 
+const productTypeEnum: Record<string, string> = {
+  "1": 'Hospital',
+  "2": 'Distributor',
+};
+
 const ActionsCell = ({ id, fetchInvoices, viewInvoice }: { id: number, fetchInvoices: () => void, viewInvoice: any }) => {
   const handleDelete = async () => {
     try {
@@ -36,14 +41,17 @@ const ActionsCell = ({ id, fetchInvoices, viewInvoice }: { id: number, fetchInvo
       </Link> */}
       <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
       <Link href={`/exon-admin/invoice/add?convertId=${id}`}>
-      <BookType size={22} />
+        <BookType size={22} />
       </Link>
     </div>
   );
 };
 export const columns = (
   fetchInvoices: () => void,
-  viewInvoice: (id: number) => void
+  viewInvoice: (id: number) => void,
+  productTypeFilter: string,
+  setProductTypeFilter: (value: string) => void,
+  setPageIndex: (value: number) => void
 ): ColumnDef<any>[] => [
     {
       accessorKey: 'name',
@@ -90,6 +98,21 @@ export const columns = (
         >
           Party Type
           <ArrowUpDown className="ml-2 h-4 w-4" />
+          <select
+            className="ml-2 p-1 border rounded-md"
+            value={productTypeFilter}
+            onChange={(e) => {
+              setPageIndex(1)
+              setProductTypeFilter(e.target.value)
+            }}
+          >
+            <option value="">All</option>
+            {Object.entries(productTypeEnum).map(([key, value]) => (
+              <option key={key} value={key}>
+                {value}
+              </option>
+            ))}
+          </select>
         </div>
       ),
       cell: ({ row }) => {

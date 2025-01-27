@@ -7,12 +7,12 @@ import { CalendarDateRangePicker } from '@/app/exon-admin/dashboard/__components
 import { columns } from '@/app/exon-admin/products/columns'
 import { DataTable } from '@/components/root/data-table'
 import { Button } from '@/components/ui/button'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export default function ListProducts() {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
-    const [productStatus, setProductStatus] = useState('')
+    const [statusFilter, setStatusFilter] = useState('')
     // State for Expiration date range
     const [expirationFrom, setExpirationFrom] = useState("")
     const [expirationTo, setExpirationTo] = useState("")
@@ -25,12 +25,13 @@ export default function ListProducts() {
     const [pageCount, setPageCount] = useState(0)
 
     const pageSize = 10
-    const fetchProducts = async () => {
+
+    const fetchProducts = useCallback(async () => {
         let params = {
             PageNumber: pageIndex,
             pageSize: pageSize,
             searchParam: search,
-            productStatus: Number(productStatus) ?? null,
+            productStatus: statusFilter ? Number(statusFilter) : '',
             ExpirationDateFrom: expirationFrom,
             ExpirationDateTo: expirationTo,
             ManufactureDateFrom: manufactureFrom,
@@ -46,62 +47,52 @@ export default function ListProducts() {
         } catch (err) {
             console.log(`err`, err)
         }
-    }
+    }, [search, pageIndex, expirationTo, manufactureTo, statusFilter]);
 
     useEffect(() => {
-        fetchProducts()
-    }, [search, pageIndex, productStatus, expirationTo, manufactureTo])
-
-    const setStatusFilter = (value: string) => {
-        setPageIndex(1)
-        setProductStatus(value)
-    }
+        fetchProducts();
+    }, [fetchProducts]);
 
     const onSuccess = () => {
-        fetchProducts()
-    }
+        fetchProducts();
+    };
 
     return (
-        <section className=''>
+        <section>
             <div className='container'>
-                <div className='flex justify-between'>
-                    <h1 className='mb-6 text-2xl font-bold'>Products</h1>
-                    <div className='flex items-end gap-4'>
+                <h1 className='mb-2 text-2xl font-bold'>Products</h1>
+
+                <div className='flex justify-between items-center w-full'>
+                    <div className='flex gap-4'>
+                        <CalendarDateRangePicker
+                            setFrom={setManufactureFrom}
+                            setToD={setManufactureTo}
+                            label="Manufacture Date"
+                        />
+                        <CalendarDateRangePicker
+                            setFrom={setExpirationFrom}
+                            setToD={setExpirationTo}
+                            label="Expiration Date"
+                        />
+                    </div>
+                    <div className='flex gap-4'>
                         <ScannerButton asChild onSuccess={onSuccess}>
                             <Button>
                                 Scan barcode
                             </Button>
                         </ScannerButton>
                         <DocumentUploadModal onSuccess={onSuccess} />
-                        <div className='relative z-[999999999]'>
-                            <div className='flex gap-4'>
-                                {/* Manufacture Date Picker */}
-                                <CalendarDateRangePicker
-                                    setFrom={setManufactureFrom}
-                                    setToD={setManufactureTo}
-                                    label="Manufacture Date"
-                                />
-                                {/* Expiration Date Picker */}
-                                <CalendarDateRangePicker
-                                    setFrom={setExpirationFrom}
-                                    setToD={setExpirationTo}
-                                    label="Expiration Date"
-                                />
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 <DataTable
-                    columns={columns(fetchProducts)}
+                    columns={columns(fetchProducts, statusFilter, setStatusFilter, setPageIndex)}
                     data={data}
                     buttonTitle={"Add Product"}
                     buttonUrl={"/exon-admin/products/add"}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
-                    setStatusFilter={setStatusFilter}
                     pageCount={pageCount}
-                    isStatusFilterEnable={true}
                     currentPage={pageIndex}
                     search={search}
                     pageSize={pageSize}
