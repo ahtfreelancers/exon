@@ -28,7 +28,7 @@ const InvoiceEditPage = async ({ params }: InvoiceFormEditPageProps) => {
     const { data: distributors }: any = await getAllDistributors(listParams)
 
     return (
-        <InvoiceForm invoice={data} hospitals={hospitals?.items} distributors={distributors?.items} invoiceId={id} />
+        <InvoiceForm invoice={data} hospitals={hospitals?.items} distributors={distributors?.items} invoiceId={id} isEdit={true} />
     );
 }
 

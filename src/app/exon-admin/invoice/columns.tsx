@@ -12,7 +12,7 @@ const productTypeEnum: Record<string, string> = {
   "2": 'Distributor',
 };
 
-const ActionsCell = ({ id, fetchInvoices, viewInvoice }: { id: number, fetchInvoices: () => void, viewInvoice: any }) => {
+const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceType: number, id: number, fetchInvoices: () => void, viewInvoice: any }) => {
   const handleDelete = async () => {
     try {
       const result: any = await deleteDistributor(id);
@@ -36,9 +36,11 @@ const ActionsCell = ({ id, fetchInvoices, viewInvoice }: { id: number, fetchInvo
           onClick={() => viewInvoice(id)}
         />
       </div>
-      {/* <Link href={`/exon-admin/invoice/edit/${id}`}>
-        <FilePenLine size={22} />
-      </Link> */}
+      {invoiceType === 1 && (
+        <Link href={`/exon-admin/invoice/edit/${id}`}>
+          <FilePenLine size={22} />
+        </Link>
+      )}
       <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
       <Link href={`/exon-admin/invoice/add?convertId=${id}`}>
         <BookType size={22} />
@@ -317,6 +319,6 @@ export const columns = (
     {
       id: 'actions',
       header: 'Actions',
-      cell: ({ row }) => <ActionsCell id={row.original.id} fetchInvoices={fetchInvoices} viewInvoice={viewInvoice} />,
+      cell: ({ row }) => <ActionsCell invoiceType={row.original.invoiceType} id={row.original.id} fetchInvoices={fetchInvoices} viewInvoice={viewInvoice} />,
     },
   ]

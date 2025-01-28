@@ -102,6 +102,7 @@ interface InvoiceFormProps {
     hospitals?: any;
     distributors?: any;
     invoiceId?: any;
+    isEdit?: boolean;
 }
 
 const invoiceTypes = [
@@ -109,7 +110,7 @@ const invoiceTypes = [
     { id: '2', name: 'Tax Invoice' }
 ]
 
-export default function CommonForm({ type, invoice, hospitals, distributors, invoiceId }: InvoiceFormProps) {
+export default function CommonForm({ type, invoice, hospitals, distributors, invoiceId, isEdit }: InvoiceFormProps) {
     const [search, setSearch] = useState('')
     const [selectedHospital, setSelectedHospital] = useState(type === 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString())
 
@@ -462,7 +463,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         <div className='flex items-center gap-4'>
                             <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}>
                                 {/* <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital && !invoiceId ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
-                                <Button type='button' disabled={selectedHospital && !invoiceId ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                                <Button type='button' disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
                                     Scan barcode
                                 </Button>
                             </HospitalScannerButton>
@@ -703,9 +704,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         buttonUrl={""}
                         onSearch={setSearch}
                         onPageChange={setPageIndex}
-                        setStatusFilter={() => { }}
                         pageCount={pageCount}
-                        isStatusFilterEnable={false}
                         currentPage={pageIndex}
                         search={search}
                         pageSize={pageSize}
@@ -713,7 +712,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         isPaginationEnable={false}
                         isMultiSelectEnabled={true}
                         onSelectedRowsChange={(selectedRows) => setSelectedTableRows(selectedRows)}
-                        isDisableTable={invoiceId ? true : false}
+                        isDisableTable={invoiceId && !isEdit ? true : false}
                     />
 
                     <div className="border border-gray-300 rounded-lg p-4 mt-4">
@@ -789,7 +788,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={invoiceId ? true : false}
+                                                    disabled={invoiceId && !isEdit ? true : false}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -806,7 +805,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={invoiceId ? true : false}
+                                                    disabled={invoiceId && !isEdit ? true : false}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -840,7 +839,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={invoiceId ? true : false}
+                                                    disabled={invoiceId && !isEdit ? true : false}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -857,7 +856,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={invoiceId ? true : false}
+                                                    disabled={invoiceId && !isEdit ? true : false}
                                                 />
                                             </FormControl>
                                             <FormMessage />
