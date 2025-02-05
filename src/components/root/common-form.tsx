@@ -300,8 +300,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             igst: newValues.igst ?? 0,
             roundOffAmount: newValues.roundOff ?? 0,
             grandTotal: newValues.grandTotal ?? 0,
-            invoiceType: invoiceId ? 2 : Number(invoiceType),
-            invoiceItems: invoiceId ? selectedTableRows.map((item: any) => ({
+            invoiceType: invoiceId ? isEdit ? 1 : 2 : Number(invoiceType),
+            invoiceItems: (invoiceId && !isEdit) ? selectedTableRows.map((item: any) => ({
                 productId: item.productId ?? 0,
                 quantity: item.quantity,
                 rpuwg: item.rpuwg,
@@ -462,7 +462,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         </div>
                         <div className='flex items-center gap-4'>
                             <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}>
-                                {/* <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital && !invoiceId ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
+                                {/* <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
                                 <Button type='button' disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
                                     Scan barcode
                                 </Button>
@@ -712,7 +712,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         isPaginationEnable={false}
                         isMultiSelectEnabled={true}
                         onSelectedRowsChange={(selectedRows) => setSelectedTableRows(selectedRows)}
-                        isDisableTable={invoiceId && !isEdit ? true : false}
+                        isDisableTable={(invoiceId && !isEdit) ? true : false}
                     />
 
                     <div className="border border-gray-300 rounded-lg p-4 mt-4">
