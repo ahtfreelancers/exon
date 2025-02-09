@@ -169,6 +169,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             cgst: invoice?.cgst,
             sgst: invoice?.sgst,
             igst: invoice?.igst,
+            invoiceType: invoice?.invoiceType,
             roundOff: invoice?.roundOffAmount,
             grandTotal: invoice?.grandTotal
         },
@@ -302,7 +303,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             igst: newValues.igst ?? 0,
             roundOffAmount: newValues.roundOff ?? 0,
             grandTotal: newValues.grandTotal ?? 0,
-            invoiceType: invoiceId ? (isEdit ? 1 : 2) : Number(invoiceType),
+            invoiceType: newValues?.invoiceType ? newValues?.invoiceType : Number(invoiceType),
             invoiceItems: (invoiceId && !isEdit)
                 ? selectedTableRows.map((item: any) => ({
                     productId: item.productId ?? 0,
