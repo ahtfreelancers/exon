@@ -292,7 +292,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         };
 
         const payload = {
-            hospitalId: type === 1 ? parseInt(selectedHospital as string) : 0,
+            hospitalId: type === 1 ? parseInt(selectedHospital as string) : null,
             distributorId: type === 2 ? parseInt(selectedHospital as string) : null,
             shipping: newValues.shippingFreight ?? 0,
             packingCharge: newValues.packingCharge ?? 0,
