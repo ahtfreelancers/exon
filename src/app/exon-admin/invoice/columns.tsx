@@ -36,11 +36,11 @@ const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceT
           onClick={() => viewInvoice(id)}
         />
       </div>
-      {invoiceType === 1 && (
-        <Link href={`/exon-admin/invoice/edit/${id}`}>
-          <FilePenLine size={22} />
-        </Link>
-      )}
+      {/* {invoiceType === 1 && ( */}
+      <Link href={`/exon-admin/invoice/edit/${id}`}>
+        <FilePenLine size={22} />
+      </Link>
+      {/* )} */}
       <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
       <Link href={`/exon-admin/invoice/add?convertId=${id}`}>
         <BookType size={22} />
