@@ -38,8 +38,8 @@ const statusEnum: any = {
 }
 
 const DiscountTypeList = [
-  { id: '1', name: '%' },
-  { id: '2', name: '₹' }
+  { id: 1, name: '%' },
+  { id: 2, name: '₹' }
 ]
 const gstList = [
   { id: '0%', name: '0%' },
@@ -65,7 +65,7 @@ const ActionsCell = ({ id, handleDelete }: { id: string, handleDelete: any }) =>
 };
 
 export const columns = (
-  onHandleChange: (id: string, value: string, type: string) => void,
+  onHandleChange: (id: string, value: any, type: string) => void,
   handleDelete: (id: string) => void
 ): ColumnDef<any>[] => [
   {
@@ -170,7 +170,7 @@ export const columns = (
       </div>
     ),
     cell: ({ row }) => {
-    const handleDiscount = (newValue: string) => {
+    const handleDiscount = (newValue: any) => {
       onHandleChange(row.original.id, newValue, 'discount');
     };
       return (
@@ -194,7 +194,7 @@ export const columns = (
       </div>
     ),
     cell: ({ row }) => {
-      const handleDiscountType = (newValue: string) => {
+      const handleDiscountType = (newValue: any) => {
         onHandleChange(row.original.id, newValue, 'discount-type');
       };
       return (
