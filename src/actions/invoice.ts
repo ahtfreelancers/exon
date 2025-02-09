@@ -29,6 +29,7 @@ export async function addInvoice(data: any) {
         const response = await agent.Invoice.createInvoice(data)
         return handleResponse(response)
     } catch (error) {
+        console.error("Add Invoice error", error);
         return {
             error,
         };

@@ -127,6 +127,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
     const router = useRouter();
 
     const pageSize = 10
+    console.log("selectedTableRows", selectedTableRows);
+    console.log("invoice", invoice);
 
     useEffect(() => {
         if (invoice?.invoiceItems && invoice?.invoiceItems?.length > 0) {
@@ -290,7 +292,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         };
 
         const payload = {
-            hospitalId: type === 1 ? parseInt(selectedHospital as string) : null,
+            hospitalId: type === 1 ? parseInt(selectedHospital as string) : 0,
             distributorId: type === 2 ? parseInt(selectedHospital as string) : null,
             shipping: newValues.shippingFreight ?? 0,
             packingCharge: newValues.packingCharge ?? 0,
@@ -300,26 +302,34 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             igst: newValues.igst ?? 0,
             roundOffAmount: newValues.roundOff ?? 0,
             grandTotal: newValues.grandTotal ?? 0,
-            invoiceType: invoiceId ? isEdit ? 1 : 2 : Number(invoiceType),
-            invoiceItems: (invoiceId && !isEdit) ? selectedTableRows.map((item: any) => ({
-                productId: item.productId ?? 0,
-                quantity: item.quantity,
-                rpuwg: item.rpuwg,
-                rpuwog: item.rpuwog,
-                discountType: item.discountType ?? 0,
-                discount: item.discount ?? 0,
-                gst: item.gst,
-                total: item.total,
-            })) : productItems.map((item: any) => ({
-                productId: item.productId ?? 0,
-                quantity: item.quantity,
-                rpuwg: item.rpuwg,
-                rpuwog: item.rpuwog,
-                discountType: item.discountType ?? 0,
-                discount: item.discount ?? 0,
-                gst: item.gst,
-                total: item.total,
-            })),
+            invoiceType: invoiceId ? (isEdit ? 1 : 2) : Number(invoiceType),
+            invoiceItems: (invoiceId && !isEdit)
+                ? selectedTableRows.map((item: any) => ({
+                    productId: item.productId ?? 0,
+                    quantity: item.quantity,
+                    rpuwg: item.rpuwg,
+                    rpuwog: item.rpuwog,
+                    discountType: item.discountType ?? 0,
+                    discount: item.discount ?? 0,
+                    gst: item.gst,
+                    total: item.total,
+                }))
+                : productItems.map((item: any) => {
+                    const commonFields = {
+                        productId: item.productId ?? 0,
+                        quantity: item.quantity,
+                        rpuwg: item.rpuwg,
+                        rpuwog: item.rpuwog,
+                        discountType: parseInt(item.discountType, 10) ?? 0,
+                        discount: parseInt(item.discount, 10) ?? 0,
+                        gst: item.gst,
+                        total: item.total,
+                    };
+
+                    return type === 1
+                        ? commonFields // Exclude invoiceId and id for type 1
+                        : { ...commonFields, invoiceId: parseInt(invoiceId, 10), id: item?.id };
+                }),
         };
 
         if (invoiceId) {
@@ -339,61 +349,85 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         }
 
     };
+    console.log("productItems", productItems);
 
-    const onHandleChange = (id: string, value: string, typeName: string) => {
-        if (typeName === 'gst') {
-            const newProductItems: any = productItems.map((item: any) => {
-                const gstVal = value.includes('%') ? value.replaceAll('%', '') : value
-                const calculateRpuwg = ((parseFloat(item.total) * parseFloat(gstVal)) / 100)
-                return item.id === id ? { ...item, gst: value, rpuwog: parseFloat(item.total), rpuwg: (parseFloat(item.total) + calculateRpuwg), gstAmount: calculateRpuwg } : item
-            })
-            setProductItems(newProductItems);
+    const onHandleChange = (id: string, value: any, typeName: string) => {
+        const newProductItems = productItems.map((item: any) => {
+            if (item.id !== id) return item;
 
-            calculateTotal(newProductItems)
-        }
+            let updatedItem = { ...item };
 
-        if (typeName === 'discount') {
-            const newProductItems: any = productItems.map((item: any) => {
-                let calculatedDiscount: any
-                if (item?.discountType === '1') {
-                    calculatedDiscount = ((parseFloat(item.total) * Number(value)) / 100)
+            // Ensure originalTotal exists to always refer back to the original amount
+            if (!updatedItem.originalTotal) {
+                updatedItem.originalTotal = item.total;
+            }
+
+            let total = parseFloat(updatedItem.originalTotal) || 0;
+
+            if (typeName === 'gst') {
+                const gstVal = value.includes('%') ? value.replace('%', '') : value;
+                const gstAmount = (total * parseFloat(gstVal)) / 100;
+
+                updatedItem = {
+                    ...updatedItem,
+                    gst: value,
+                    gstAmount: isNaN(gstAmount) ? 0 : gstAmount,
+                    rpuwg: total + gstAmount, // total including gst
+                    rpuwog: total, // total without gst
+                };
+            }
+
+            if (typeName === 'discount') {
+                const discountValue = parseFloat(value) || 0;
+                let calculatedDiscount = 0;
+
+                if (updatedItem.discountType === 1) {
+                    calculatedDiscount = (total * discountValue) / 100;
+                } else if (updatedItem.discountType === 2) {
+                    calculatedDiscount = discountValue;
                 }
-                if (item?.discountType === '2') {
-                    calculatedDiscount = value
+
+                const newTotal = total - calculatedDiscount;
+                const gstVal = updatedItem.gst.includes('%') ? updatedItem.gst.replace('%', '') : updatedItem.gst;
+                const gstAmount = (newTotal * parseFloat(gstVal)) / 100;
+
+                updatedItem = {
+                    ...updatedItem,
+                    discount: value,
+                    total: isNaN(newTotal) ? 0 : newTotal,
+                    gstAmount: isNaN(gstAmount) ? 0 : gstAmount,
+                };
+            }
+
+            if (typeName === 'discount-type') {
+                let calculatedDiscount = 0;
+                const discountValue = parseFloat(updatedItem.discount) || 0;
+
+                if (value === 1) {
+                    calculatedDiscount = (total * discountValue) / 100;
+                } else if (value === 2) {
+                    calculatedDiscount = discountValue;
                 }
-                const calculateTotal = (parseFloat(item.total) - parseFloat(calculatedDiscount))
-                const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
-                const calculateRpuwg = ((calculateTotal * parseFloat(gstVal)) / 100)
-                return item.id === id ? { ...item, discount: value, total: calculateTotal, gstAmount: calculateRpuwg } : item
-            })
-            setProductItems(newProductItems);
 
-            calculateTotal(newProductItems)
-        }
+                const newTotal = total - calculatedDiscount;
+                const gstVal = updatedItem.gst.includes('%') ? updatedItem.gst.replace('%', '') : updatedItem.gst;
+                const gstAmount = (newTotal * parseFloat(gstVal)) / 100;
 
-        if (typeName === 'discount-type') {
-            const newProductItems: any = productItems.map((item: any) => {
-                if (item?.discount) {
-                    let calculatedDiscount: any
-                    if (value === '1') {
-                        calculatedDiscount = ((parseFloat(item.total) * Number(item?.discount)) / 100)
-                    }
-                    if (value === '2') {
-                        calculatedDiscount = item?.discount
-                    }
-                    const calculateTotal = (parseFloat(item.total) - parseFloat(calculatedDiscount))
-                    const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
-                    const calculateRpuwg = ((calculateTotal * parseFloat(gstVal)) / 100)
-                    return item.id === id ? { ...item, discountType: value, total: calculateTotal, gstAmount: calculateRpuwg } : item
-                } else {
-                    return item.id === id ? { ...item, discountType: value } : item
-                }
-            })
-            setProductItems(newProductItems);
+                updatedItem = {
+                    ...updatedItem,
+                    discountType: value,
+                    total: isNaN(newTotal) ? 0 : newTotal,
+                    gstAmount: isNaN(gstAmount) ? 0 : gstAmount,
+                };
+            }
 
-            calculateTotal(newProductItems)
-        }
+            return updatedItem;
+        });
+
+        setProductItems(newProductItems);
+        calculateTotal(newProductItems);
     };
+
 
     const handleDelete = (id: string) => {
         const filteredProductItems = productItems.filter((item: any) => item.id !== Number(id));
@@ -462,9 +496,10 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         </div>
                         <div className='flex items-center gap-4'>
                             <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}>
-                                {/* <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
-                                <Button type='button' disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                                <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                                    {/* <Button type='button' disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
                                     Scan barcode
+                                </Button> */}
                                 </Button>
                             </HospitalScannerButton>
                         </div>
@@ -509,19 +544,22 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                 <Popover>
                                                     <PopoverTrigger asChild disabled={invoiceId ? true : false}>
                                                         <Button
-                                                            // variant={"outline"}
                                                             className="border border-input bg-transparent text-black flex w-full justify-start text-left font-normal"
                                                         >
                                                             <CalendarIcon className="mr-2 h-4 w-4" />
-                                                            {field.value ? new Date(field.value).toLocaleDateString() : <span>Pick a date</span>}
+                                                            {field.value
+                                                                ? new Date(field.value).toLocaleDateString("en-GB")
+                                                                : new Date().toLocaleDateString("en-GB") // Default to today’s date
+                                                            }
                                                         </Button>
                                                     </PopoverTrigger>
                                                     <PopoverContent className="w-auto p-0">
                                                         <Calendar
                                                             mode="single"
-                                                            selected={field.value ? new Date(field.value) : undefined}
-                                                            onSelect={(date) => field.onChange(date?.toISOString())}
-                                                        // initialFocus
+                                                            selected={field.value && !isNaN(new Date(field.value).getTime())
+                                                                ? new Date(field.value)
+                                                                : new Date()}
+                                                            onSelect={(date) => field.onChange(date ? date.toISOString() : new Date().toISOString())}
                                                         />
                                                     </PopoverContent>
                                                 </Popover>
@@ -530,6 +568,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                         </FormItem>
                                     )}
                                 />
+
                             </div>
                             <div className='w-full flex gap-2'>
                                 <FormField
@@ -834,7 +873,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                     name="roundOff"
                                     render={({ field }) => (
                                         <FormItem className='w-full flex items-center justify-between mb-2'>
-                                            <FormLabel>Round Off:</FormLabel>
+                                            <FormLabel>Round Offd:</FormLabel>
                                             <FormControl className='w-1/2'>
                                                 <Input
                                                     className='!mt-0'
