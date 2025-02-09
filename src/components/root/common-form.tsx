@@ -496,10 +496,10 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         </div>
                         <div className='flex items-center gap-4'>
                             <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}>
-                                <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
-                                    {/* <Button type='button' disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
+                                {/* <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
+                                <Button type='button' disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
                                     Scan barcode
-                                </Button> */}
+                                    {/* </Button> */}
                                 </Button>
                             </HospitalScannerButton>
                         </div>
@@ -873,7 +873,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                     name="roundOff"
                                     render={({ field }) => (
                                         <FormItem className='w-full flex items-center justify-between mb-2'>
-                                            <FormLabel>Round Offd:</FormLabel>
+                                            <FormLabel>Round Off:</FormLabel>
                                             <FormControl className='w-1/2'>
                                                 <Input
                                                     className='!mt-0'
