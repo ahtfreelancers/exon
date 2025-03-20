@@ -9,8 +9,14 @@ import "../styles/global.scss";
 import Footer from "@/components/core/Footer";
 import { ArrowUpIcon } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
+import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { Toaster } from "@/components/ui/sonner";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-poppins",
+});
 
 export default function RootLayout({
   children,
@@ -87,7 +93,7 @@ export default function RootLayout({
           content="Exon Therapeutics - Leading provider of innovative heart endostents and heart-related products."
         />
         <meta
-          httpEquiv="Content-Security-Policy"
+          http-equiv="Content-Security-Policy"
           content="upgrade-insecure-requests"
         />
         {/* Primary Keywords Related to Exon Therapeutics  */}
@@ -95,7 +101,6 @@ export default function RootLayout({
           name="keywords"
           content="Exon Therapeutics, heart endostents, cardiovascular technology, heart health, medical devices, Infinity, Sleek, Swift, Intima, Endostent, heart stents"
         />
-
         {/* Additional Keywords for Products  */}
         <meta
           name="keywords"
@@ -185,46 +190,43 @@ export default function RootLayout({
           name="keywords"
           content="Exon Therapeutics USA, Exon Therapeutics Europe, Exon Therapeutics India, heart stents worldwide, cardiovascular devices in Asia"
         />
-
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
       </head>
 
-      <>
-        {!pathname.includes("exon-admin") ? (
-          <body className={"relative"}>
-            <Toaster position="top-center" />
-            {children}
-            {showFooter && <Footer />}
-            <div className="fixed bottom-4 right-4 flex flex-col gap-4 z-[9999999]">
-              {/* WhatsApp Button */}
-              <a
-                href={`https://wa.me/918799410617?text=Hello! I would like to inquire about Exon Therapeutics products.`}
-                className="p-3 bg-green-500 text-white rounded-full shadow-lg transition-transform duration-300 hover:scale-110"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp"
-              >
-                <FaWhatsapp className="h-6 w-6" />
-              </a>
-
-              {/* Scroll to Top Button */}
-              {showScrollButton && (
-                <button
-                  onClick={scrollToTop}
-                  className="p-3 bg-secondary text-white rounded-full shadow-lg transition-transform duration-300 animate-bounce"
-                  aria-label="Scroll to Top"
+      <body className={cn("relative", poppins.className)}>
+        <>
+          {!pathname.includes("exon-admin") ? (
+            <>
+              {children}
+              {showFooter && <Footer />}
+              <div className="fixed bottom-4 right-4 flex flex-col gap-4 z-[9999999]">
+                {/* WhatsApp Button */}
+                <a
+                  href={`https://wa.me/918799410617?text=Hello! I would like to inquire about Exon Therapeutics products.`}
+                  className="p-3 bg-green-500 text-white rounded-full shadow-lg transition-transform duration-300 hover:scale-110"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp"
                 >
-                  <ArrowUpIcon className="h-6 w-6" />
-                </button>
-              )}
-            </div>
-          </body>
-        ) : (
-          <body className={"relative font-admin"}> <Toaster position="top-center" />{children}</body>
-        )}
-      </>
+                  <FaWhatsapp className="h-6 w-6" />
+                </a>
+
+                {/* Scroll to Top Button */}
+                {showScrollButton && (
+                  <button
+                    onClick={scrollToTop}
+                    className="p-3 bg-secondary text-white rounded-full shadow-lg transition-transform duration-300 animate-bounce"
+                    aria-label="Scroll to Top"
+                  >
+                    <ArrowUpIcon className="h-6 w-6" />
+                  </button>
+                )}
+              </div>
+            </>
+          ) : (
+            <>{children}</>
+          )}
+        </>
+      </body>
     </html>
   );
 }

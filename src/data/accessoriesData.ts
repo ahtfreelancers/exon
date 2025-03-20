@@ -42,7 +42,7 @@ export const accessoriesData = {
         },
         tableSpecification: {
             title: "Specification",
-            columns: "7",
+            columns: 7,
             details: [
                 "S/N",
                 "CURVE SHAPES",
