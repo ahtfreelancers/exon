@@ -37,7 +37,7 @@ export default function NavBar({ children }: { children: ReactNode }) {
   ];
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-hidden">
       <header className="flex h-14 lg:h-[55px] items-center gap-4 border-b px-3">
         <Dialog>
           <SheetTrigger className="min-[1024px]:hidden p-2 transition">

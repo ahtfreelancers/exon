@@ -132,12 +132,34 @@ const Distributors = {
     distributorProductMapping: (data: any) => requests.post(`${API_BASE_URL}/distributors/distributorproductmapping`, data),
 }
 
+const ProductTypes = {
+    getProductTypes: (params: any) => requests.get(`${API_BASE_URL}/producttypes`, params),
+    createProductType: (data: any) => requests.post(`${API_BASE_URL}/producttypes`, createFormData(data)),
+    getProductTypeById: (id: number) => requests.get(`${API_BASE_URL}/producttypes/${id}`),
+    deleteProductType: (id: number) => requests.delete(`${API_BASE_URL}/producttypes/${id}`),
+    updateProductType: (id: any, data: any) => requests.put(`${API_BASE_URL}/producttypes/${id}`, createFormData(data)),
+}
+const Invoice = {
+    getInvoice: (params: any) => requests.get(`${API_BASE_URL}/invoices`, params),
+    getInvoicePdf: (id: any) => requests.get(`${API_BASE_URL}/invoices/getInvoicePDF/${id}`),
+    createInvoice: (data: any) => requests.post(`${API_BASE_URL}/invoices`, data),
+    updateInvoice: (id: any, data: any) => requests.put(`${API_BASE_URL}/invoices/${id}`, data),
+    getInvoiceById: (id: number) => requests.get(`${API_BASE_URL}/invoices/${id}`),
+    deleteInvoice: (id: number) => requests.delete(`${API_BASE_URL}/invoices/${id}`),
+}
+const SharePdf = {
+    sharePdf: (data: any) => requests.post(`${API_BASE_URL}/emails`, data),
+}
+
 const agent = {
     Products,
     Contact,
     Hospitals,
     Distributors,
-    Dashboard
+    Dashboard,
+    ProductTypes,
+    Invoice,
+    SharePdf
 }
 
 export default agent

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -9,44 +9,50 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  useReactTable
-} from '@tanstack/react-table'
+  useReactTable,
+} from "@tanstack/react-table";
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
-} from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import Link from 'next/link'
-// import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
-// const statusEnum = {
-//   "0": 'Not In',
-//   "1": 'In',
-//   "2": 'Out',
-//   "3": 'Dispose',
-// }
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FiChevronDown, FiChevronRight } from "react-icons/fi";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  buttonTitle: string
-  buttonUrl: string
-  search?: string
-  onSearch: (value: string) => void
-  onPageChange: (pageIndex: number) => void
-  setStatusFilter?: (value: string) => void
-  pageCount: number
-  currentPage: number
-  pageSize?: number
-  isSearchEnable?: boolean
-  isPaginationEnable?: boolean
-  isStatusFilterEnable?: boolean
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  buttonTitle: string;
+  buttonUrl: string;
+  search?: string;
+  onSearch: (value: string) => void;
+  onPageChange: (pageIndex: number) => void;
+  onSelectDropdownChange?: (value: string) => void;
+  pageCount: number;
+  currentPage: number;
+  pageSize?: number;
+  isSearchEnable?: boolean;
+  isPaginationEnable?: boolean;
+  isInvoiceFilterEnable?: boolean;
+  isMultiSelectEnabled?: boolean;
+  onSelectedRowsChange?: (selectedRows: TData[]) => void;
+  isDisableTable?: boolean;
+  isStatusFilterEnable?: boolean;
+  setStatusFilter?: (status: string) => void; // <-- Add this
 }
 
 export function DataTable<TData, TValue>({
@@ -57,18 +63,27 @@ export function DataTable<TData, TValue>({
   search,
   onSearch,
   onPageChange,
-  setStatusFilter,
+  onSelectDropdownChange,
   pageCount,
   currentPage,
   pageSize = 10,
   isSearchEnable = true,
+  isInvoiceFilterEnable = false,
+  isPaginationEnable = true,
+  isMultiSelectEnabled = false,
+  onSelectedRowsChange,
+  isDisableTable = false,
   isStatusFilterEnable = false,
-  isPaginationEnable = true
+  setStatusFilter, // <-- Add this
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [searchTerm, setSearchTerm] = useState(search || '')
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [searchTerm, setSearchTerm] = useState(search || "");
+  const [expandedRows, setExpandedRows] = useState<{ [key: string]: boolean }>(
+    {}
+  );
+  const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>({});
 
   const table = useReactTable({
     data,
@@ -76,7 +91,7 @@ export function DataTable<TData, TValue>({
     state: {
       sorting,
       columnFilters,
-      columnVisibility
+      columnVisibility,
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -84,21 +99,65 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel()
-  })
+    getPaginationRowModel: getPaginationRowModel(),
+  });
+
+  const allRowsSelected =
+    data?.length > 0 && data?.every((_, index) => selectedRows[index]);
+  const someRowsSelected =
+    data?.some((_, index) => selectedRows[index]) && !allRowsSelected;
+
+  const selectAllCheckboxRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    table.setPageIndex(currentPage - 1) // TanStack Table uses zero-based index
-  }, [currentPage, table])
+    if (selectAllCheckboxRef.current) {
+      selectAllCheckboxRef.current.indeterminate = someRowsSelected;
+    }
+  }, [someRowsSelected]);
+
+  const handleSelectAll = () => {
+    const newSelection = allRowsSelected
+      ? {}
+      : Object.fromEntries(data?.map((_, index) => [index, true]));
+    setSelectedRows(newSelection);
+  };
+
+  const handleSelectRow = (rowId: string) => {
+    setSelectedRows((prev) => ({
+      ...prev,
+      [rowId]: !prev[rowId],
+    }));
+  };
+
+  useEffect(() => {
+    if (data.length === 0 || Object.keys(selectedRows).length === 0) {
+      return;
+    }
+
+    const selectedData = data?.filter((_, index) => selectedRows[index]);
+    onSelectedRowsChange?.(selectedData);
+  }, [selectedRows, data]);
+
+  useEffect(() => {
+    table.setPageIndex(currentPage - 1);
+  }, [currentPage, table]);
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      onSearch(searchTerm)
-    }, 300)
-    return () => clearTimeout(delayDebounce)
-  }, [searchTerm, onSearch])
+      onSearch(searchTerm);
+    }, 300);
+    return () => clearTimeout(delayDebounce);
+  }, [searchTerm, onSearch]);
 
-  const totalPages = Math.ceil(pageCount / pageSize)
+  const totalPages = Math.ceil(pageCount / pageSize);
+
+  // Function to toggle row expansion
+  const toggleExpandRow = (rowId: string) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [rowId]: !prev[rowId],
+    }));
+  };
 
   // Function to render pagination buttons
   const renderPaginationButtons = () => {
@@ -110,7 +169,7 @@ export function DataTable<TData, TValue>({
 
     // Add ellipsis after the first page if currentPage is far from it
     if (currentPage > 4) {
-      pageNumbers.push('ellipsis-start');
+      pageNumbers.push("ellipsis-start");
     }
 
     // Determine the range of pages to display around the current page
@@ -126,7 +185,7 @@ export function DataTable<TData, TValue>({
 
     // Add ellipsis before the last page if necessary
     if (currentPage < totalPages - 3) {
-      pageNumbers.push('ellipsis-end');
+      pageNumbers.push("ellipsis-end");
     }
 
     // Add the last page (if there's more than one page)
@@ -136,14 +195,18 @@ export function DataTable<TData, TValue>({
 
     // Render the pagination buttons
     return pageNumbers.map((pageNumber: any, index: number) => {
-      if (pageNumber === 'ellipsis-start' || pageNumber === 'ellipsis-end') {
-        return <span key={`ellipsis-${index}`} className="px-2">...</span>;
+      if (pageNumber === "ellipsis-start" || pageNumber === "ellipsis-end") {
+        return (
+          <span key={`ellipsis-${index}`} className="px-2">
+            ...
+          </span>
+        );
       }
 
       return (
         <Button
           key={pageNumber}
-          variant={pageNumber === currentPage ? 'secondary' : 'default'}
+          variant={pageNumber === currentPage ? "secondary" : "default"}
           size="sm"
           onClick={() => onPageChange(pageNumber)}
         >
@@ -153,70 +216,89 @@ export function DataTable<TData, TValue>({
     });
   };
 
-
-
   return (
     <>
       {/* Filters */}
-      {(isSearchEnable || buttonTitle) && <div className='flex items-center justify-between'>
-        <div className='flex items-center py-4'>
-          {isSearchEnable && (
-            <Input
-              placeholder='Search by name...'
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              className='max-w-sm'
-            />
-          )}
+      {(isSearchEnable || buttonTitle) && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center py-4">
+            {isSearchEnable && (
+              <Input
+                placeholder="Search by name..."
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                className="max-w-sm"
+              />
+            )}
+          </div>
+          <div className="flex gap-4">
+            {isInvoiceFilterEnable && (
+              <div className="flex justify-center items-center gap-2">
+                <div>
+                  <Select
+                    defaultValue={"1"}
+                    onValueChange={(value: any) =>
+                      onSelectDropdownChange?.(value || "1")
+                    } // Use optional chaining
+                  >
+                    <SelectTrigger className="w-[180px] font-normal text-black border-input">
+                      <SelectValue placeholder={`Select a Hospital`} />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white">
+                      <SelectGroup>
+                        <SelectItem
+                          key={`1`}
+                          value={`1`}
+                          className="cursor-pointer"
+                        >
+                          Proforma
+                        </SelectItem>
+
+                        <SelectItem
+                          key={`2`}
+                          value={`2`}
+                          className="cursor-pointer"
+                        >
+                          Tax
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            )}
+            {buttonTitle && (
+              <Link href={buttonUrl}>
+                <Button className="ml-auto">{buttonTitle}</Button>
+              </Link>
+            )}
+          </div>
         </div>
-        <div className='flex gap-4'>
-          {isStatusFilterEnable && <div className='flex items-center gap-2'>
-            {/* <label className='font-medium'>Filter:</label>
-            <Select onValueChange={(value: any) => setStatusFilter && setStatusFilter(value)}>
-              <SelectTrigger className="w-[180px] text-black border-input">
-                <SelectValue placeholder="Select a status" />
-              </SelectTrigger>
-              <SelectContent className='bg-white'>
-                <SelectGroup>
-                  {Object.entries(statusEnum).map(([key, value]) => (
-                    <SelectItem key={key} value={key} className='cursor-pointer'>
-                      {value}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select> */}
-            <Tabs defaultValue="all" className="w-[400px]">
-              <TabsList>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("")} value="all">All</TabsTrigger>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("0")} value="notin">Not In</TabsTrigger>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("1")} value="in">In</TabsTrigger>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("2")} value="out">Out</TabsTrigger>
-                <TabsTrigger onClick={() => setStatusFilter && setStatusFilter("3")} value="dispose">Dispose</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>}
-          {buttonTitle && (
-            <Link href={buttonUrl}>
-              <Button className='ml-auto'>{buttonTitle}</Button>
-            </Link>
-          )}
-        </div>
-      </div>}
+      )}
       {/* Table */}
-      <div className='rounded-md border'>
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map(headerGroup => (
+            {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
+                {isMultiSelectEnabled && (
+                  <TableHead>
+                    <input
+                      type="checkbox"
+                      ref={selectAllCheckboxRef}
+                      checked={allRowsSelected}
+                      onChange={handleSelectAll}
+                    />
+                  </TableHead>
+                )}
+                {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -224,26 +306,61 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
+              table.getRowModel().rows.map((row, rowIndex) => (
+                <>
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {/* <TableCell>
+                      <Button onClick={() => toggleExpandRow(row.id)}>
+                        <FiChevronDown className="h-4 w-4" />
+                      </Button>
+                    </TableCell> */}
+                    {isMultiSelectEnabled && (
+                      <TableCell>
+                        <input
+                          type="checkbox"
+                          checked={!!selectedRows[rowIndex]}
+                          onChange={() => handleSelectRow(rowIndex.toString())}
+                        />
+                      </TableCell>
+                    )}
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {isDisableTable && cell.column.id !== "checkbox" ? (
+                          <span className="text-gray-500 pointer-events-none">
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </span>
+                        ) : (
+                          flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                  {expandedRows[row.id] && (
+                    <TableRow key={`${row.id}-expanded`}>
+                      <TableCell colSpan={columns.length + 1}>
+                        {/* Render your expanded content here */}
+                        <div className="p-4 border-t">
+                          Expanded content for row {row.id}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
               ))
             ) : (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className='h-24 text-center'
+                  className="h-24 text-center"
                 >
                   No results.
                 </TableCell>
@@ -255,9 +372,9 @@ export function DataTable<TData, TValue>({
 
       {/* Pagination */}
       {isPaginationEnable && (
-        <div className='flex items-center justify-end space-x-2 py-4'>
+        <div className="flex items-center justify-end space-x-2 py-4">
           <Button
-            size='sm'
+            size="sm"
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
@@ -267,7 +384,7 @@ export function DataTable<TData, TValue>({
           {renderPaginationButtons()}
 
           <Button
-            size='sm'
+            size="sm"
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
           >
@@ -276,5 +393,5 @@ export function DataTable<TData, TValue>({
         </div>
       )}
     </>
-  )
+  );
 }

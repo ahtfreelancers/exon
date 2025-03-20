@@ -1,13 +1,16 @@
 'use client'
 
 import { deleteProduct } from '@/actions/products';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, Eye, FilePenLine, Trash } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import React from 'react';
 import { toast } from 'sonner';
 
-export type User = {
+export type Mapping = {
   id: string
   name: string
   brandName: string
@@ -17,6 +20,15 @@ export type User = {
   expirationDate: string
   productStatus: number
   price: string
+  product: undefined
+  discount: number
+  discountType: number
+  gst: string
+  quantity: number
+  rpuwg: number
+  rpuwog: number
+  total: number
+
 }
 
 const statusEnum: any = {
@@ -25,36 +37,37 @@ const statusEnum: any = {
   "2": 'Dispose'
 }
 
-const ActionsCell = ({ id }: { id: string }) => {
-  const { data: session } = useSession();
+const DiscountTypeList = [
+  { id: 1, name: '%' },
+  { id: 2, name: '₹' }
+]
+const gstList = [
+  { id: '0%', name: '0%' },
+  { id: '0.25%', name: '0.25%' },
+  { id: '1%', name: '1%' },
+  { id: '1.5%', name: '1.5%' },
+  { id: '3%', name: '3%' },
+  { id: '5%', name: '5%' },
+  { id: '7.5%', name: '7.5%' },
+  { id: '12%', name: '12%' },
+  { id: '18%', name: '18%' },
+  { id: '28%', name: '28%' },
+]
 
-  const handleDelete = async () => {
-    try {
-      const result: any = await deleteProduct(id);
-      if (result.error) {
-        toast.error(result.error)
-      } else {
-        toast.success("Product deleted successfully")
-      }
-    } catch (error) {
-      console.error("Error deleting product", error);
-    }
-  };
+const ActionsCell = ({ id, handleDelete }: { id: string, handleDelete: any }) => {
+  const { data: session } = useSession();
 
   return (
     <div className="flex gap-[10px]">
-      <Link href={`/exon-admin/products/${id}`}>
-        <Eye size={22} className="cursor-pointer" />
-      </Link>
-      <Link href={`/exon-admin/products/edit/${id}`}>
-        <FilePenLine size={22} />
-      </Link>
-      <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
+      <Trash size={22} color="red" className="cursor-pointer" onClick={() => handleDelete(id)} />
     </div>
   );
 };
 
-export const columns: ColumnDef<User>[] = [
+export const columns = (
+  onHandleChange: (id: string, value: any, type: string) => void,
+  handleDelete: (id: string) => void
+): ColumnDef<any>[] => [
   {
     accessorKey: 'itemNo',
     header: ({ column }) => (
@@ -146,6 +159,144 @@ export const columns: ColumnDef<User>[] = [
     },
   },
   {
+    accessorKey: 'discount',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Discount
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    ),
+    cell: ({ row }) => {
+    const handleDiscount = (newValue: any) => {
+      onHandleChange(row.original.id, newValue, 'discount');
+    };
+      return (
+        <Input
+          className='!mt-0'
+          defaultValue={row.original.discount}
+          onBlur={(e) => handleDiscount(e.target.value)}
+        />
+      )
+    },
+  },
+  {
+    accessorKey: 'discountType',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Discount Type
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    ),
+    cell: ({ row }) => {
+      const handleDiscountType = (newValue: any) => {
+        onHandleChange(row.original.id, newValue, 'discount-type');
+      };
+      return (
+        <Select defaultValue={row.original.discountType} onValueChange={handleDiscountType}>
+          <SelectTrigger className="font-normal text-black border-input">
+            <SelectValue placeholder="" />
+          </SelectTrigger>
+          <SelectContent className='bg-white'>
+            <SelectGroup>
+              {DiscountTypeList.map((item: any) => (
+                <SelectItem key={item.id} value={item.id} className='cursor-pointer'>
+                  {item.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      )
+    },
+  },
+  {
+    accessorKey: 'gst',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        GST
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    ),
+    cell: ({ row }) => {
+      const handleGstChange = (newValue: string) => {
+        onHandleChange(row.original.id, newValue, 'gst');
+      };
+      return (
+        <Select defaultValue={row.original.gst} onValueChange={handleGstChange}>
+          <SelectTrigger className="font-normal text-black border-input">
+            <SelectValue placeholder="" />
+          </SelectTrigger>
+          <SelectContent className='bg-white'>
+            <SelectGroup>
+              {gstList.map((item: any) => (
+                <SelectItem key={item.id} value={item.id} className='cursor-pointer'>
+                  {item.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      )
+    },
+  },
+  {
+    accessorKey: 'quantity',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Quantity
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    )
+  },
+  {
+    accessorKey: 'rpuwg',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        RPUWG
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    )
+  },
+  {
+    accessorKey: 'rpuwog',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        RPUWOG
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'total',
+    header: ({ column }) => (
+      <div
+        className='flex items-center'
+        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+      >
+        Total
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </div>
+    ),
+  },
+  {
     accessorKey: 'productStatus',
     header: ({ column }) => (
       <div
@@ -158,5 +309,14 @@ export const columns: ColumnDef<User>[] = [
     ),
     cell: ({ row }) => <>{statusEnum[`${row.original.productStatus}`]}</>,
     filterFn: (row, columnId, value) => row.getValue(columnId) === value,
-  }
+  },
+  {
+    id: 'actions',
+    header: () => (
+      <div className='flex items-center'>
+        Action
+      </div>
+    ),
+    cell: ({ row }) => <ActionsCell id={row.original.id} handleDelete={handleDelete} />,
+  },
 ];

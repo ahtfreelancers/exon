@@ -19,6 +19,12 @@ export const MedicineSchema = z.object({
     price: z.string().min(1, { message: "Price is required" }),
 })
 
+export const ProductTypeSchema = z.object({
+    name: z.string().min(1, { message: "Name is required" }),
+    description: z.string().min(1, { message: "Description is required" }),
+    price: z.string().min(1, { message: "Price is required" })
+})
+
 export const HospitalSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
     gstNumber: z.string().min(1, { message: "Gst Number is required" }),
@@ -29,6 +35,7 @@ export const HospitalSchema = z.object({
     city: z.string().min(1, { message: "City is required" }),
     state: z.string().min(1, { message: "State is required" }),
     pinCode: z.string().min(1, { message: "Pincode is required" }),
+    addressId: z.number().optional(),
 })
 
 export const DistributorSchema = z.object({
@@ -41,4 +48,5 @@ export const DistributorSchema = z.object({
     city: z.string().min(1, { message: "City is required" }),
     state: z.string().min(1, { message: "State is required" }),
     pinCode: z.string().min(1, { message: "Pincode is required" }),
+    addressId: z.number().optional(),
 })
