@@ -6,7 +6,7 @@ import Image from "next/image";
 import { productData } from "@/data/productData";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
     Dialog,
     DialogContent,
@@ -83,7 +83,7 @@ export default function ProductPage() {
             <div className="relative bg-background p-3 md:p-5">
                 <Navbar />
                 <section className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 md:gap-20 xl:gap-24 justify-center">
-                    <div className="relative h-[400px] spbp:h-[640px] 2xl:h-[940px]" data-aos="fade-right">
+                    <div className="relative h-[400px] spbp:h-[500px] 2xl:h-[515px]" data-aos="fade-right">
                         <Image
                             src={`/about/${productImage}`}
                             alt="Featured Product"
@@ -129,41 +129,9 @@ export default function ProductPage() {
                     </div>
                 </DialogContent>
             </Dialog>
-            <section className="pt-[124px] px-5">
+            <section className="pt-[124px] px-5 md:px-12 xl:px-24">
                 <h2 className="text-center mb-[68px]" data-aos="fade-up">Technical Specification</h2>
                 <SpecificationSection title={stentSpecification.title} details={stentSpecification.details} />
-
-                {/* Render deliverySystems only if it exists */}
-                {deliverySystems && (
-                    <SpecificationSection title={deliverySystems.title} details={deliverySystems.details} />
-                )}
-
-                {description && <ProductDescription description={description} />}
-
-                {/* Render guidewireCompatibilityData only if it exists */}
-                {guidewireCompatibilityData && (
-                    <div>
-                        <h2 className="text-center mb-[68px]" data-aos="fade-up">Guidewire Compatibility</h2>
-                        <div className="max-w-[1024px] mx-auto">
-                            {guidewireCompatibilityData.map((section: any, index: any) => (
-                                <div key={index}>
-                                    <h3 className="text-center text-2xl text-[#162D3EC2] font-helvetica font-normal mb-4 mt-8">{section.title}</h3>
-                                    <div className="bg-background rounded-[30px] md:rounded-[66px] p-6 md:p-16" data-aos="fade-up">
-                                        <div>
-                                            <div className="grid grid-cols-2 gap-4 md:gap-6 justify-start text-[#5A5776]" data-aos="fade-right">
-                                                {section.data.map((item: any, idx: any) => (
-                                                    <div key={idx}>
-                                                        <p className="font-medium text-left text-lg md:text-[28px]">{item}</p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
             </section>
             {/* <section className="lg:p-5">
                 <ProductSlider />
@@ -172,21 +140,44 @@ export default function ProductPage() {
         </main>
     );
 }
-
 function SpecificationSection({ title, details }: any) {
     return (
-        <div className="max-w-[750px] lg:max-w-[1000px] spbp:max-w-[1250px] 3xl:max-w-[1550px] mb-16 mx-auto bg-background gap-x-3 md:gap-x-[158px] gap-y-6 p-6 md:p-16 rounded-[30px] md:rounded-[66px] grid grid-cols-2 justify-center md:justify-start font-helvetica text-3xl font-medium text-[#5A5776]">
-            {title && <h2 className="mb-12 borderText font-helvetica !text-left font-bold text-[#5A5776] text-2xl lg:text-[44px] col-span-2 lg:leading-10" data-aos="fade-right">
-                {title}
-            </h2>}
-            {details.map((item: any, index: any) => (
-                <div key={index} className="col-span-1" data-aos="fade-left">
-                    <h5 className="text-[#5A5776] text-base md:text-2xl">{item}</h5>
-                </div>
-            ))}
+        <div className="mb-16 mx-auto bg-background gap-x-3 md:gap-x-[158px] gap-y-6 p-6 md:p-16 rounded-[30px] md:rounded-[66px] justify-center md:justify-start font-helvetica text-3xl font-medium text-[#5A5776]">
+            {/* Table Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                {/* Table Headers */}
+                <div className="font-bold text-lg xl:text-4xl p-2 rounded-md">Parameter</div>
+                <div className="font-bold text-lg xl:text-4xl p-2 rounded-md">Specification</div>
+                <div className="font-bold text-lg xl:text-4xl p-2 rounded-md">Parameter</div>
+                <div className="font-bold text-lg xl:text-4xl p-2 rounded-md">Specification</div>
+
+                {/* Dynamic Rows */}
+                {details.map((item: any, index: number) => (
+                    <React.Fragment key={index}>
+                        <div className="text-[#5A5776] text-base md:text-2xl">{item.parameter1}</div>
+                        <div className="text-[#5A5776] text-base md:text-2xl">{item.specification1}</div>
+                        <div className="text-[#5A5776] text-base md:text-2xl">{item.parameter2}</div>
+                        <div className="text-[#5A5776] text-base md:text-2xl">{item.specification2}</div>
+                    </React.Fragment>
+                ))}
+            </div>
         </div>
     );
 }
+// function SpecificationSection({ title, details }: any) {
+//     return (
+//         <div className="max-w-[750px] lg:max-w-[1000px] spbp:max-w-[1250px] 3xl:max-w-[1550px] mb-16 mx-auto bg-background gap-x-3 md:gap-x-[158px] gap-y-6 p-6 md:p-16 rounded-[30px] md:rounded-[66px] grid grid-cols-2 justify-center md:justify-start font-helvetica text-3xl font-medium text-[#5A5776]">
+//             {title && <h2 className="mb-12 borderText font-helvetica !text-left font-bold text-[#5A5776] text-2xl lg:text-[44px] col-span-2 lg:leading-10" data-aos="fade-right">
+//                 {title}
+//             </h2>}
+//             {details.map((item: any, index: any) => (
+//                 <div key={index} className="col-span-1" data-aos="fade-left">
+//                     <h5 className="text-[#5A5776] text-base md:text-2xl">{item}</h5>
+//                 </div>
+//             ))}
+//         </div>
+//     );
+// }
 
 function ProductDescription({ description }: any) {
     return (

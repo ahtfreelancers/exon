@@ -1,5 +1,6 @@
 "use client"
 import ContactUs from "@/components/core/ContactUs";
+import KindWords from "@/components/core/KindWords";
 // import KindWords from "@/components/core/KindWords";
 import Navbar from "@/components/core/Navbar";
 import Slider from "@/components/core/Slider";
@@ -59,13 +60,11 @@ export default function Home() {
           </div>
           <div>
             <h2 className="mb-6 md:mb-14 borderText" data-aos="fade-left">
-              About Exon
+              Healing Hearts with
+              Innovative Care
             </h2>
             <p className="font-helvetica text-textSecondary font-medium text-xs md:text-2xl" data-aos="fade-up">
-              Exon Therapeutics LLP is committed to innovate the heart health technology at the forefront. We have created an ecosystem for invention and growth, all under one umbrella. In today’s times where
-              health is always at an edge, it is necessary to prioritize the production of high-quality medical devices that are both accessible and affordable. Our topmost indulgence lies in making cutting
-              edge cardiovascular devices that improve the quality of your life. We also provide flexible implantable cardiac devices and drug-eluting stents with longevity. We also assert to be your one-stop
-              solution for semi-compliant balloon catheter and non-compliant balloon catheter for pre-dilation and post-dilations in cardiac procedures. Exon Therapeutics LLP builds healthcare for eons.
+              At Exon Therapeutics, we are dedicated to providing advanced medical solutions for heart disease through our innovative drug-coated stents and cardiovascular devices. Our focus is on improving the outcomes of heart surgery with precision-engineered products designed to enhance patient health and quality of life. We strive to lead the way in offering cutting-edge solutions for the treatment of atherosclerosis and other heart conditions, ensuring the best possible care for those in need.
             </p>
           </div>
         </div>
@@ -87,11 +86,11 @@ export default function Home() {
             />
           </div>
         </div>
-        <Slider />
+        {/* <Slider /> */}
       </section>
-      {/* <section className="py-32 bg-primary">
+      <section className="py-32 bg-primary">
         <KindWords />
-      </section> */}
+      </section>
       <ContactUs />
     </main>
   );
