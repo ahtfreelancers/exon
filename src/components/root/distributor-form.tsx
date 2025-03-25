@@ -411,7 +411,7 @@ export const DistributorForm = ({ type, distributor }: any) => {
                     type="submit"
                     className=""
                 >
-                    {type == 1 ? "Add" : "Edit"} Distributor
+                    Save
                 </Button>
             </form>
         </Form>
