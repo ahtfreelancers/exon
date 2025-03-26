@@ -420,7 +420,7 @@ export const HospitalForm = ({ type, hospital }: any) => {
                     type="submit"
                     className=""
                 >
-                    {type == 1 ? "Add" : "Edit"} Hospital
+                    Save
                 </Button>
             </form>
         </Form>
