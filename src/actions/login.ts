@@ -6,7 +6,7 @@ import * as z from "zod"
 import { signIn } from "../../auth"
 import { LoginSchema } from "@/schemas"
 
-const DEFAULT_LOGIN_REDIRECT = '/exon-admin/products'
+const DEFAULT_LOGIN_REDIRECT = '/exon-admin/dashboard'
 
 export const login = async (values: z.infer<typeof LoginSchema>, callbackUrl?: string | null) => {
     const validatedFields = LoginSchema.safeParse(values)
