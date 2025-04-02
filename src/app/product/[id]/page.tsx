@@ -141,28 +141,94 @@ export default function ProductPage() {
     );
 }
 function SpecificationSection({ title, details }: any) {
-    return (
-        <div className="mb-16 mx-auto bg-background gap-x-3 md:gap-x-[158px] gap-y-6 p-6 md:p-16 rounded-[30px] md:rounded-[66px] justify-center md:justify-start font-helvetica text-3xl font-medium text-[#5A5776]">
-            {/* Table Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                {/* Table Headers */}
-                <div className="font-bold text-lg xl:text-4xl p-2 rounded-md">Parameter</div>
-                <div className="font-bold text-lg xl:text-4xl p-2 rounded-md">Specification</div>
-                <div className="font-bold text-lg xl:text-4xl p-2 rounded-md">Parameter</div>
-                <div className="font-bold text-lg xl:text-4xl p-2 rounded-md">Specification</div>
+  return (
+    <div className="mb-16 mx-auto bg-background gap-x-3 md:gap-x-[158px] gap-y-6 p-6 md:p-16 rounded-[30px] md:rounded-[66px] justify-center md:justify-start font-helvetica text-3xl font-medium text-[#5A5776]">
+      {/* Title */}
+      <h2 className="text-center text-2xl md:text-4xl font-bold mb-6">
+        {title}
+      </h2>
 
-                {/* Dynamic Rows */}
-                {details.map((item: any, index: number) => (
-                    <React.Fragment key={index}>
-                        <div className="text-[#5A5776] text-base md:text-2xl">{item.parameter1}</div>
-                        <div className="text-[#5A5776] text-base md:text-2xl">{item.specification1}</div>
-                        <div className="text-[#5A5776] text-base md:text-2xl">{item.parameter2}</div>
-                        <div className="text-[#5A5776] text-base md:text-2xl">{item.specification2}</div>
-                    </React.Fragment>
-                ))}
-            </div>
+      {/* Large screen layout (4 columns for md+) */}
+      <div className="hidden md:grid md:grid-cols-4 gap-6">
+        <div className="font-bold text-lg xl:text-4xl rounded-md">
+          Parameter
         </div>
-    );
+        <div className="font-bold text-lg xl:text-4xl rounded-md">
+          Specification
+        </div>
+        <div className="font-bold text-lg xl:text-4xl rounded-md">
+          Parameter
+        </div>
+        <div className="font-bold text-lg xl:text-4xl rounded-md">
+          Specification
+        </div>
+
+        {details.map((item: any, index: number) => (
+          <React.Fragment key={index}>
+            <div className="text-[#5A5776] text-base md:text-2xl">
+              {item.parameter1}
+            </div>
+            <div className="text-[#5A5776] text-base md:text-2xl">
+              {item.specification1}
+            </div>
+            <div className="text-[#5A5776] text-base md:text-2xl">
+              {item.parameter2}
+            </div>
+            <div className="text-[#5A5776] text-base md:text-2xl">
+              {item.specification2}
+            </div>
+          </React.Fragment>
+        ))}
+      </div>
+
+      {/* Mobile and Small Screen Layout */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:hidden">
+        {/* Parameter 1 & Specification 1 */}
+        <div className="col-span-1">
+          <div className="font-bold text-lg xl:text-4xl rounded-md">
+            Parameter
+          </div>
+          {details.map((item: any, index: number) => (
+            <div key={index} className="text-[#5A5776] text-base md:text-2xl">
+              {item.parameter1}
+            </div>
+          ))}
+        </div>
+        <div className="col-span-1">
+          <div className="font-bold text-lg xl:text-4xl rounded-md">
+            Specification
+          </div>
+          {details.map((item: any, index: number) => (
+            <div key={index} className="text-[#5A5776] text-base md:text-2xl">
+              {item.specification1}
+            </div>
+          ))}
+        </div>
+
+        {/* Parameter 2 & Specification 2 */}
+        <div className="col-span-1">
+          <div className="font-bold text-lg xl:text-4xl rounded-md">
+            Parameter
+          </div>
+          {details.map((item: any, index: number) => (
+            <div key={index} className="text-[#5A5776] text-base md:text-2xl">
+              {item.parameter2}
+            </div>
+          ))}
+        </div>
+        <div className="col-span-1">
+          <div className="font-bold text-lg xl:text-4xl rounded-md">
+            Specification
+          </div>
+          {details.map((item: any, index: number) => (
+            <div key={index} className="text-[#5A5776] text-base md:text-2xl">
+              {item.specification2}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
 // function SpecificationSection({ title, details }: any) {
 //     return (
