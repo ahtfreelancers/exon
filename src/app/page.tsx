@@ -88,9 +88,9 @@ export default function Home() {
         </div>
         {/* <Slider /> */}
       </section>
-      <section className="py-32 bg-primary">
+      {/* <section className="py-32 bg-primary">
         <KindWords />
-      </section>
+      </section> */}
       <ContactUs />
     </main>
   );
