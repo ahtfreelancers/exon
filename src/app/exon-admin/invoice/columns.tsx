@@ -217,92 +217,92 @@ export const columns = (
         return '';
       }
     },
-    {
-      accessorKey: 'invoiceItems',
-      header: ({ column }) => (
-        <div
-          className='flex items-center'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Taxable Value
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </div>
-      ),
-      cell: ({ row }) => `₹${row.original.grandTotal}`,
-    },
-    {
-      accessorKey: 'invoiceItems',
-      header: ({ column }) => (
-        <div
-          className='flex items-center'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          GST
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </div>
-      ),
-      cell: ({ row }) => (row.original.cgst + row.original.sgst),
-    },
-    {
-      accessorKey: 'cgst',
-      header: ({ column }) => (
-        <div
-          className='flex items-center'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          CGST
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'sgst',
-      header: ({ column }) => (
-        <div
-          className='flex items-center'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          SGST
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'igst',
-      header: ({ column }) => (
-        <div
-          className='flex items-center'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          IGST
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'cess',
-      header: ({ column }) => (
-        <div
-          className='flex items-center'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          CESS
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'roundOffAmount',
-      header: ({ column }) => (
-        <div
-          className='flex items-center'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Round Off
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </div>
-      ),
-    },
+    // {
+    //   accessorKey: 'invoiceItems',
+    //   header: ({ column }) => (
+    //     <div
+    //       className='flex items-center'
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    //     >
+    //       Taxable Value
+    //       <ArrowUpDown className='ml-2 h-4 w-4' />
+    //     </div>
+    //   ),
+    //   cell: ({ row }) => `₹${row.original.grandTotal}`,
+    // },
+    // {
+    //   accessorKey: 'invoiceItems',
+    //   header: ({ column }) => (
+    //     <div
+    //       className='flex items-center'
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    //     >
+    //       GST
+    //       <ArrowUpDown className='ml-2 h-4 w-4' />
+    //     </div>
+    //   ),
+    //   cell: ({ row }) => (row.original.cgst + row.original.sgst),
+    // },
+    // {
+    //   accessorKey: 'cgst',
+    //   header: ({ column }) => (
+    //     <div
+    //       className='flex items-center'
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    //     >
+    //       CGST
+    //       <ArrowUpDown className='ml-2 h-4 w-4' />
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   accessorKey: 'sgst',
+    //   header: ({ column }) => (
+    //     <div
+    //       className='flex items-center'
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    //     >
+    //       SGST
+    //       <ArrowUpDown className='ml-2 h-4 w-4' />
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   accessorKey: 'igst',
+    //   header: ({ column }) => (
+    //     <div
+    //       className='flex items-center'
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    //     >
+    //       IGST
+    //       <ArrowUpDown className='ml-2 h-4 w-4' />
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   accessorKey: 'cess',
+    //   header: ({ column }) => (
+    //     <div
+    //       className='flex items-center'
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    //     >
+    //       CESS
+    //       <ArrowUpDown className='ml-2 h-4 w-4' />
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   accessorKey: 'roundOffAmount',
+    //   header: ({ column }) => (
+    //     <div
+    //       className='flex items-center'
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    //     >
+    //       Round Off
+    //       <ArrowUpDown className='ml-2 h-4 w-4' />
+    //     </div>
+    //   ),
+    // },
     {
       accessorKey: 'grandTotal',
       header: ({ column }) => (
