@@ -81,7 +81,7 @@ export default function Product() {
       <section ref={productSliderRef} className="md:px-5">
         <ProductSlider />
       </section>
-      <section className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-20 px-8 md:px-[100px] bg-white py-[100px]">
+      <section className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-20 px-8 md:px-[100px] bg-white py-[70px]">
         <div className="relative h-[300px] md:h-[680px]" data-aos="fade-right">
           <Image
             src="/products/endostent-featured.png"
@@ -102,9 +102,9 @@ export default function Product() {
           </Link>
         </div>
       </section>
-      <section className="md:px-5">
+      {/* <section className="md:px-5">
         <ProductSlider />
-      </section>
+      </section> */}
       <ContactUs />
     </main>
   );

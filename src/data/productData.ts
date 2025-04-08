@@ -18,26 +18,16 @@ export const productData = {
         stentSpecification: {
             title: "Stent Specification",
             details: [
-                "Available stent lengths",
-                "10, 13, 15, 18, 20, 24, 28, 32, 36, 40, 44 & 48mm",
-                "Available stent diameters",
-                "2.25, 2.50, 2.75, 3.00, 3.50 & 4.00mm",
-                "Stent Material",
-                "L605 Cobalt-Chromium (Co-cr) alloy",
-                "Stent Design",
-                "Open and closed cell design",
-                "Stent Platform",
-                "Cobal + C",
-                "Stent foreshortening",
-                "<2%",
-                "Stent Recoil",
-                "<4%",
-                "Stent struct thickness",
-                "63µm",
-                "Drug",
-                "Sirolimus",
-                "Coating Thickness",
-                "6µm"
+                { parameter1: "Available stent lengths", specification1: "10, 13, 15, 18, 20, 24, 28, 32, 36, 40, 44 & 48mm", parameter2: "Delivery System Type", specification2: "Monorail rapid exchange" },
+                { parameter1: "Available stent diameters", specification1: "2.25, 2.50, 2.75, 3.00, 3.50 & 4.00mm", parameter2: "Polymer Type", specification2: "Biodegradable polymer" },
+                { parameter1: "Stent Material", specification1: "L605 Cobalt-Chromium (Co-cr) alloy", parameter2: "Nominal Pressure", specification2: "8 Bar" },
+                { parameter1: "Stent Design", specification1: "Open and closed hybrid cell design", parameter2: "Rated Burst Pressure", specification2: "16 Bar" },
+                { parameter1: "Stent Platform", specification1: "Cobal + C", parameter2: "Guidewire Compatibility", specification2: "0.014”" },
+                { parameter1: "Stent foreshortening", specification1: "<2%", parameter2: "Guiding Catheter Compatibility", specification2: "5F" },
+                { parameter1: "Stent Recoil", specification1: "<4%", parameter2: " ", specification2: "" },
+                { parameter1: "Stent struct thickness", specification1: "63µm", parameter2: "", specification2: "" },
+                { parameter1: "Drug", specification1: "Sirolimus ", parameter2: "", specification2: "" },
+                { parameter1: "Coating Thickness", specification1: "6µm", parameter2: "", specification2: "" }
             ]
         },
         // guidewireCompatibilityData: [
@@ -98,7 +88,7 @@ export const productData = {
         //     "- Ergonomic and Safe: A transparent hub facilitates safe connections, with proximal marker bands at 90 cm and 100 cm for accurate positioning.",
         //     "Technical specifications include a 0.90 mm distal shaft outer diameter, 0.72 mm proximal shaft outer diameter, and compatibility with 0.014” guidewires. The catheter supports a nominal inflation pressure of 10 ATM and a rated burst pressure of 18 ATM, with two platinum iridium marker bands and a tip profile of 0.016."
         // ],
-        stentSpecification: {
+        guidewireCompatibilityData: {
             title: "SLEEK NC Balloon Catheter",
             details: [
                 "Balloon Compliance",
@@ -155,7 +145,7 @@ export const productData = {
         //     "- Ergonomic and Safe: A transparent hub facilitates safe connections, with proximal marker bands at 90 cm and 100 cm for accurate positioning.",
         //     "Technical specifications include a 0.90 mm distal shaft outer diameter, 0.72 mm proximal shaft outer diameter, and compatibility with 0.014” guidewires. The catheter supports a nominal inflation pressure of 10 ATM and a rated burst pressure of 18 ATM, with two platinum iridium marker bands and a tip profile of 0.016."
         // ],
-        stentSpecification: {
+        guidewireCompatibilityData: {
             title: "SWIFT SC Balloon Catheter",
             details: [
                 "Distal Shaft (Outer Diameter)",
@@ -239,49 +229,33 @@ export const productData = {
             ]
         },
         stentSpecification: {
-            title: "INTIMA Everolimus-Eluting Coronary Stent System ",
+            title: "Stent Specification",
             details: [
-                "Available Stent Lengths",
-                "8, 10, 12, 13, 15, 16, 18, 20, 24, 28, 32, 36, 40, 42, 44 & 48 mm",
-                "Available Stent Diameters",
-                "2.25, 2.50, 2.75, 3.00, 3.50, 4.00, 4.50, & 5.00 mm",
-                "Stent Material",
-                "L605 Cobalt-Chromium (Co-Cr) Alloy",
-                "Stent Design",
-                "Open and closed cell design",
-                "Stent Foreshortening",
-                "<2%",
-                "Stent Recoil",
-                "<4%",
-                "Stent Strut Thickness",
-                "60 μm",
-                "Coating Thickness",
-                "3 μm",
-                "Drug",
-                "Sirolimus",
-                "Delivery System",
-                "Monorail rapid exchange",
-                "Polymer Type",
-                "Biodegradable polymer (PLGA carrier)",
-                // "Drug",
-                // "Everolimus",
-                // "Coating Thickness",
-                // "3μm",
+                { parameter1: "Available stent lengths", specification1: "8, 10, 12, 13, 15, 16, 18, 20, 24, 28, 32, 36, 40, 42, 44 & 48mm", parameter2: "Delivery System Type", specification2: "Monorail rapid exchange" },
+                { parameter1: "Available stent diameters", specification1: "2.25, 2.50, 2.75, 3.00, 3.50, 4.00, 4.50 & 5.00mm", parameter2: "Polymer Type", specification2: "Biodegradable polymer" },
+                { parameter1: "Stent Material", specification1: "L605 Cobalt-Chromium (Co-cr) alloy", parameter2: "Nominal Pressure", specification2: "8 Bar" },
+                { parameter1: "Stent Design", specification1: "Open and closed hybrid cell design", parameter2: "Rated Burst Pressure", specification2: "16 Bar/ ATM up to 4.00mm diameter" },
+                { parameter1: "Stent Platform", specification1: "Cobal + C", parameter2: "Guidewire Compatibility", specification2: "0.014”" },
+                { parameter1: "Stent foreshortening", specification1: "<2%", parameter2: "Guiding Catheter Compatibility", specification2: "5F" },
+                { parameter1: "Stent Recoil", specification1: "<4%", parameter2: "Delivery System ", specification2: "Hydrophilic coated" },
+                { parameter1: "Stent struct thickness", specification1: "60µm", parameter2: "Tip Entry Profile", specification2: "0.018”" },
+                { parameter1: "Drug", specification1: "Everolimus", parameter2: "Proximal Shaft Diameter", specification2: "0.76mm" },
+                { parameter1: "Coating Thickness", specification1: "3µm", parameter2: "Distal Shaft Diameter", specification2: "0.89mm" }
             ]
         },
-        guidewireCompatibilityData: [
-            {
-                title: "Guiding Catheter Compatibility",
-                data: [
-                    "Guidewire Compatibility",
-                    "0.014”",
-                    "Guiding Catheter Compatibility",
-                    "5F",
-                    "Hydrophilic Coating",
-                    "Yes",
-                ]
-            }
-        ]
+        // guidewireCompatibilityData: [
+        //     {
+        //         title: "Guiding Catheter Compatibility",
+        //         data: [
+        //             "Guidewire Compatibility",
+        //             "0.014”",
+        //             "Guiding Catheter Compatibility",
+        //             "5F",
+        //             "Hydrophilic Coating",
+        //             "Yes",
+        //         ]
+        //     }
+        // ]
     },
     ENDOSTENT: {
         productImage: "endostent.png",
@@ -295,34 +269,18 @@ export const productData = {
         //     "Technical specifications include compatibility with 0.014” guidewires and 5F guiding catheters, a nominal pressure of 8 Bar, and a rated burst pressure of 16 Bar. The stent's delivery system is a monorail rapid exchange type, with a tip entry profile of 0.018” and available in multiple sizes to fit various clinical scenarios."
         // ],
         stentSpecification: {
-            title: "ENDOSTENT Sirolimus-Eluting Coronary Stent System",
+            title: "Stent Specification",
             details: [
-                "Available Stent Lengths",
-                "10, 13, 15, 18, 20, 24, 28, 32, 36, 40, 44, 48 mm",
-                "Available Stent Diameters",
-                "2.25, 2.50, 2.75, 3.00, 3.50, 4.00 mm",
-                "Stent Material",
-                "L605 Cobalt-Chromium (Co-Cr) Alloy",
-                "Stent Design",
-                "Open and closed cell design",
-                "Stent Platform",
-                "Bio-compatible polymer (PLGA carrier)",
-                "Stent Foreshortening",
-                "<2%",
-                "Stent Recoil",
-                "<4%",
-                "Stent Strut Thickness",
-                "63 μm",
-                "Bulge Strut Width",
-                "105 μm (strut)",
-                "Radial Strut Width",
-                "62.5 μm (hinge)",
-                "Connecting Strut Width",
-                "45 μm",
-                "Drug",
-                "Sirolimus",
-                "Coating Thickness",
-                "6 μm",
+                { parameter1: "Available stent lengths", specification1: "10, 13, 15, 18, 20, 24, 28, 32, 36, 40, 44 & 48mm", parameter2: "Delivery System Type", specification2: "Monorail rapid exchange" },
+                { parameter1: "Available stent diameters", specification1: "2.25, 2.50, 2.75, 3.00, 3.50 & 4.00mm", parameter2: "Polymer Type", specification2: "Biodegradable polymer" },
+                { parameter1: "Stent Material", specification1: "L605 Cobalt-Chromium (Co-cr) alloy", parameter2: "Nominal Pressure", specification2: "8 Bar" },
+                { parameter1: "Stent Design", specification1: "Open and closed hybrid cell design", parameter2: "Rated Burst Pressure", specification2: "16 Bar" },
+                { parameter1: "Stent Platform", specification1: "Cobal + C", parameter2: "Guidewire Compatibility", specification2: "0.014”" },
+                { parameter1: "Stent foreshortening", specification1: "<2%", parameter2: "Guiding Catheter Compatibility", specification2: "5F" },
+                { parameter1: "Stent Recoil", specification1: "<4%", parameter2: "Delivery System ", specification2: "Hydrophilic coated" },
+                { parameter1: "Stent struct thickness", specification1: "63µm", parameter2: "Tip Entry Profile", specification2: "0.018”" },
+                { parameter1: "Drug", specification1: "Sirolimus ", parameter2: "Proximal Shaft Diameter", specification2: "0.76mm" },
+                { parameter1: "Coating Thickness", specification1: "6µm", parameter2: "Distal Shaft Diameter", specification2: "0.89mm" }
             ]
         },
         deliverySystems: {

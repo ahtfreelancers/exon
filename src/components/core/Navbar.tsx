@@ -25,6 +25,7 @@ const categories = [
         products: [
             { id: 1, name: "Endostent", image: "/about/endostent.png", link: "/product/endostent" },
             { id: 2, name: "Intima", image: "/about/intima.png", link: "/product/intima" },
+            { id: 3, name: "Infinity", image: "/about/infinity.png", link: "/product/infinity" },
         ],
     },
     {
