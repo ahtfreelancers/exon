@@ -82,7 +82,7 @@ export default function ProductPage() {
     <main className="relative bg-white">
       <div className="relative bg-background p-3 md:p-5">
         <Navbar />
-        <section className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 md:gap-20 xl:gap-24 justify-center">
+        <section className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 md:gap-20 xl:gap-24 justify-center my-10">
           <div className="relative h-[400px] spbp:h-[500px] 2xl:h-[515px]" data-aos="fade-right">
             <Image
               src={`/about/${productImage}`}
