@@ -291,7 +291,7 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                     type="submit"
                     className=""
                 >
-                    {type == 1 ? "Add" : "Edit"} Product
+                    Save
                 </Button>
             </form>
         </Form>
