@@ -90,6 +90,7 @@ export default function RootLayout({
           httpEquiv="Content-Security-Policy"
           content="upgrade-insecure-requests"
         />
+        <meta name="robots" content="NOODP" />
         {/* Primary Keywords Related to Exon Therapeutics  */}
         <meta
           name="keywords"
@@ -187,8 +188,15 @@ export default function RootLayout({
         />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+          rel="stylesheet"
+        />
       </head>
 
       <>
@@ -222,7 +230,11 @@ export default function RootLayout({
             </div>
           </body>
         ) : (
-          <body className={"relative font-admin"}> <Toaster position="top-center" />{children}</body>
+          <body className={"relative font-admin"}>
+            {" "}
+            <Toaster position="top-center" />
+            {children}
+          </body>
         )}
       </>
     </html>

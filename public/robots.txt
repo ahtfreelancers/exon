@@ -1,3 +1,9 @@
+# *
 User-agent: *
-Disallow: /exon-admin/
 Allow: /
+
+# Host
+Host: https://www.exontherapeutics.com/
+
+# Sitemaps
+Sitemap: https://www.exontherapeutics.com/sitemap.xml
