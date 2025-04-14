@@ -132,7 +132,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
 
     useEffect(() => {
         if (invoice?.invoiceItems && invoice?.invoiceItems?.length > 0) {
-            const combinedArray: any = invoice?.invoiceItems.map(item => {
+            const combinedArray: any = invoice?.invoiceItems?.map(item => {
                 const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
                 const calculateRpuwg = ((item.total * parseFloat(gstVal)) / 100)
                 return {
@@ -305,7 +305,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             grandTotal: newValues.grandTotal ?? 0,
             invoiceType: newValues?.invoiceType ? newValues?.invoiceType : Number(invoiceType),
             invoiceItems: (invoiceId && !isEdit)
-                ? selectedTableRows.map((item: any) => ({
+                ? selectedTableRows?.map((item: any) => ({
                     productId: item.productId ?? 0,
                     quantity: item.quantity,
                     rpuwg: item.rpuwg,
@@ -315,7 +315,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                     gst: item.gst,
                     total: item.total,
                 }))
-                : productItems.map((item: any) => {
+                : productItems?.map((item: any) => {
                     const commonFields = {
                         productId: item.productId ?? 0,
                         quantity: item.quantity,
@@ -353,7 +353,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
     console.log("productItems", productItems);
 
     const onHandleChange = (id: string, value: any, typeName: string) => {
-        const newProductItems = productItems.map((item: any) => {
+        const newProductItems = productItems?.map((item: any) => {
             if (item.id !== id) return item;
 
             let updatedItem = { ...item };
@@ -522,7 +522,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                     </SelectTrigger>
                                                     <SelectContent className='bg-white'>
                                                         <SelectGroup>
-                                                            {invoiceTypes.map((item: any) => (
+                                                            {invoiceTypes?.map((item: any) => (
                                                                 <SelectItem key={`${item.id}`} value={`${item.id}`} className='cursor-pointer'>
                                                                     {item.name}
                                                                 </SelectItem>
@@ -587,12 +587,12 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                                         <SelectGroup>
                                                             {type == 1
                                                                 ?
-                                                                hospitals.map((item: any) => (
+                                                                hospitals?.map((item: any) => (
                                                                     <SelectItem key={`${item.id}`} value={`${item.id}`} className='cursor-pointer'>
                                                                         {item.name}
                                                                     </SelectItem>
                                                                 )) :
-                                                                distributors.map((item: any) => (
+                                                                distributors?.map((item: any) => (
                                                                     <SelectItem key={`${item.id}`} value={`${item.id}`} className='cursor-pointer'>
                                                                         {item.name}
                                                                     </SelectItem>))
