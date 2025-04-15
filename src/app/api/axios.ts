@@ -147,6 +147,14 @@ const Invoice = {
     getInvoiceById: (id: number) => requests.get(`${API_BASE_URL}/invoices/${id}`),
     deleteInvoice: (id: number) => requests.delete(`${API_BASE_URL}/invoices/${id}`),
 }
+const Challan = {
+    getChallan: (params: any) => requests.get(`${API_BASE_URL}/invoices`, params),
+    getChallanPdf: (id: any) => requests.get(`${API_BASE_URL}/invoices/getChallanPDF/${id}`),
+    createChallan: (data: any) => requests.post(`${API_BASE_URL}/invoices`, data),
+    updateChallan: (id: any, data: any) => requests.put(`${API_BASE_URL}/invoices/${id}`, data),
+    getChallanById: (id: number) => requests.get(`${API_BASE_URL}/invoices/${id}`),
+    deleteChallan: (id: number) => requests.delete(`${API_BASE_URL}/invoices/${id}`),
+}
 const SharePdf = {
     sharePdf: (data: any) => requests.post(`${API_BASE_URL}/emails`, data),
 }
@@ -159,6 +167,7 @@ const agent = {
     Dashboard,
     ProductTypes,
     Invoice,
+    Challan,
     SharePdf
 }
 
