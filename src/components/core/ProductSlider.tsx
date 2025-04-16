@@ -82,7 +82,7 @@ const ProductSlider = () => {
             >
               <h3 className="text-[28px] mb-20 font-bold font-helvetica">{slide.title}</h3>
               {/* <h4 className="text-lg text-[#6D6D6D] font-semibold font-helvetica mb-14">{slide.description}</h4> */}
-              <img src={slide.src} alt={`Product Image ${index + 1}`} className="mx-auto mb-4" />
+              <img src={slide.src} alt={`Exon Therapeutics ${slide?.title}`} className="mx-auto mb-4" />
               <Link href={`/product/${slide.slug}`}>
                 <button
                   className="mt-4 py-2 px-8 font-medium md:font-bold text-base rounded-b-none sm:px-10 md:px-6 lg:px-5 3xl:px-[42px] rounded-t-[28px] md:rounded-t-full absolute bottom-0 left-1/2 transform -translate-x-1/2"
