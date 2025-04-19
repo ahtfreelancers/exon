@@ -53,26 +53,27 @@ export default function About() {
     <main className="relative">
       <div className="sm:bg-background p-1 md:p-[6px]">
         <Navbar />
-        <div className="relative h-[528px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px] mt-3 lg:mt-10">
+        <div className="relative h-[420px] sm:h-[500px] mt-3 lg:mt-10">
           {md ? (
             <Image
-              src="/about/about-banner.png"
+              src="/about/team-about.png"
               priority
               fill
               alt="Picture of the author"
             />
           ) : (
             <Image
-              src="/about/mob-banner.png"
+              src="/about/team-about.png"
               priority
               fill
               alt="Picture of the author"
             />
           )}
-          <div className="absolute top-20 left-2/4 -translate-x-2/4 md:w-full">
-            <div className="hero-heading">
+          <div className="absolute top-20 left-[20%] -translate-x-[13%] md:left-2/4 md:-translate-x-2/4 md:w-full">
+            <div className="hero-heading flex flex-col items-center">
               <h1 className="text-white mb-6 text-center" data-aos="fade-up">So how did<span className="text-secondary"> Exon</span> come to be?</h1>
-              <h5 className="mb-8 2xl:mb-[68px] text-sm text-center lg:text-[28px]" data-aos="fade-up">Exon Therapeutics LLP was founded by healthcare</h5>
+              <h2 className="mb-4 2xl:mb-[40px] text-[#96a0a8] text-sm font-helvetica font-normal text-center lg:text-4xl" data-aos="fade-up">Empowering Health Through Innovation</h2>
+              <p className="font-normal md:max-w-[65%] 3xl:max-w-[52%] font-helvetica text-center text-[#96a0a8] text-sm lg:text-2xl" data-aos="fade-up">Exon Therapeutics LLP is committed to innovate the heart health technology at the forefront. We have created an ecosystem for invention and growth all under one mumbrella. In today's times where health is always at an edge, it is necessary to prioitize the production of high quality medical devices that are both accessible and afordable.</p>
             </div>
             {/* <div className="flex justify-center">
               <button data-aos="fade-up">Meet our team</button>
@@ -101,7 +102,7 @@ export default function About() {
         )}
         <div className="absolute top-[30%] w-full md:top-[40%] left-2/4 -translate-x-2/4">
           <div className="max-w-[300px] mx-auto md:max-w-[900px]">
-            <h5 className="text-secondary text-xs sm:text-sm mb-3 font-medium" data-aos="fade-up">PHARMACY SOLUTIONS</h5>
+            {/* <h5 className="text-secondary text-xs sm:text-sm mb-3 font-medium" data-aos="fade-up">PHARMACY SOLUTIONS</h5> */}
             <h2 className="text-2xl sm:text-2xl spbp:text-5xl text-center mb-10" data-aos="fade-up">&quot;Building Connections with Customers: Uniting Vision and Design&quot;</h2>
             <p className="text-xs sm:text-lg spbp:text-2xl text-center" data-aos="fade-up">we builds strong connections with healthcare professionals, offering innovative stents and surgical accessories that enhance patient care and outcomes.</p>
           </div>
@@ -134,7 +135,7 @@ export default function About() {
         )}
 
       </div> */}
-      <div className="px-7 md:px-20 xl:px-36 py-8 md:py-32 mt-28 md:mt-0" id="faq-section">
+      <div className="px-7 md:px-20 xl:px-36 py-8 md:py-32 mt-14 md:mt-0" id="faq-section">
         <h2 className="mb-10 md:mb-[61px] borderText" data-aos="fade-right">
           Frequently asked questions
         </h2>
