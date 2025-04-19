@@ -54,7 +54,7 @@ const privacyContent = [
   {
     title: "Contact Us",
     content: [
-      "If you have any questions or concerns about this Privacy Policy, please contact us at privacy@exontherapeutics.com."
+      "If you have any questions or concerns about this Privacy Policy, please contact us at support@exontherapeutics.com."
     ]
   }
 ];
