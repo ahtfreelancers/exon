@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useRef } from "react";
 
 export default function Product() {
-  const { md }: any = useScreens()
+  const { md }: any = useScreens();
   const productSliderRef = useRef<HTMLDivElement>(null);
 
   const scrollToProductSlider = () => {
@@ -41,10 +41,14 @@ export default function Product() {
           <div className="absolute top-20 left-2/4 -translate-x-2/4 md:w-full">
             <div className="hero-heading">
               <h1 className="text-white mb-6 text-center">Our Top Products</h1>
-              <h5 className="mb-8 2xl:mb-[68px]">Dive into our range products</h5>
+              <h5 className="mb-8 2xl:mb-[68px]">
+                Dive into our range products
+              </h5>
             </div>
             <div className="flex justify-center">
-              <button data-aos="fade-up" onClick={scrollToProductSlider}>Explore</button>
+              <button data-aos="fade-up" onClick={scrollToProductSlider}>
+                Explore
+              </button>
             </div>
           </div>
         </div>
@@ -53,11 +57,15 @@ export default function Product() {
         </section> */}
       </div>
       <section className="py-[122px] flex flex-col bg-white items-center justify-center">
-        <h2 className="mb-[100px]" data-aos="fade-up">Precision. Reliability. Excellence.</h2>
+        <h2 className="mb-[100px]" data-aos="fade-up">
+          Precision. Reliability. Excellence.
+        </h2>
         <div className="relative w-[90%]">
           <hr className="border-t border-gray-300 w-full absolute top-1/2 transform -translate-y-1/2" />
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-[-15deg]">
-            <span className="bg-white px-4 py-2 text-lg font-semibold border border-gray-300 rounded-full">Products</span>
+            <span className="bg-white px-4 py-2 text-lg font-semibold border border-gray-300 rounded-full">
+              Products
+            </span>
           </div>
         </div>
         {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-[80px] px-12 spbp:max-w-[1200px] 3xl:max-w-[1440px]">
@@ -85,19 +93,19 @@ export default function Product() {
         <div className="relative h-[300px] md:h-[680px]" data-aos="fade-right">
           <Image
             src="/products/endostent-featured.png"
-            alt="Featured Product"
+            alt="Exon Therapeutics Endostent"
             layout="fill"
             objectFit="contain"
           />
         </div>
         <div data-aos="fade-left">
           <div className="borderText mb-4">
-            <h2 className="">
-              ENDOSTENT
-            </h2>
-            <h4 className="font-medium text-[20px]">Sirolimus Eluting coronary stent system</h4>
+            <h2 className="">ENDOSTENT</h2>
+            <h4 className="font-medium text-[20px]">
+              Sirolimus Eluting coronary stent system
+            </h4>
           </div>
-          <Link href={'/product/endostent'}>
+          <Link href={"/product/endostent"}>
             <button data-aos="fade-up">Know More</button>
           </Link>
         </div>

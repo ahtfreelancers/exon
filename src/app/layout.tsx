@@ -79,12 +79,16 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <title>
-          Exon Therapeutics LLP is committed to innovate the heart health
-          technology at the forefront.
+          Exon Therapeutics - Heart Stents | Medical Devices | Cardiovascular
+          Technology | Surat, India
         </title>
-        <meta
+        {/* <meta
           name="description"
           content="Exon Therapeutics - Leading provider of innovative heart endostents and heart-related products."
+        /> */}
+        <meta
+          name="description"
+          content="Exon Therapeutics is a leading manufacturer and marketer of innovative heart stents and cardiovascular medical devices based in India. Explore our products including Endostent, Infinity, Sleek, Swift, Intima, and more. Advancing heart health worldwide."
         />
         <meta
           name="google-site-verification"
@@ -95,101 +99,30 @@ export default function RootLayout({
           content="upgrade-insecure-requests"
         />
         <meta name="robots" content="NOODP" />
-        {/* Primary Keywords Related to Exon Therapeutics  */}
         <meta
           name="keywords"
-          content="Exon Therapeutics, heart endostents, cardiovascular technology, heart health, medical devices, Infinity, Sleek, Swift, Intima, Endostent, heart stents"
+          content="Exon Therapeutics, exontherapeutics, Exon, heart stents, heart endostents, cardiovascular technology, heart health, medical devices, Infinity stent, Sleek stent, Swift stent, Intima stent, Endostent, INFLA-D, GUIDE PLUS, Y-CLICK, ARROW, ADC, 2-PORT manifold, 3-PORT manifold, heart care solutions, Exon Surat, Exon India, top heart stent companies, cardiac health devices, innovative stents India"
         />
-
-        {/* Additional Keywords for Products  */}
+        <meta name="author" content="Exon Therapeutics" />
         <meta
-          name="keywords"
-          content="INFLA-D, Inflation Device, ergonomic design, deflation mechanism, manometer, ADC, Angiographic Diagnostic Catheter, curve shape memory, torque control, kink resistance, surface finish"
-        />
-        <meta
-          name="keywords"
-          content="GUIDE PLUS, Guide Extension Catheter, maneuverability, back-up support, kink-resistant, Y-CLICK, Y-Connector-Push Pull, three-stage valve, auto-closing mechanism"
+          property="og:title"
+          content="Exon Therapeutics - Innovative Cardiovascular Medical Devices"
         />
         <meta
-          name="keywords"
-          content="ARROW, Introducer Needle, sharp tip, low resistance, tissue trauma reduction, short tip controllability, tapered hub, guide wire, customized sizes"
+          property="og:description"
+          content="Explore heart stents and cutting-edge cardiovascular devices from Exon Therapeutics based in Surat, India."
+        />
+        <meta property="og:image" content="/path-to-your-thumbnail.jpg" />
+        <meta property="og:url" content="https://www.exontherapeutics.com" />
+        <meta
+          name="twitter:title"
+          content="Exon Therapeutics - Cardiovascular Devices & Heart Stents"
         />
         <meta
-          name="keywords"
-          content="2-PORT, Manifold 2port Right on/off, pressure resistance, rotation adapters, ease of inspection, 3-PORT, Manifold 3port Right on/off, manifold systems"
+          name="twitter:description"
+          content="Leading heart stents and cardiovascular technology provider from Gujarat, India."
         />
-
-        {/* More Variations of Keywords  */}
-        <meta
-          name="keywords"
-          content="heart stents by Exon Therapeutics, innovative cardiovascular devices, Exon Therapeutics heart health solutions, cardiac care technology, medical innovations by Exon Therapeutics"
-        />
-        <meta
-          name="keywords"
-          content="best heart stents, cutting-edge cardiovascular care, heart health products, Exon Therapeutics medical devices, advanced endostent technology"
-        />
-        <meta
-          name="keywords"
-          content="cardiac devices, heart care solutions, heart surgery products, cardiovascular innovation, Exon Therapeutics heart stents"
-        />
-        <meta
-          name="keywords"
-          content="where to buy heart stents, advanced cardiovascular devices, Exon Therapeutics heart care products, innovative endostents, Exon medical devices"
-        />
-        <meta
-          name="keywords"
-          content="cardiovascular surgery technology, heart stent providers, top heart health technology, Exon Therapeutics heart health products"
-        />
-
-        {/* Product-Specific Keywords  */}
-        <meta
-          name="keywords"
-          content="Infinity stent, Sleek stent, Swift stent, Intima stent, Endostent by Exon Therapeutics, heart stent models, best heart stent technology"
-        />
-        <meta
-          name="keywords"
-          content="Inflation Device INFLA-D, ergonomic design for doctors, easy deflation mechanism, manometer viewing"
-        />
-        <meta
-          name="keywords"
-          content="Angiographic Diagnostic Catheter ADC, torque control, kink resistance, vascular spasm prevention"
-        />
-        <meta
-          name="keywords"
-          content="Guide Extension Catheter GUIDE PLUS, maneuverability, back-up support, kink-resistant catheter"
-        />
-        <meta
-          name="keywords"
-          content="Y-Connector Y-CLICK, push-pull connector, three-stage valve, auto-closing mechanism, introducer needle ARROW"
-        />
-        <meta
-          name="keywords"
-          content="Introducer Needle ARROW, sharp tip, low resistance, tissue trauma, tapered hub, manifold 2-port, manifold 3-port"
-        />
-
-        {/* Long-Tail Keywords and Descriptions  */}
-        <meta
-          name="description"
-          content="Explore advanced heart stents like Infinity, Sleek, Swift, Intima, and Endostent, along with other cardiovascular devices by Exon Therapeutics."
-        />
-        <meta
-          name="keywords"
-          content="heart stents, Infinity stent, Sleek stent, Swift stent, Intima stent, Endostent, Exon Therapeutics"
-        />
-        <meta
-          name="description"
-          content="Innovative cardiovascular devices including INFLA-D Inflation Device, ADC Angiographic Diagnostic Catheter, and GUIDE PLUS Guide Extension Catheter."
-        />
-        <meta
-          name="keywords"
-          content="heart stents, cardiovascular devices, inflation device, angiographic diagnostic catheter, guide extension catheter, Exon Therapeutics"
-        />
-
-        {/* Region-Specific Keywords  */}
-        <meta
-          name="keywords"
-          content="Exon Therapeutics USA, Exon Therapeutics Europe, Exon Therapeutics India, heart stents worldwide, cardiovascular devices in Asia"
-        />
+        <meta name="twitter:image" content="/home/logo.svg" />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
