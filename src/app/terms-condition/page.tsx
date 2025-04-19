@@ -36,7 +36,7 @@ const termsContent = [
   {
     title: "Governing Law",
     content: [
-      "These Terms and Conditions are governed by and construed in accordance with the laws of [Your Country/State]. You agree to submit to the exclusive jurisdiction of the courts located within [Your Country/State] for the resolution of any disputes."
+      "These Terms and Conditions are governed by and construed in accordance with the laws of India. You agree to submit to the exclusive jurisdiction of the courts located within India for the resolution of any disputes."
     ]
   },
   {
@@ -48,7 +48,7 @@ const termsContent = [
   {
     title: "Contact Us",
     content: [
-      "If you have any questions about these Terms and Conditions, please contact us at terms@exontherapeutics.com."
+      "If you have any questions about these Terms and Conditions, please contact us at support@exontherapeutics.com."
     ]
   }
 ];
