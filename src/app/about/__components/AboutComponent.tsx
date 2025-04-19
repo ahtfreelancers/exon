@@ -73,7 +73,7 @@ export default function AboutComponent() {
             <div className="hero-heading flex flex-col items-center">
               <h1 className="text-white mb-6 text-center" data-aos="fade-up">So how did<span className="text-secondary"> Exon</span> come to be?</h1>
               <h2 className="mb-4 2xl:mb-[40px] text-[#96a0a8] text-sm font-helvetica font-normal text-center lg:text-4xl" data-aos="fade-up">Empowering Health Through Innovation</h2>
-              <p className="font-normal md:max-w-[65%] 3xl:max-w-[52%] font-helvetica text-center text-[#96a0a8] text-sm lg:text-2xl" data-aos="fade-up">Exon Therapeutics LLP is committed to innovate the heart health technology at the forefront. We have created an ecosystem for invention and growth all under one mumbrella. In today's times where health is always at an edge, it is necessary to prioitize the production of high quality medical devices that are both accessible and afordable.</p>
+              <p className="font-normal md:max-w-[65%] 3xl:max-w-[52%] font-helvetica text-center text-[#96a0a8] text-sm lg:text-2xl" data-aos="fade-up">Exon Therapeutics LLP is committed to innovate the heart health technology at the forefront. We have created an ecosystem for invention and growth all under one mumbrella. In today&rsquo;s times where health is always at an edge, it is necessary to prioitize the production of high quality medical devices that are both accessible and afordable.</p>
             </div>
             {/* <div className="flex justify-center">
               <button data-aos="fade-up">Meet our team</button>
