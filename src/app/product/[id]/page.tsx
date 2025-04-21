@@ -57,7 +57,7 @@ export default function ProductPage() {
     }
 
     try {
-      const response: any = await sharePdfWithEmail({ to: email, pdfType: product.productType });
+      const response: any = await sharePdfWithEmail({ to: email, pdfType: product.productType, productName: product.productName });
       console.log("response", response);
 
       if (response.isSuccess) {

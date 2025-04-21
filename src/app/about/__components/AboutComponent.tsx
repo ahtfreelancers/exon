@@ -84,7 +84,7 @@ export default function AboutComponent() {
           
         </section> */}
       </div>
-      <div className="relative h-[450px] sm:h-[700px] xl:h-[760px] 3xl:h-[946px]">
+      <div className="relative h-[450px] sm:h-[500px] xl:h-[560px] 3xl:h-[746px]">
         {md ? (
           <Image
             src="/about/solutions-about.png"
@@ -100,7 +100,7 @@ export default function AboutComponent() {
             alt="Picture of the author"
           />
         )}
-        <div className="absolute top-[30%] w-full md:top-[40%] left-2/4 -translate-x-2/4">
+        <div className="absolute top-[20%] w-full md:top-[27%] left-2/4 -translate-x-2/4">
           <div className="max-w-[300px] mx-auto md:max-w-[900px]">
             {/* <h5 className="text-secondary text-xs sm:text-sm mb-3 font-medium" data-aos="fade-up">PHARMACY SOLUTIONS</h5> */}
             <h2 className="text-2xl sm:text-2xl spbp:text-5xl text-center mb-10" data-aos="fade-up">&quot;Building Connections with Customers: Uniting Vision and Design&quot;</h2>
@@ -135,7 +135,7 @@ export default function AboutComponent() {
         )}
 
       </div> */}
-      <div className="px-7 md:px-20 xl:px-36 py-8 md:py-32 mt-14 md:mt-0" id="faq-section">
+      <div className="px-7 md:px-20 xl:px-36 py-8 md:py-16 mt-14 md:mt-0" id="faq-section">
         <h2 className="mb-10 md:mb-[61px] borderText" data-aos="fade-right">
           Frequently asked questions
         </h2>
