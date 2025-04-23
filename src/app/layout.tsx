@@ -28,38 +28,38 @@ export default function RootLayout({
       once: true,
     });
 
-    if (!pathname.includes("exon-admin")) {
-      // Disable text selection, copying, and right-click
-      const handleCopy = (e: ClipboardEvent) => e.preventDefault();
-      const handleCut = (e: ClipboardEvent) => e.preventDefault();
-      const handleSelectStart = (e: Event) => e.preventDefault();
-      const handleContextMenu = (e: MouseEvent) => e.preventDefault();
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (
-          e.key === "F12" ||
-          (e.ctrlKey &&
-            e.shiftKey &&
-            (e.key === "I" || e.key === "J" || e.key === "C")) ||
-          (e.ctrlKey && e.key === "U")
-        ) {
-          e.preventDefault();
-        }
-      };
+    // if (!pathname.includes("exon-admin")) {
+    //   // Disable text selection, copying, and right-click
+    //   const handleCopy = (e: ClipboardEvent) => e.preventDefault();
+    //   const handleCut = (e: ClipboardEvent) => e.preventDefault();
+    //   const handleSelectStart = (e: Event) => e.preventDefault();
+    //   const handleContextMenu = (e: MouseEvent) => e.preventDefault();
+    //   const handleKeyDown = (e: KeyboardEvent) => {
+    //     if (
+    //       e.key === "F12" ||
+    //       (e.ctrlKey &&
+    //         e.shiftKey &&
+    //         (e.key === "I" || e.key === "J" || e.key === "C")) ||
+    //       (e.ctrlKey && e.key === "U")
+    //     ) {
+    //       e.preventDefault();
+    //     }
+    //   };
 
-      document.addEventListener("copy", handleCopy);
-      document.addEventListener("cut", handleCut);
-      document.addEventListener("selectstart", handleSelectStart);
-      document.addEventListener("contextmenu", handleContextMenu);
-      document.addEventListener("keydown", handleKeyDown);
+    //   document.addEventListener("copy", handleCopy);
+    //   document.addEventListener("cut", handleCut);
+    //   document.addEventListener("selectstart", handleSelectStart);
+    //   document.addEventListener("contextmenu", handleContextMenu);
+    //   document.addEventListener("keydown", handleKeyDown);
 
-      return () => {
-        document.removeEventListener("copy", handleCopy);
-        document.removeEventListener("cut", handleCut);
-        document.removeEventListener("selectstart", handleSelectStart);
-        document.removeEventListener("contextmenu", handleContextMenu);
-        document.removeEventListener("keydown", handleKeyDown);
-      };
-    }
+    //   return () => {
+    //     document.removeEventListener("copy", handleCopy);
+    //     document.removeEventListener("cut", handleCut);
+    //     document.removeEventListener("selectstart", handleSelectStart);
+    //     document.removeEventListener("contextmenu", handleContextMenu);
+    //     document.removeEventListener("keydown", handleKeyDown);
+    //   };
+    // }
 
     const handleScroll = () => {
       setShowScrollButton(window.scrollY > 300);
