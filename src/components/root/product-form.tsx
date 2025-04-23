@@ -78,7 +78,7 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
             productStatus: product?.productStatus?.toString() ?? "0"
         }
     })
-    console.log("product", product);
+
 
     const onSubmit = async (values: z.infer<typeof MedicineSchema>) => {
         const manufactureDate = new Date(values.manufactureDate)
