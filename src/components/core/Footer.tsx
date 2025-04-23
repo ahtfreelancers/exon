@@ -9,7 +9,7 @@ export default function Footer() {
             <div className="bg-primary py-10 px-3 sm:px-5 md:px-[52px] rounded-2xl md:rounded-[72px] font-openSans">
                 <div className="sm:px-4">
                     <div className="bg-white rounded-xl md:rounded-[52px] shadow-lg pt-6 md:pt-20 pb-6 px-9 sm:px-12 md:px-16 xl:px-28 3xl:px-44">
-                        <div className="grid grid-cols-1 md:grid-cols-5 gap-[34px] sm:gap-[80px] md:gap-16 3xl:gap-[100px] mb-5 md:mb-20">
+                        <div className="grid grid-cols-1 md:grid-cols-7 gap-[34px] sm:gap-[80px] md:gap-16 3xl:gap-[80px] mb-5 md:mb-20">
                             <div className="md:col-span-2">
                                 <Link href={"/"}>
                                     <Image src="/home/logo.svg" alt="Logo" width={139} height={96} />
@@ -19,13 +19,20 @@ export default function Footer() {
                                 <p className="text-left mt-2 text-xs 2xl:text-sm font-openSans mb-5 md:mb-7">
                                     ISO 13485:2016 & ISO 9001:2015 Certified Company
                                 </p>
-                                <p className="text-left text-xs 2xl:text-sm font-openSans max-w-60">
-                                    Address: 201-202, Krishna Complex,
-                                    Panjava Street, Kadarsha Nal,
-                                    Nanpura, Surat, Gujarat-395001
-                                </p>
+                                <div className="flex gap-4">
+                                    <Link href={'https://www.youtube.com/@EXONTHERAPEUTICS'} target="_blank">
+                                        <AiOutlineYoutube className="text-xl cursor-pointer" />
+                                    </Link>
+                                    <Link href={'https://www.facebook.com/profile.php?id=61563239412087'} target="_blank">
+                                        <FaFacebook className="text-xl cursor-pointer" />
+                                    </Link>
+                                    {/* <FaInstagram className="text-xl cursor-pointer" /> */}
+                                    <Link href={'https://www.linkedin.com/company/exon-therapeutics-llp/posts/?feedView=all'} target="_blank">
+                                        <FaLinkedin className="text-xl cursor-pointer" />
+                                    </Link>
+                                </div>
                             </div>
-                            <div>
+                            <div className="md:col-span-2">
                                 <h4 className="text-left mb-6 3xl:mb-12">Trust & Legal</h4>
                                 <div className="mt-2 space-y-2 flex flex-col">
                                     <Link href={'/terms-condition'}>
@@ -50,19 +57,35 @@ export default function Footer() {
                                     </Link>
                                 </div>
                             </div>
-                            <div>
+                            <div className="md:col-span-2">
                                 <h4 className="text-left mb-6 3xl:mb-12">Social Media</h4>
-                                <div className="flex gap-4">
-                                    <Link href={'https://www.youtube.com/@EXONTHERAPEUTICS'} target="_blank">
-                                        <AiOutlineYoutube className="text-xl cursor-pointer" />
-                                    </Link>
-                                    <Link href={'https://www.facebook.com/profile.php?id=61563239412087'} target="_blank">
-                                        <FaFacebook className="text-xl cursor-pointer" />
-                                    </Link>
-                                    {/* <FaInstagram className="text-xl cursor-pointer" /> */}
-                                    <Link href={'https://www.linkedin.com/company/exon-therapeutics-llp/posts/?feedView=all'} target="_blank">
-                                        <FaLinkedin className="text-xl cursor-pointer" />
-                                    </Link>
+
+                                <div className="flex items-center gap-2 mb-4 w-full">
+                                    <Image src="/icons/address.png" alt="address icon" height={25} width={25} className="mt-1" />
+                                    <p className="text-left text-xs 2xl:text-sm font-openSans leading-snug">
+                                        201-202, Krishna Complex, Panjava Street, <br />
+                                        Kadarsha Nal, Nanpura, Surat, Gujarat-395001
+                                    </p>
+                                </div>
+
+                                <div className="flex items-center gap-2 mb-4">
+                                    <Image src="/icons/email.png" alt="email icon" height={20} width={20} className="mt-1" />
+                                    <a
+                                        href="mailto:Support@exontherapeutics.com"
+                                        className="text-left text-xs 2xl:text-sm font-openSans hover:underline"
+                                    >
+                                        Support@exontherapeutics.com
+                                    </a>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                    <Image src="/icons/contact.png" alt="contact icon" height={15} width={15} className="mt-1" />
+                                    <a
+                                        href="tel:+917617610023"
+                                        className="text-left text-xs 2xl:text-sm font-openSans hover:underline"
+                                    >
+                                        +91 7617610023
+                                    </a>
                                 </div>
                             </div>
                         </div>
