@@ -913,19 +913,19 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
 
                     <div className='mt-4 flex justify-end'>
                         {/* <Button onClick={onSaveHospital} disabled={hospitalProducts.length > 0 ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
+                        <Button className='disabled:pointer-events-none disabled:opacity-50'>
+                            Save
+                        </Button>
                         <Link href={'/exon-admin/invoice'}>
                             <Button
                                 disabled={isPending}
                                 type="submit"
                                 variant="secondary"
-                                className="mr-[20px]"
+                                className="ml-[20px]"
                             >
                                 Cancel
                             </Button>
                         </Link>
-                        <Button className='disabled:pointer-events-none disabled:opacity-50'>
-                            Save
-                        </Button>
                     </div>
                 </form>
             </Form>

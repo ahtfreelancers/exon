@@ -191,16 +191,6 @@ export const ProductTypeForm = ({ type, productType }: ProductTypeFormProps) => 
                 </div>
                 <FormError message={error || urlError} />
                 <FormSuccess message={success} />
-                <Link href={'/exon-admin/product-types'}>
-                    <Button
-                        disabled={isPending}
-                        type="submit"
-                        variant="secondary"
-                        className="mr-[20px]"
-                    >
-                        Cancel
-                    </Button>
-                </Link>
                 <Button
                     disabled={isPending}
                     type="submit"
@@ -208,6 +198,16 @@ export const ProductTypeForm = ({ type, productType }: ProductTypeFormProps) => 
                 >
                     Save
                 </Button>
+                <Link href={'/exon-admin/product-types'}>
+                    <Button
+                        disabled={isPending}
+                        type="submit"
+                        variant="secondary"
+                        className="ml-[20px]"
+                    >
+                        Cancel
+                    </Button>
+                </Link>
             </form>
         </Form>
     )
