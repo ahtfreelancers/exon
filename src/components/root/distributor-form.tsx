@@ -396,16 +396,6 @@ export const DistributorForm = ({ type, distributor }: any) => {
                 />
                 <FormError message={error || urlError} />
                 <FormSuccess message={success} />
-                <Link href={'/exon-admin/distributors'}>
-                    <Button
-                        disabled={isPending}
-                        type="submit"
-                        variant="secondary"
-                        className="mr-[20px]"
-                    >
-                        Cancel
-                    </Button>
-                </Link>
                 <Button
                     disabled={isPending}
                     type="submit"
@@ -413,6 +403,16 @@ export const DistributorForm = ({ type, distributor }: any) => {
                 >
                     Save
                 </Button>
+                <Link href={'/exon-admin/distributors'}>
+                    <Button
+                        disabled={isPending}
+                        type="submit"
+                        variant="secondary"
+                        className="ml-[20px]"
+                    >
+                        Cancel
+                    </Button>
+                </Link>
             </form>
         </Form>
     )
