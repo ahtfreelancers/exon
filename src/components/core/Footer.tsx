@@ -9,8 +9,8 @@ export default function Footer() {
             <div className="bg-primary py-10 px-3 sm:px-5 md:px-[52px] rounded-2xl md:rounded-[72px] font-openSans">
                 <div className="sm:px-4">
                     <div className="bg-white rounded-xl md:rounded-[52px] shadow-lg pt-6 md:pt-20 pb-6 px-9 sm:px-12 md:px-16 xl:px-28 3xl:px-44">
-                        <div className="grid grid-cols-1 md:grid-cols-7 gap-[34px] sm:gap-[80px] md:gap-16 3xl:gap-[80px] mb-5 md:mb-20">
-                            <div className="md:col-span-2">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-[34px] sm:gap-[80px] md:gap-16 3xl:gap-[80px] mb-5 md:mb-20">
+                            <div className="lg:col-span-2">
                                 <Link href={"/"}>
                                     <Image src="/home/logo.svg" alt="Logo" width={139} height={96} />
                                 </Link>
@@ -32,7 +32,7 @@ export default function Footer() {
                                     </Link>
                                 </div>
                             </div>
-                            <div className="md:col-span-2">
+                            <div className="lg:col-span-2">
                                 <h4 className="text-left mb-6 3xl:mb-12">Trust & Legal</h4>
                                 <div className="mt-2 space-y-2 flex flex-col">
                                     <Link href={'/terms-condition'}>
@@ -57,7 +57,7 @@ export default function Footer() {
                                     </Link>
                                 </div>
                             </div>
-                            <div className="md:col-span-2">
+                            <div className="lg:col-span-2">
                                 <h4 className="text-left mb-6 3xl:mb-12">Social Media</h4>
 
                                 <div className="flex items-center gap-2 mb-4 w-full">

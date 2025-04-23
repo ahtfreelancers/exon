@@ -227,18 +227,18 @@ export const columns = (fetchProducts: () => void, statusFilter: string, setStat
         </div>
       ),
     },
-    {
-      accessorKey: 'lotNumber',
-      header: ({ column }) => (
-        <div
-          className="flex items-center w-[110px] font-bold"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Lot Number
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </div>
-      ),
-    },
+    // {
+    //   accessorKey: 'lotNumber',
+    //   header: ({ column }) => (
+    //     <div
+    //       className="flex items-center w-[110px] font-bold"
+    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+    //     >
+    //       Lot Number
+    //       <ArrowUpDown className="ml-2 h-4 w-4" />
+    //     </div>
+    //   ),
+    // },
     {
       accessorKey: 'manufactureDate',
       header: ({ column }) => (
