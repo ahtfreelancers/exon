@@ -50,7 +50,11 @@ interface ProductTypeFormProps {
 }
 
 const ExtendedProductTypeSchema = ProductTypeSchema.extend({
-    pictureUrl: z.array(z.instanceof(File)).max(3, "You can upload up to 3 pictures").optional(),
+    pictureUrl: z
+        .array(z.union([z.instanceof(File), z.string()])) // Accepts both File and URL (string)
+        .max(3, "You can upload up to 3 pictures")
+        .optional(),
+    // pictureUrl: z.array(z.instanceof(File)).max(3, "You can upload up to 3 pictures").optional(),
 });
 
 export const ProductTypeForm = ({ type, productType }: ProductTypeFormProps) => {
@@ -66,6 +70,7 @@ export const ProductTypeForm = ({ type, productType }: ProductTypeFormProps) => 
 
     const [error, setError] = useState<string | undefined>("")
     const [success, setSuccess] = useState<string | undefined>("")
+    const uploadedFile = productType && productType?.pictureUrl ? [productType.pictureUrl] : [];
 
     const [isPending, startTransition] = useTransition();
     const form = useForm<z.infer<typeof ExtendedProductTypeSchema>>({
@@ -73,17 +78,18 @@ export const ProductTypeForm = ({ type, productType }: ProductTypeFormProps) => 
         defaultValues: {
             name: productType?.name ?? "",
             description: productType?.description ?? "",
-            pictureUrl: productType?.pictureUrl ?? [],
+            pictureUrl: uploadedFile,
             price: productType?.price.toString() ?? "",
         }
     })
 
     const onSubmit = async (values: z.infer<typeof ExtendedProductTypeSchema>) => {
         console.log('values', values);
+        const pictureUrl = values?.pictureUrl?.[0] ? (typeof values?.pictureUrl[0] === 'string' ? null : values?.pictureUrl[0]) : null 
         const newValues = {
             name: values.name,
             description: values.description,
-            pictureUrl: values?.pictureUrl?.[0],
+            pictureUrl: pictureUrl,
             price: values.price,
         }
         console.log("newValues", newValues);
@@ -176,11 +182,11 @@ export const ProductTypeForm = ({ type, productType }: ProductTypeFormProps) => 
                     <FormField
                         control={form.control}
                         name="pictureUrl"
-                        render={({ field }) => (
+                        render={({ field }: any) => (
                             <FormItem>
                                 <FormLabel>Picture Url</FormLabel>
                                 <FileUploader
-                                    value={field.value}
+                                    value={field?.value || []}
                                     onValueChange={field.onChange}
                                     reSelect={true}
                                     className="size-52 p-0"

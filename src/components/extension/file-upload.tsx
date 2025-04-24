@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { Paperclip } from 'lucide-react';
 import Image from 'next/image';
-import React, { ChangeEvent, FC, ReactNode, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, ReactNode, useRef, useState, useEffect } from 'react';
 import { AspectRatio } from '../ui/aspect-ratio';
 import { buttonVariants } from '../ui/button';
 
@@ -9,7 +9,7 @@ export interface FileUploaderProps {
   onFileSelect?: (file: File) => void;
   children?: ReactNode;
   className?: string;
-  value?: File[] | (() => File[]);
+  value?: File[] | string | (() => File[] | string); // value can be a string (URL) or an array of File objects
   onValueChange?: (files: File[]) => void;
   reSelect?: boolean;
 }
@@ -21,8 +21,19 @@ export const FileUploader: FC<FileUploaderProps> = ({
   onValueChange,
   reSelect = false,
 }) => {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>(value);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+console.log('value::::', value)
+  // Handle value changes when the component first loads (for edit mode)
+  useEffect(() => {
+    if (typeof value === 'string') {
+      // If the value is a string (URL), set it as the selected file
+      setSelectedFiles([new File([], value)]); // Treat the URL as a "file" for display
+    } else if (Array.isArray(value)) {
+      // If the value is an array of files, use it directly
+      setSelectedFiles(value);
+    }
+  }, [value]);
 
   const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -40,7 +51,7 @@ export const FileUploader: FC<FileUploaderProps> = ({
 
   return (
     <div className={`file-uploader ${className}`}>
-      <div className='flex items-center'>
+      <div className="flex items-center">
         <FileInput
           className={cn(
             buttonVariants({
@@ -54,26 +65,30 @@ export const FileUploader: FC<FileUploaderProps> = ({
           <Paperclip className="size-4 cursor-pointer" onClick={handleIconClick} />
         </FileInput>
         <span className="sr-only">Select your files</span>
-        {selectedFiles && selectedFiles.length > 0 && <p className='pl-2'>{selectedFiles[0].name}</p>}
+        {selectedFiles.length > 0 && typeof selectedFiles[0] !== 'string' && (
+          <p className="pl-2">{selectedFiles[0]?.name}</p>
+        )}
       </div>
-      {selectedFiles && typeof selectedFiles === 'string' ? (
+
+      {/* Handle displaying either images (URLs or uploaded files) */}
+      {selectedFiles.length > 0 && typeof selectedFiles[0] === 'string' ? (
         <AspectRatio className="size-36 mt-2">
           <Image
-            src={selectedFiles}
-            alt={selectedFiles}
+            src={selectedFiles[0]}
+            alt="Existing image"
             className="object-cover rounded-md"
             fill
           />
         </AspectRatio>
       ) : (
         <>
-          {
-            selectedFiles.length > 0 && selectedFiles?.map((file, index) => (
+          {selectedFiles.length > 0 &&
+            selectedFiles.map((file, index) => (
               <FileUploaderItem
                 key={index}
                 file={file}
                 index={index}
-                aria-roledescription={`file ${index + 1} containing ${file.name}`}
+                aria-roledescription={`file ${index + 1} containing ${file?.name}`}
                 className="p-0 size-20 mt-2"
               >
                 <AspectRatio className="size-full">
@@ -85,11 +100,9 @@ export const FileUploader: FC<FileUploaderProps> = ({
                   />
                 </AspectRatio>
               </FileUploaderItem>
-            ))
-          }
+            ))}
         </>
-      )
-      }
+      )}
     </div>
   );
 };
