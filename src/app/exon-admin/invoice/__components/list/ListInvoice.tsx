@@ -5,6 +5,7 @@ import { columns } from '@/app/exon-admin/invoice/columns'
 import { DataTable } from '@/components/root/data-table'
 import { useCallback, useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { useLoading } from '@/components/loading-context'
 
 export default function ListInvoice() {
     const [data, setData] = useState([])
@@ -16,7 +17,8 @@ export default function ListInvoice() {
     const pageSize = 10
     const [productTypeFilter, setProductTypeFilter] = useState('1')
     const [invoiceType, setInvoiceType] = useState('1')
-
+    // const { setLoading } = useLoading()
+    const { loading, setLoading } = useLoading();
     const fetchInvoice = useCallback(async () => {
         let params = {
             PageNumber: pageIndex,
@@ -27,14 +29,17 @@ export default function ListInvoice() {
         }
 
         try {
+            debugger
+            setLoading(true)
             const { data, isSuccess }: any = await getAllInvoices(params)
             console.log("data", data);
-
+            setLoading(false)
             if (isSuccess) {
                 setData(data.items)
                 setPageCount(data.totalCount)
             }
         } catch (err) {
+            setLoading(false)
             console.log(`Error fetching invoices`, err)
         }
     }, [search, pageIndex, productTypeFilter, invoiceType]);
