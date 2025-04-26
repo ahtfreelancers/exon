@@ -86,13 +86,12 @@ export const ProductTypeForm = ({ type, productType }: ProductTypeFormProps) => 
     const onSubmit = async (values: z.infer<typeof ExtendedProductTypeSchema>) => {
         console.log('values', values);
         const pictureUrl = values?.pictureUrl?.[0] ? (typeof values?.pictureUrl[0] === 'string' ? null : values?.pictureUrl[0]) : null 
-        const newValues = {
+        const newValues: any = {
             name: values.name,
             description: values.description,
-            pictureUrl: pictureUrl,
+            pictureUrl: pictureUrl || null,
             price: values.price,
         }
-        console.log("newValues", newValues);
 
         if (type == 1) {
             try {
