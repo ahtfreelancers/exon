@@ -2,6 +2,7 @@
 
 import { getAllTransport } from '@/actions/transport'
 import { columns } from '@/app/exon-admin/transport/columns'
+import { useLoading } from '@/components/loading-context'
 import { DataTable } from '@/components/root/data-table'
 import { useEffect, useState } from 'react'
 
@@ -11,6 +12,7 @@ export default function ListTransport() {
 
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
+    const { setLoading } = useLoading();
 
     const pageSize = 10
     const fetchTransports = async () => {
@@ -21,14 +23,17 @@ export default function ListTransport() {
         }
 
         try {
+            setLoading(true)
             const { data, isSuccess }: any = await getAllTransport(params)
+            setLoading(false)
             console.log("data", data);
-
+            
             if (isSuccess) {
                 setData(data.items)
                 setPageCount(data.totalCount)
             }
         } catch (err) {
+            setLoading(false)
             console.log(`err`, err);
             // setError(err.message || 'An error occurred')
         }
