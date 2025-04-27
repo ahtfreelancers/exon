@@ -2,6 +2,7 @@
 
 import { getAllHospitals } from '@/actions/hospitals'
 import { columns } from '@/app/exon-admin/hospitals/columns'
+import { useLoading } from '@/components/loading-context'
 import { DataTable } from '@/components/root/data-table'
 import { useEffect, useState } from 'react'
 
@@ -11,7 +12,7 @@ export default function ListHospitals() {
 
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
-
+    const { setLoading } = useLoading()
     const pageSize = 10
     const fetchHospitals = async () => {
         let params = {
@@ -21,12 +22,15 @@ export default function ListHospitals() {
         }
 
         try {
+            setLoading(true)
             const { data, isSuccess }: any = await getAllHospitals(params)
+            setLoading(false)
             if (isSuccess) {
                 setData(data.items)
                 setPageCount(data.totalCount)
             }
         } catch (err) {
+            setLoading(false)
             console.log(`err`, err);
             // setError(err.message || 'An error occurred')
         }
@@ -50,7 +54,7 @@ export default function ListHospitals() {
                     buttonUrl={"/exon-admin/hospitals/add"}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
-                    setStatusFilter={() => {}}
+                    setStatusFilter={() => { }}
                     pageCount={pageCount}
                     isStatusFilterEnable={false}
                     currentPage={pageIndex}

@@ -32,6 +32,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Calendar as CalendarIcon } from "lucide-react"
+import { useLoading } from "../loading-context"
 
 interface Product {
     id: number,
@@ -63,6 +64,7 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
 
     const [error, setError] = useState<string | undefined>("")
     const [success, setSuccess] = useState<string | undefined>("")
+    const {setLoading} = useLoading()
 
     const [isPending, startTransition] = useTransition();
     const form = useForm<z.infer<typeof MedicineSchema>>({
@@ -96,24 +98,30 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
 
         if (type == 1) {
             try {
+                setLoading(true)
                 const response = await agent.Products.createProduct(newValues)
+                setLoading(false)
                 if (response && response.isSuccess) {
                     form.reset();
                     router.push('/exon-admin/products')
                 }
             } catch (error) {
+                setLoading(false)
                 console.error("An error occurred:", error);
             }
         }
         if (type == 2) {
             try {
+                setLoading(true)
                 const response = await agent.Products.updateProduct(id, newValues)
+                setLoading(false)
 
                 if (response && response.isSuccess) {
                     form.reset();
                     router.push('/exon-admin/products')
                 }
             } catch (error) {
+                setLoading(false)
                 console.error("An error occurred:", error);
             }
         }

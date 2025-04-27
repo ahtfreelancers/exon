@@ -9,10 +9,10 @@ import "../styles/global.scss";
 import Footer from "@/components/core/Footer";
 import { ArrowUpIcon } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import { cn } from "@/lib/utils";
+// import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
-import { LoadingProvider } from "@/components/loading-context";
-import GlobalSpinner from "@/components/global-spinner";
+// import { LoadingProvider } from "@/components/loading-context";
+// import GlobalSpinner from "@/components/global-spinner";
 
 export default function RootLayout({
   children,
@@ -172,10 +172,8 @@ export default function RootLayout({
           <body className={"relative font-admin"}>
             {" "}
             <Toaster position="top-center" />
-            <LoadingProvider>
-              <GlobalSpinner />
+             
               {children}
-            </LoadingProvider>
           </body>
         )}
       </>

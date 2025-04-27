@@ -4,21 +4,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from 'react'
 import { getDashboardData } from "@/actions/dashboard";
 import { MoveDown, MoveUp, Recycle, Undo2 } from "lucide-react";
+import { useLoading } from "@/components/loading-context";
 
 export default function DashboardWrapper() {
     const [data, setData]: any = useState([])
     const [todate, setToD] = useState("")
     const [fromdate, setFrom] = useState("")
+    const { setLoading } = useLoading()
 
     const fetchMedicines = async () => {
         try {
+            setLoading(true);
             const { data, isSuccess }: any = await getDashboardData();
+            setLoading(false)
             console.log("data", data);
-
+            
             if (isSuccess) {
                 setData(data);
             }
         } catch (err) {
+            setLoading(false)
             console.log(`Error:`, err);
         }
     };

@@ -35,6 +35,7 @@ import { Calendar as CalendarIcon } from "lucide-react"
 import {
     FileUploader
 } from "@/components/extension/file-upload"
+import { useLoading } from "../loading-context"
 
 interface ProductType {
     id: number,
@@ -71,6 +72,7 @@ export const ProductTypeForm = ({ type, productType }: ProductTypeFormProps) => 
     const [error, setError] = useState<string | undefined>("")
     const [success, setSuccess] = useState<string | undefined>("")
     const uploadedFile = productType && productType?.pictureUrl ? [productType.pictureUrl] : [];
+    const {setLoading} = useLoading()
 
     const [isPending, startTransition] = useTransition();
     const form = useForm<z.infer<typeof ExtendedProductTypeSchema>>({
@@ -95,24 +97,30 @@ export const ProductTypeForm = ({ type, productType }: ProductTypeFormProps) => 
 
         if (type == 1) {
             try {
+                setLoading(true)
                 const response = await agent.ProductTypes.createProductType(newValues)
+                setLoading(false)
                 if (response && response.isSuccess) {
                     form.reset();
                     router.push('/exon-admin/product-types')
                 }
             } catch (error) {
+                setLoading(false)
                 console.error("An error occurred:", error);
             }
         }
         if (type == 2) {
             try {
+                setLoading(true)
                 const response = await agent.ProductTypes.updateProductType(id, newValues)
-
+                setLoading(false)
+                
                 if (response && response.isSuccess) {
                     form.reset();
                     router.push('/exon-admin/product-types')
                 }
             } catch (error) {
+                setLoading(false)
                 console.error("An error occurred:", error);
             }
         }

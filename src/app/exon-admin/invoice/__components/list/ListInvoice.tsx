@@ -17,8 +17,7 @@ export default function ListInvoice() {
     const pageSize = 10
     const [productTypeFilter, setProductTypeFilter] = useState('1')
     const [invoiceType, setInvoiceType] = useState('1')
-    // const { setLoading } = useLoading()
-    const { loading, setLoading } = useLoading();
+    const { setLoading } = useLoading();
     const fetchInvoice = useCallback(async () => {
         let params = {
             PageNumber: pageIndex,
@@ -29,7 +28,6 @@ export default function ListInvoice() {
         }
 
         try {
-            debugger
             setLoading(true)
             const { data, isSuccess }: any = await getAllInvoices(params)
             console.log("data", data);
@@ -54,10 +52,13 @@ export default function ListInvoice() {
     }
     const viewInvoice = async (id: number) => {
         try {
+            setLoading(true)
             const { data }: any = await getAllInvoicesPdf(id)
+            setLoading(false)
             setInvoicePdf(data.pdf)
             setModalOpen(true)
         } catch (err) {
+            setLoading(false)
             console.log(`Error fetching invoice PDF`, err)
         }
     }
