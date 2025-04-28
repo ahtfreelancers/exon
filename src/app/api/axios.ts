@@ -122,6 +122,13 @@ const Hospitals = {
     getHospitalById: (id: number) => requests.get(`${API_BASE_URL}/hospitals/${id}`),
     hospitalProductMapping: (data: any) => requests.post(`${API_BASE_URL}/hospitals/hospitalproductmapping`, data),
 }
+const Transport = {
+    getTransport: (params: any) => requests.get(`${API_BASE_URL}/transport`, params),
+    createTransport: (data: any) => requests.post(`${API_BASE_URL}/transport`, data),
+    updateTransport: (id: any, data: any) => requests.put(`${API_BASE_URL}/transport/${id}`, data),
+    deleteTransport: (id: number) => requests.delete(`${API_BASE_URL}/transport/${id}`),
+    getTransportById: (id: number) => requests.get(`${API_BASE_URL}/transport/${id}`),
+}
 
 const Distributors = {
     getDistributors: (params: any) => requests.get(`${API_BASE_URL}/distributors`, params),
@@ -159,7 +166,8 @@ const agent = {
     Dashboard,
     ProductTypes,
     Invoice,
-    SharePdf
+    SharePdf,
+    Transport
 }
 
 export default agent
