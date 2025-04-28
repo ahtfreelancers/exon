@@ -5,6 +5,7 @@ import { DocumentUploadModal } from '@/app/exon-admin/__components/DocumentUploa
 import { ScannerButton } from '@/app/exon-admin/__components/scanner-modal'
 import { CalendarDateRangePicker } from '@/app/exon-admin/dashboard/__components/date-range-picker'
 import { columns } from '@/app/exon-admin/products/columns'
+import { useLoading } from '@/components/loading-context'
 import { DataTable } from '@/components/root/data-table'
 import { Button } from '@/components/ui/button'
 import { useCallback, useEffect, useState } from 'react'
@@ -23,7 +24,8 @@ export default function ListProducts() {
 
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
-
+    const { setLoading } = useLoading()
+    
     const pageSize = 10
 
     const fetchProducts = useCallback(async () => {
@@ -39,12 +41,16 @@ export default function ListProducts() {
         }
 
         try {
+            setLoading(true)
             const { data, isSuccess }: any = await getAllProducts(params)
+            setLoading(false)
+            setLoading(false)
             if (isSuccess) {
                 setData(data.items)
                 setPageCount(data.totalCount)
             }
         } catch (err) {
+            setLoading(false)
             console.log(`err`, err)
         }
     }, [search, pageIndex, expirationTo, manufactureTo, statusFilter]);

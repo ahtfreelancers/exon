@@ -1,12 +1,12 @@
 'use client'
 
-import { getAllProductTypes } from '@/actions/product-types'
-import { columns } from '@/app/exon-admin/product-types/columns'
+import { getAllTransport } from '@/actions/transport'
+import { columns } from '@/app/exon-admin/transport/columns'
 import { useLoading } from '@/components/loading-context'
 import { DataTable } from '@/components/root/data-table'
 import { useEffect, useState } from 'react'
 
-export default function ListProductTypes() {
+export default function ListTransport() {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
 
@@ -15,7 +15,7 @@ export default function ListProductTypes() {
     const { setLoading } = useLoading();
 
     const pageSize = 10
-    const fetchProductTypes = async () => {
+    const fetchTransports = async () => {
         let params = {
             PageNumber: pageIndex,
             pageSize: pageSize,
@@ -24,8 +24,10 @@ export default function ListProductTypes() {
 
         try {
             setLoading(true)
-            const { data, isSuccess }: any = await getAllProductTypes(params)
+            const { data, isSuccess }: any = await getAllTransport(params)
             setLoading(false)
+            console.log("data", data);
+            
             if (isSuccess) {
                 setData(data.items)
                 setPageCount(data.totalCount)
@@ -38,21 +40,21 @@ export default function ListProductTypes() {
     }
 
     useEffect(() => {
-        fetchProductTypes()
+        fetchTransports()
     }, [search, pageIndex])
 
     return (
         <section className=''>
             <div className='container'>
                 <div className='flex justify-between'>
-                    <h1 className='mb-6 text-2xl font-bold'>Product Types</h1>
+                    <h1 className='mb-6 text-2xl font-bold'>Transports</h1>
                 </div>
 
                 <DataTable
-                    columns={columns(fetchProductTypes)}
+                    columns={columns(fetchTransports)}
                     data={data}
-                    buttonTitle={"Add Product Type"}
-                    buttonUrl={"/exon-admin/product-types/add"}
+                    buttonTitle={"Add Transport"}
+                    buttonUrl={"/exon-admin/transport/add"}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
                     setStatusFilter={() => { }}
