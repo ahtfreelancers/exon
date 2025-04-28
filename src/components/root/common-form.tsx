@@ -28,6 +28,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState, useTransition } from 'react'
 import { useForm } from "react-hook-form"
 import { toast } from 'sonner'
+import { useLoading } from '../loading-context'
 
 interface InvoiceItems {
     id: number,
@@ -119,6 +120,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
 
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
+    const {setLoading} = useLoading()
 
     const [isPending, startTransition] = useTransition();
     const [isLoading, setIsLoading] = useState(false)
@@ -198,8 +200,9 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             return
         }
         try {
+            setLoading(true)
             const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
-
+            setLoading(false)
             if (isSuccess) {
                 const gstVal = ((data?.price * 5) / 100)
                 const newStateProductItems: any = [
@@ -232,6 +235,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                 calculateTotal(newProductItems)
             }
         } catch (error) {
+            setLoading(false)
             console.log('Error uploading document:', error);
         } finally {
             setIsLoading(false);
@@ -248,7 +252,9 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             return
         }
         try {
+            setLoading(true)
             const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
+            setLoading(false)
             if (isSuccess) {
                 const gstVal = ((data?.price * 5) / 100)
                 const newStateProductItems: any = [
@@ -281,6 +287,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                 calculateTotal(newProductItems)
             }
         } catch (error) {
+            setLoading(false)
             console.log('Error uploading document:', error);
         } finally {
             setIsLoading(false);
@@ -334,14 +341,18 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         };
 
         if (invoiceId) {
+            setLoading(true)
             const response: any = await updateInvoice(invoiceId, payload)
+            setLoading(false)
             if (response && response.isSuccess) {
                 form.reset();
                 toast.success("Invoice Updated Successfully")
                 router.push('/exon-admin/invoice')
             }
         } else {
+            setLoading(true)
             const response: any = await addInvoice(payload)
+            setLoading(false)
             if (response && response.isSuccess) {
                 form.reset();
                 toast.success("Invoice Added Successfully")
