@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button"
 import agent from "@/app/api/axios"
 import { toast } from "sonner"
 import Link from "next/link"
+import { useLoading } from "../loading-context"
 
 const TransportSchema = z.object({
     transportName: z.string().min(1, "Transport Name is required"),
@@ -45,7 +46,7 @@ export const TransportForm = ({ type, transport }: TransportFormProps) => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const id = pathname.split("/").pop();
-
+    const {setLoading} = useLoading()
     const [isPending, startTransition] = useTransition();
 
     const form = useForm<z.infer<typeof TransportSchema>>({
@@ -85,7 +86,9 @@ export const TransportForm = ({ type, transport }: TransportFormProps) => {
 
         try {
             if (type === 1) {
+                setLoading(true)
                 const response = await agent.Transport.createTransport(newValues);
+                setLoading(false)
                 if (response && response.isSuccess) {
                     form.reset();
                     toast.success("Transport created successfully");
@@ -99,7 +102,9 @@ export const TransportForm = ({ type, transport }: TransportFormProps) => {
                         id: transport?.address?.id, // <-- setting the id inside address
                     },
                 };
+                setLoading(true)
                 const response = await agent.Transport.updateTransport(id, payload);
+                setLoading(false)
                 if (response && response.isSuccess) {
                     form.reset();
                     toast.success("Transport updated successfully");
@@ -107,6 +112,7 @@ export const TransportForm = ({ type, transport }: TransportFormProps) => {
                 }
             }
         } catch (error) {
+            setLoading(false)
             console.error("An error occurred:", error);
         }
     }
