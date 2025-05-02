@@ -84,7 +84,7 @@ export function SideNav({ items, setOpen, className, isOpen }: SideNavProps) {
                         </AccordionItem>
                     </Accordion>
                 ) : (
-                    <Link
+                    item.isAccessible && <Link
                         key={item.label}
                         href={item.href}
                         onClick={() => {

@@ -1,6 +1,6 @@
 import NextAuth from "next-auth"
+import authConfig from "./auth.config";
 
-import authConfig from "./auth.config"
 
 export const {
     auth,
@@ -9,7 +9,7 @@ export const {
     signOut,
 } = NextAuth({
     pages: {
-        signIn: "/auth/login",
+        signIn: "/auth/exon-login",
         error: "/auth/error"
     },
     callbacks: {
@@ -26,6 +26,9 @@ export const {
                 session.user.id = token.id || token.sub
                 session.user.email = token.email
                 session.user.access_token = token.access_token
+                session.user.role_permissions = token.role_permissions
+                session.user.role_id = token.role_id
+                session.user.role = token.role
             }
 
             return session
@@ -42,6 +45,9 @@ export const {
                 token.id = user.id
                 token.email = user.email
                 token.access_token = user.access_token
+                token.role_permissions = user.role_permissions
+                token.role_id = user.role_id
+                token.role = user.role
             }
 
             return token;

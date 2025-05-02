@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { useState } from 'react';
 import Image from 'next/image';
 import { Dialog, DialogClose, DialogContent, DialogOverlay, DialogTrigger } from '@radix-ui/react-dialog';
+import { isPermissionExists } from '@/lib/auth';
 
 export type Product = {
   id: string;
@@ -32,7 +33,8 @@ const statusEnum: Record<string, string> = {
 };
 
 const ActionsCell = ({ id, fetchProducts }: { id: string; fetchProducts: () => void }) => {
-  const { data: session } = useSession();
+  const { data: session }: any = useSession();
+  const permissions = session?.user?.role_permissions;
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
 
   const handleDelete = async () => {
@@ -53,18 +55,22 @@ const ActionsCell = ({ id, fetchProducts }: { id: string; fetchProducts: () => v
 
   return (
     <div className="flex gap-[10px]">
-      <Link href={`/exon-admin/products/${id}`}>
-        <Eye size={22} className="cursor-pointer" />
-      </Link>
+      {isPermissionExists(permissions, "Product:Edit") && (
+        <Link href={`/exon-admin/products/${id}`}>
+          <Eye size={22} className="cursor-pointer" />
+        </Link>
+      )}
       <Link href={`/exon-admin/products/edit/${id}`}>
         <FilePenLine size={22} />
       </Link>
-      <Trash
-        size={22}
-        color="red"
-        className="cursor-pointer"
-        onClick={() => setIsConfirmVisible(true)}
-      />
+      {isPermissionExists(permissions, "Product:Delete") && (
+        <Trash
+          size={22}
+          color="red"
+          className="cursor-pointer"
+          onClick={() => setIsConfirmVisible(true)}
+        />
+      )}
 
       {isConfirmVisible && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

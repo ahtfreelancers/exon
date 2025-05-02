@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useLoading } from '@/components/loading-context'
 
-export default function ListInvoice() {
+export default function ListInvoice(props: any) {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
     const [pageIndex, setPageIndex] = useState(1)
@@ -80,6 +80,7 @@ export default function ListInvoice() {
                     isInvoiceFilterEnable={true}
                     currentPage={pageIndex}
                     search={search}
+                    isAddVisible={props.createVisible}
                     pageSize={pageSize}
                 />
 

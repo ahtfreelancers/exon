@@ -53,6 +53,7 @@ interface DataTableProps<TData, TValue> {
   isDisableTable?: boolean;
   isStatusFilterEnable?: boolean;
   setStatusFilter?: (status: string) => void; // <-- Add this
+  isAddVisible?: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -73,6 +74,7 @@ export function DataTable<TData, TValue>({
   isMultiSelectEnabled = false,
   onSelectedRowsChange,
   isDisableTable = false,
+  isAddVisible = true,
   isStatusFilterEnable = false,
   setStatusFilter, // <-- Add this
 }: DataTableProps<TData, TValue>) {
@@ -267,11 +269,9 @@ export function DataTable<TData, TValue>({
                 </div>
               </div>
             )}
-            {buttonTitle && (
-              <Link href={buttonUrl}>
-                <Button className="ml-auto">{buttonTitle}</Button>
-              </Link>
-            )}
+            {buttonTitle && isAddVisible && <Link href={buttonUrl}>
+              <Button className="ml-auto">{buttonTitle}</Button>
+            </Link>}
           </div>
         </div>
       )}
@@ -296,9 +296,9 @@ export function DataTable<TData, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </TableHead>
                 ))}
               </TableRow>

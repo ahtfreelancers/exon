@@ -154,6 +154,11 @@ const Invoice = {
     getInvoiceById: (id: number) => requests.get(`${API_BASE_URL}/invoices/${id}`),
     deleteInvoice: (id: number) => requests.delete(`${API_BASE_URL}/invoices/${id}`),
 }
+const Role = {
+    getRole: (params: any) => requests.get(`${API_BASE_URL}/roles`, params),
+    getPermissionsByRoleId: (params: any) => requests.get(`${API_BASE_URL}/permissions`, params),
+    updatePermissions: (data: any) => requests.put(`${API_BASE_URL}/permissions`, data),
+}
 const SharePdf = {
     sharePdf: (data: any) => requests.post(`${API_BASE_URL}/emails`, data),
 }
@@ -167,7 +172,8 @@ const agent = {
     ProductTypes,
     Invoice,
     SharePdf,
-    Transport
+    Transport,
+    Role
 }
 
 export default agent
