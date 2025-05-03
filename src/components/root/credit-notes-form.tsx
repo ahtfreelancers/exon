@@ -70,7 +70,7 @@ interface Invoice {
     modified: string
     creditNoteDate: string;
     originalInvoiceDate: string
-    origionalInvoiceNo: string
+    invoiceId: string
 }
 
 interface InvoiceFormProps {

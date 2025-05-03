@@ -96,7 +96,7 @@ interface Invoice {
     created: string
     modified: string
     creditNoteDate: string;
-    origionalInvoiceNo: string
+    invoiceId: string
     originalInvoiceDate: string
 }
 
@@ -161,9 +161,9 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
     const form = useForm({
         defaultValues: {
             // title: invoice?.invoiceType?.toString(),
-            creditNoteDate: invoice?.creditNoteDate,
-            origionalInvoiceNo: invoice?.origionalInvoiceNo,
-            originalInvoiceDate: invoice?.originalInvoiceDate,
+            creditNoteDate: invoice?.creditNoteDate || new Date(),
+            invoiceId: invoice?.invoiceId ,
+            originalInvoiceDate: invoice?.originalInvoiceDate || new Date(),
             partyName: type == 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString(),
             gstin: type == 1 ? invoice?.hospital?.gstNumber : invoice?.distributor?.gstNumber,
             addressline1: type == 1 ? invoice?.hospital?.address?.address1 : invoice?.distributor?.address?.address1,
@@ -317,7 +317,17 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             grandTotal: newValues.grandTotal ?? 0,
             creditNoteDate: newValues?.creditNoteDate,
             originalInvoiceDate: newValues?.originalInvoiceDate,
-            origionalInvoiceNo: newValues?.origionalInvoiceNo,
+            invoiceId: newValues?.invoiceId,
+            ledgerId: null,
+            address: {
+                address1: newValues.addressline1,
+                address2: newValues.addressline2,
+                city: newValues.city,
+                state: newValues.state,
+                country: newValues.country,
+                pinCode: newValues.pincode,
+                addressType: 1
+            },
             // invoiceType: newValues?.invoiceType ? newValues?.invoiceType : Number(invoiceType),
             invoiceItems: (invoiceId && !isEdit)
                 ? selectedTableRows?.map((item: any) => ({
@@ -456,9 +466,9 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
     }
 
     const onSelectInvoiceDropdownChange = (value: any) => {
-        form.setValue('origionalInvoiceNo', value)        
+        form.setValue('invoiceId', value)
     }
-     const onSelectDropdownChange = (value: any) => {
+    const onSelectDropdownChange = (value: any) => {
         setSelectedHospital && setSelectedHospital(value)
 
         if (type === 1) {
@@ -595,7 +605,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                             <div className='w-full flex gap-2'>
                                 <FormField
                                     control={form.control}
-                                    name="origionalInvoiceNo"
+                                    name="invoiceId"
                                     render={({ field }) => (
                                         <FormItem className='w-1/2'>
                                             <FormLabel>Original Invoice No:</FormLabel>
