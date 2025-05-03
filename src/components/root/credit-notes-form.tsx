@@ -1,227 +1,111 @@
-"use client"
+'use client'
 
-import { useState, useTransition } from "react"
-import * as z from "zod"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import CreditCommonForm from "./credit-common-form"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useForm } from "react-hook-form"
-
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from "@/components/ui/form"
-
-import { ProductTypeSchema, MedicineSchema } from "@/schemas"
-
-import agent from "@/app/api/axios"
-import { FormError } from "@/components/form-error"
-import { FormSuccess } from "@/components/form-success"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import Link from "next/link"
-
-import { Calendar } from "@/components/ui/calendar"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { Calendar as CalendarIcon } from "lucide-react"
-import {
-    FileUploader
-} from "@/components/extension/file-upload"
-import { useLoading } from "../loading-context"
-
-interface ProductType {
+interface InvoiceItems {
     id: number,
-    name: string,
-    description: string,
-    pictureUrl: any,
-    price: string
+    product: {
+        id: number,
+        itemNo: string,
+        itemDescription: string,
+        serialNumber: string,
+        lotNumber: string,
+        manufactureDate: string,
+        expirationDate: string,
+        productStatus: number
+    },
+    quantity: number,
+    rpuwg: number,
+    rpuwog: number,
+    discountType: number,
+    discount: number,
+    gst: string,
+    total: number
 }
 
-interface CreditNotesFormProps {
-    type: number;
-    productType?: ProductType;
+interface Invoice {
+    id: number,
+    hospital?: {
+        id: number,
+        name: string,
+        gstNumber: string,
+        phoneNumber: string,
+        panNumber: string,
+        address: {
+            id?: number,
+            address1: string,
+            address2: string,
+            city: string,
+            state: string,
+            pinCode: string
+        }
+    },
+    distributor?: {
+        id: number,
+        name: string,
+        gstNumber: string,
+        phoneNumber: string,
+        panNumber: string,
+        address: {
+            id?: number,
+            address1: string,
+            address2: string,
+            city: string,
+            state: string,
+            pinCode: string
+        }
+    },
+    // shipping: number,
+    // packingCharge: number,
+    cess: number,
+    cgst: number,
+    sgst: number,
+    igst: number,
+    roundOffAmount: number,
+    grandTotal: number,
+    invoiceType: number,
+    invoiceItems: InvoiceItems[]
+    created: string
+    modified: string
+    creditNoteDate: string;
+    originalInvoiceDate: string
+    origionalInvoiceNo: string
 }
 
-const ExtendedProductTypeSchema = ProductTypeSchema.extend({
-    pictureUrl: z
-        .array(z.union([z.instanceof(File), z.string()])) // Accepts both File and URL (string)
-        .max(3, "You can upload up to 3 pictures")
-        .optional(),
-    // pictureUrl: z.array(z.instanceof(File)).max(3, "You can upload up to 3 pictures").optional(),
-});
+interface InvoiceFormProps {
+    invoice?: Invoice;
+    hospitals?: any;
+    distributors?: any;
+    invoiceId?: any;
+    isEdit?: boolean
+    invoiceList?: any
+    
+}
 
-export const CreditNotesForm = ({ type, productType }: CreditNotesFormProps) => {
-    const searchParams = useSearchParams();
-    const router = useRouter();
-    const callbackUrl = searchParams.get("callbackUrl");
-    const pathname = usePathname()
-    const id = pathname.split("/").pop(); // Get the last part of the URL
-
-    const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
-        ? "Email already in use with different provider!"
-        : ""
-
-    const [error, setError] = useState<string | undefined>("")
-    const [success, setSuccess] = useState<string | undefined>("")
-    const uploadedFile = productType && productType?.pictureUrl ? [productType.pictureUrl] : [];
-    const {setLoading} = useLoading()
-
-    const [isPending, startTransition] = useTransition();
-    const form = useForm<z.infer<typeof ExtendedProductTypeSchema>>({
-        resolver: zodResolver(ExtendedProductTypeSchema),
-        defaultValues: {
-            name: productType?.name ?? "",
-            description: productType?.description ?? "",
-            pictureUrl: uploadedFile,
-            price: productType?.price.toString() ?? "",
-        }
-    })
-
-    const onSubmit = async (values: z.infer<typeof ExtendedProductTypeSchema>) => {
-        console.log('values', values);
-        const pictureUrl = values?.pictureUrl?.[0] ? (typeof values?.pictureUrl[0] === 'string' ? null : values?.pictureUrl[0]) : null 
-        const newValues: any = {
-            name: values.name,
-            description: values.description,
-            pictureUrl: pictureUrl || null,
-            price: values.price,
-        }
-
-        if (type == 1) {
-            try {
-                setLoading(true)
-                const response = await agent.CreditNotes.createCreditNote(newValues)
-                setLoading(false)
-                if (response && response.isSuccess) {
-                    form.reset();
-                    router.push('/exon-admin/credit-notes')
-                }
-            } catch (error) {
-                setLoading(false)
-                console.error("An error occurred:", error);
-            }
-        }
-        if (type == 2) {
-            try {
-                setLoading(true)
-                const response = await agent.CreditNotes.updateCreditNote(id, newValues)
-                setLoading(false)
-                
-                if (response && response.isSuccess) {
-                    form.reset();
-                    router.push('/exon-admin/credit-notes')
-                }
-            } catch (error) {
-                setLoading(false)
-                console.error("An error occurred:", error);
-            }
-        }
-    }
-
+export default function CreditNotesForm({ invoice, hospitals, distributors, invoiceId, isEdit = false, invoiceList }: InvoiceFormProps) {
     return (
-        <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6"
-            >
-                <div className="grid grid-cols-2 gap-[10px]">
-                    <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Name</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        disabled={isPending}
-                                        placeholder="Enter Name"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="description"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Description
-                                </FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        disabled={isPending}
-                                        placeholder="Enter Description"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="price"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Price
-                                </FormLabel>
-                                <FormControl>
-                                    <Input
-                                        {...field}
-                                        disabled={isPending}
-                                        placeholder="Enter Price"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="pictureUrl"
-                        render={({ field }: any) => (
-                            <FormItem>
-                                <FormLabel>Picture Url</FormLabel>
-                                <FileUploader
-                                    value={field?.value || []}
-                                    onValueChange={field.onChange}
-                                    reSelect={true}
-                                    className="size-52 p-0"
-                                />
-                            </FormItem>
-                        )}
-                    />
-                </div>
-                <FormError message={error || urlError} />
-                <FormSuccess message={success} />
-                <Button
-                    disabled={isPending}
-                    type="submit"
-                    className=""
-                >
-                    Save
-                </Button>
-                <Link href={'/exon-admin/credit-notes'}>
-                    <Button
-                        disabled={isPending}
-                        type="submit"
-                        variant="secondary"
-                        className="ml-[20px]"
-                    >
-                        Cancel
-                    </Button>
-                </Link>
-            </form>
-        </Form>
+        <section className=''>
+            <div className='container'>
+                {
+                    invoiceId ? (
+                        <CreditCommonForm type={invoice?.hospital?.id ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} isEdit={isEdit} invoiceList={invoiceList} />
+                    ) : (
+                        <Tabs defaultValue="hospitalmapping">
+                            <TabsList>
+                                <TabsTrigger value="hospitalmapping">Hospital</TabsTrigger>
+                                <TabsTrigger value="distributormapping">Distributor</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="hospitalmapping" className='p-4'>
+                                <CreditCommonForm type={1} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} invoiceList={invoiceList}/>
+                            </TabsContent>
+                            <TabsContent value="distributormapping" className='p-4'>
+                                <CreditCommonForm type={2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} invoiceList={invoiceList}/>
+                            </TabsContent>
+                        </Tabs>
+                    )
+                }
+            </div>
+        </section>
     )
 }
