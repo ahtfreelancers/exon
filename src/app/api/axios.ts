@@ -146,6 +146,13 @@ const ProductTypes = {
     deleteProductType: (id: number) => requests.delete(`${API_BASE_URL}/producttypes/${id}`),
     updateProductType: (id: any, data: any) => requests.put(`${API_BASE_URL}/producttypes/${id}`, createFormData(data)),
 }
+const CreditNotes = {
+    getCreditNotes: (params: any) => requests.get(`${API_BASE_URL}/producttypes`, params),
+    createCreditNote: (data: any) => requests.post(`${API_BASE_URL}/producttypes`, createFormData(data)),
+    getCreditNoteById: (id: number) => requests.get(`${API_BASE_URL}/producttypes/${id}`),
+    deleteCreditNote: (id: number) => requests.delete(`${API_BASE_URL}/producttypes/${id}`),
+    updateCreditNote: (id: any, data: any) => requests.put(`${API_BASE_URL}/producttypes/${id}`, createFormData(data)),
+}
 const Invoice = {
     getInvoice: (params: any) => requests.get(`${API_BASE_URL}/invoices`, params),
     getInvoicePdf: (id: any) => requests.get(`${API_BASE_URL}/invoices/getInvoicePDF/${id}`),
@@ -167,7 +174,9 @@ const agent = {
     ProductTypes,
     Invoice,
     SharePdf,
-    Transport
+    Transport,
+    CreditNotes
+
 }
 
 export default agent
