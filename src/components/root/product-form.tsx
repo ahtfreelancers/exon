@@ -32,6 +32,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Calendar as CalendarIcon } from "lucide-react"
+import { useLoading } from "../loading-context"
 
 interface Product {
     id: number,
@@ -42,6 +43,7 @@ interface Product {
     manufactureDate: string,
     expirationDate: string,
     price: string,
+    productStatus: string,
 }
 
 interface ProductFormProps {
@@ -62,6 +64,7 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
 
     const [error, setError] = useState<string | undefined>("")
     const [success, setSuccess] = useState<string | undefined>("")
+    const {setLoading} = useLoading()
 
     const [isPending, startTransition] = useTransition();
     const form = useForm<z.infer<typeof MedicineSchema>>({
@@ -74,8 +77,11 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
             manufactureDate: product?.manufactureDate ?? "",
             expirationDate: product?.expirationDate ?? "",
             price: product?.price ?? "",
+            productStatus: product?.productStatus?.toString() ?? "0"
         }
     })
+
+
     const onSubmit = async (values: z.infer<typeof MedicineSchema>) => {
         const manufactureDate = new Date(values.manufactureDate)
         const expirationDate = new Date(values.expirationDate)
@@ -86,29 +92,36 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
             ...values,
             price: parseFloat(values.price),
             manufactureDate: formattedManufactureDate,
-            expirationDate: formattedExpirationDate
+            expirationDate: formattedExpirationDate,
+            productStatus: Number(values.productStatus)
         }
 
         if (type == 1) {
             try {
+                setLoading(true)
                 const response = await agent.Products.createProduct(newValues)
+                setLoading(false)
                 if (response && response.isSuccess) {
                     form.reset();
                     router.push('/exon-admin/products')
                 }
             } catch (error) {
+                setLoading(false)
                 console.error("An error occurred:", error);
             }
         }
         if (type == 2) {
             try {
+                setLoading(true)
                 const response = await agent.Products.updateProduct(id, newValues)
-                
+                setLoading(false)
+
                 if (response && response.isSuccess) {
                     form.reset();
                     router.push('/exon-admin/products')
                 }
             } catch (error) {
+                setLoading(false)
                 console.error("An error occurred:", error);
             }
         }
@@ -214,7 +227,7 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                                                 mode="single"
                                                 selected={field.value ? new Date(field.value) : undefined}
                                                 onSelect={(date) => field.onChange(date?.toISOString())}
-                                                // initialFocus
+                                            // initialFocus
                                             />
                                         </PopoverContent>
                                     </Popover>
@@ -246,7 +259,7 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                                                 mode="single"
                                                 selected={field.value ? new Date(field.value) : undefined}
                                                 onSelect={(date) => field.onChange(date?.toISOString())}
-                                                // initialFocus
+                                            // initialFocus
                                             />
                                         </PopoverContent>
                                     </Popover>
@@ -273,19 +286,32 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                             </FormItem>
                         )}
                     />
+                    <FormField
+                        control={form.control}
+                        name="productStatus"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Product Status</FormLabel>
+                                <FormControl>
+                                    <select
+                                        {...field}
+                                        disabled={isPending}
+                                        className="border border-input bg-white p-2 rounded-md w-full"
+                                    >
+                                        <option value={0}>NotIn</option>
+                                        <option value={1}>In</option>
+                                        <option value={2}>Out</option>
+                                        <option value={3}>Dispose</option>
+                                        <option value={4}>Return</option>
+                                    </select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                 </div>
                 <FormError message={error || urlError} />
                 <FormSuccess message={success} />
-                <Link href={'/exon-admin/products'}>
-                    <Button
-                        disabled={isPending}
-                        type="submit"
-                        variant="secondary"
-                        className="mr-[20px]"
-                    >
-                        Cancel
-                    </Button>
-                </Link>
                 <Button
                     disabled={isPending}
                     type="submit"
@@ -293,6 +319,16 @@ export const ProductForm = ({ type, product }: ProductFormProps) => {
                 >
                     Save
                 </Button>
+                <Link href={'/exon-admin/products'}>
+                    <Button
+                        disabled={isPending}
+                        type="submit"
+                        variant="secondary"
+                        className="ml-[20px]"
+                    >
+                        Cancel
+                    </Button>
+                </Link>
             </form>
         </Form>
     )

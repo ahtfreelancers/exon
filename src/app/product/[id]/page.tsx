@@ -57,7 +57,7 @@ export default function ProductPage() {
     }
 
     try {
-      const response: any = await sharePdfWithEmail({ to: email, pdfType: product.productType });
+      const response: any = await sharePdfWithEmail({ to: email, pdfType: product.productType, productName: product.productName });
       console.log("response", response);
 
       if (response.isSuccess) {
@@ -86,7 +86,7 @@ export default function ProductPage() {
           <div className="relative h-[400px] spbp:h-[500px] 2xl:h-[515px]" data-aos="fade-right">
             <Image
               src={`/about/${productImage}`}
-              alt="Featured Product"
+              alt={`Exon Therapeutics ${productName}`}
               layout="fill"
               objectFit="contain"
             />

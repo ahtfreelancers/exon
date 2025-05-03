@@ -17,6 +17,7 @@ export const MedicineSchema = z.object({
     manufactureDate: z.string().min(1, { message: "Manufacture Date is required" }),
     expirationDate: z.string().min(1, { message: "Expiration Date is required" }),
     price: z.string().min(1, { message: "Price is required" }),
+    productStatus: z.string().min(1, { message: "Product Status is required" }),
 })
 
 export const ProductTypeSchema = z.object({

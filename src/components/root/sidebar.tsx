@@ -29,6 +29,7 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
         { href: "/exon-admin/products", label: "Products", icon: Folder },
         { href: "/exon-admin/invoice", label: "Invoice", icon: ReceiptIndianRupee },
         { href: "/exon-admin/challan", label: "Challan", icon: ReceiptIndianRupee },
+        { href: "/exon-admin/transport", label: "Transport", icon: Hospital },
         { href: "/exon-admin/hospitals", label: "Hospitals", icon: Hospital },
         { href: "/exon-admin/distributors", label: "Distributors", icon: Contact },
         // { href: "/exon-admin/mapping", label: "Mapping", icon: Contact },
@@ -46,7 +47,7 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
     return (
         <nav
             className={cn(
-                `relative hidden h-screen border-r md:block transition-all duration-300`,
+                `relative hidden h-full border-r md:block transition-all duration-300`,
                 status && "duration-500",
                 isOpen ? "w-[210px]" : "w-[78px]",
                 className
@@ -69,7 +70,7 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
                 )}
                 onClick={handleToggle}
             />
-            <div className="space-y-4 h-full">
+            <div className="space-y-4">
                 <div className="mt-3 space-y-1">
                     <SideNav
                         className="text-background opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100"

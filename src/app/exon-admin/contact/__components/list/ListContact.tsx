@@ -4,12 +4,14 @@ import { getAllContact } from '@/actions/contact'
 import { DataTable } from '@/components/root/data-table'
 import { useEffect, useState } from 'react'
 import { columns } from '../../columns'
+import { useLoading } from '@/components/loading-context'
 
 export default function ListContact(props: any) {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
+    const { setLoading } = useLoading()
 
     const fetchContact = async () => {
         let params = {
@@ -19,12 +21,15 @@ export default function ListContact(props: any) {
         }
 
         try {
+            setLoading(true)
             const { data, isSuccess }: any = await getAllContact(params)
+            setLoading(false)
             if (isSuccess) {
                 setData(data.items)
                 setPageCount(data.totalCount)
             }
         } catch (err) {
+            setLoading(false)
             console.log(`err`, err);
             // setError(err.message || 'An error occurred')
         }

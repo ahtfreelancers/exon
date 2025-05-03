@@ -26,6 +26,7 @@ import {
     FormMessage
 } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useLoading } from '@/components/loading-context'
 
 export default function ListMapping() {
     const [search, setSearch] = useState('')
@@ -43,6 +44,7 @@ export default function ListMapping() {
 
     const [isPending, startTransition] = useTransition();
     const [isLoading, setIsLoading] = useState(false)
+    const { setLoading } = useLoading();
 
     useEffect(() => {
         localStorage.removeItem('hospitalProducts');
@@ -80,24 +82,29 @@ export default function ListMapping() {
         }
 
         try {
+            setLoading(true)        
             const { data, isSuccess }: any = await getAllHospitals(params)
+            setLoading(false)        
             if (isSuccess) {
                 setHospitals(data.items)
             }
         } catch (err) {
+            setLoading(false)        
             console.log(`err`, err);
             // setError(err.message || 'An error occurred')
         }
     }
-
+    
     const fetchDistributors = async () => {
         let params = {
             PageNumber: 1,
             pageSize: 10
         }
-
+        
         try {
+            setLoading(true)        
             const { data, isSuccess }: any = await getAllDistributors(params)
+            setLoading(false)        
             if (isSuccess) {
                 setDistributors(data.items)
             }

@@ -28,6 +28,7 @@ import { DataTable } from "./data-table"
 import { columns, Mapping } from "@/app/exon-admin/hospitals/__components/columns"
 import { getAllProductTypes } from "@/actions/product-types"
 import { toast } from "sonner"
+import { useLoading } from "../loading-context"
 
 interface Distributor {
     id: number,
@@ -96,7 +97,7 @@ export const DistributorForm = ({ type, distributor }: any) => {
     const [error, setError] = useState<string | undefined>("")
     const [success, setSuccess] = useState<string | undefined>("")
     console.log("distributor", distributor);
-
+    const {setLoading} = useLoading()
     const [isPending, startTransition] = useTransition();
     const form = useForm<z.infer<typeof DistributorSchema>>({
         resolver: zodResolver(DistributorSchema),
@@ -149,24 +150,30 @@ export const DistributorForm = ({ type, distributor }: any) => {
 
         if (type == 1) {
             try {
+                setLoading(true)
                 const response = await agent.Distributors.createDistributor(newValues)
+                setLoading(false)
                 if (response && response.isSuccess) {
                     form.reset();
                     router.push('/exon-admin/distributors')
                 }
             } catch (error) {
+                setLoading(false)
                 console.error("An error occurred:", error);
             }
         }
         if (type == 2) {
             try {
+                setLoading(true)
                 const response = await agent.Distributors.updateDistributor(id, newValues)
+                setLoading(false)
 
                 if (response && response.isSuccess) {
                     form.reset();
                     router.push('/exon-admin/distributors')
                 }
             } catch (error) {
+                setLoading(false)
                 console.error("An error occurred:", error);
             }
         }
@@ -396,16 +403,6 @@ export const DistributorForm = ({ type, distributor }: any) => {
                 />
                 <FormError message={error || urlError} />
                 <FormSuccess message={success} />
-                <Link href={'/exon-admin/distributors'}>
-                    <Button
-                        disabled={isPending}
-                        type="submit"
-                        variant="secondary"
-                        className="mr-[20px]"
-                    >
-                        Cancel
-                    </Button>
-                </Link>
                 <Button
                     disabled={isPending}
                     type="submit"
@@ -413,6 +410,16 @@ export const DistributorForm = ({ type, distributor }: any) => {
                 >
                     Save
                 </Button>
+                <Link href={'/exon-admin/distributors'}>
+                    <Button
+                        disabled={isPending}
+                        type="submit"
+                        variant="secondary"
+                        className="ml-[20px]"
+                    >
+                        Cancel
+                    </Button>
+                </Link>
             </form>
         </Form>
     )

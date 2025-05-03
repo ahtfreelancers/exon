@@ -28,6 +28,7 @@ import { getAllProductTypes } from "@/actions/product-types"
 import { DataTable } from "./data-table"
 import { columns, Mapping } from "@/app/exon-admin/hospitals/__components/columns"
 import { toast } from "sonner"
+import { useLoading } from "../loading-context"
 
 interface Hospital {
     id: number,
@@ -106,6 +107,7 @@ export const HospitalForm = ({ type, hospital }: any) => {
 
     const [error, setError] = useState<string | undefined>("")
     const [success, setSuccess] = useState<string | undefined>("")
+    const {setLoading} = useLoading()
 
     const [isPending, startTransition] = useTransition();
     const form = useForm<z.infer<typeof HospitalSchema>>({
@@ -158,24 +160,29 @@ export const HospitalForm = ({ type, hospital }: any) => {
 
         if (type == 1) {
             try {
+                setLoading(true)
                 const response = await agent.Hospitals.createHospital(newValues)
+                setLoading(false)
                 if (response && response.isSuccess) {
                     form.reset();
                     router.push('/exon-admin/hospitals')
                 }
             } catch (error) {
+                setLoading(false)
                 console.error("An error occurred:", error);
             }
         }
         if (type == 2) {
             try {
+                setLoading(true)
                 const response = await agent.Hospitals.updateHospital(id, newValues)
-
+                setLoading(false)
                 if (response && response.isSuccess) {
                     form.reset();
                     router.push('/exon-admin/hospitals')
                 }
             } catch (error) {
+                setLoading(false)
                 console.error("An error occurred:", error);
             }
         }
@@ -405,16 +412,6 @@ export const HospitalForm = ({ type, hospital }: any) => {
                 />
                 <FormError message={error || urlError} />
                 <FormSuccess message={success} />
-                <Link href={'/exon-admin/hospitals'}>
-                    <Button
-                        disabled={isPending}
-                        type="submit"
-                        variant="secondary"
-                        className="mr-[20px]"
-                    >
-                        Cancel
-                    </Button>
-                </Link>
                 <Button
                     disabled={isPending}
                     type="submit"
@@ -422,6 +419,16 @@ export const HospitalForm = ({ type, hospital }: any) => {
                 >
                     Save
                 </Button>
+                <Link href={'/exon-admin/hospitals'}>
+                    <Button
+                        disabled={isPending}
+                        type="submit"
+                        variant="secondary"
+                        className="ml-[20px]"
+                    >
+                        Cancel
+                    </Button>
+                </Link>
             </form>
         </Form>
     )
