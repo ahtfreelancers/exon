@@ -30,6 +30,8 @@ const authConfig: NextAuthConfig = {
                 console.log(decoded);
               }
             });
+            console.log("role_permissions", role_permissions?.Permission);
+
             const user: any = {
               email: email,
               access_token: response?.data?.data?.token,

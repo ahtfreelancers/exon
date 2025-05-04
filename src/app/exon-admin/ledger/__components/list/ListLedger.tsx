@@ -6,7 +6,7 @@ import { DataTable } from '@/components/root/data-table'
 import { useEffect, useState } from 'react'
 import { columns } from '../../columns'
 
-export default function ListLedger() {
+export default function ListLedger(props: any) {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
 
@@ -50,7 +50,7 @@ export default function ListLedger() {
                 <DataTable
                     columns={columns(fetchLedger)}
                     data={data}
-                    buttonTitle={"Add Hospital"}
+                    buttonTitle={"Add Ledger"}
                     buttonUrl={"/exon-admin/ledger/add"}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
@@ -60,6 +60,7 @@ export default function ListLedger() {
                     currentPage={pageIndex}
                     search={search}
                     pageSize={pageSize}
+                    isAddVisible={props.createVisible}
                 />
             </div>
         </section>

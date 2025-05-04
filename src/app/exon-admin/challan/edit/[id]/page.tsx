@@ -6,6 +6,8 @@ import ChallanForm from "@/components/root/challan-form";
 import { getChallan } from "@/actions/challan";
 import { getAllTransport } from "@/actions/transport";
 import { getAllProductTypes } from "@/actions/product-types";
+import { isPermissionExists } from "@/lib/auth";
+import NoAccess from "@/components/no-access";
 
 interface InvoiceFormEditPageProps {
     params: {
@@ -14,10 +16,15 @@ interface InvoiceFormEditPageProps {
 }
 
 const ChallanEditPage = async ({ params }: InvoiceFormEditPageProps) => {
-    const session = await auth()
+    const session: any = await auth()
+    const permissions = session?.user?.role_permissions
 
     if (!session) {
         return redirect('/exon-admin')
+    }
+
+    if (!isPermissionExists(permissions, "Delivery:Edit")) {
+        return <NoAccess />
     }
     const { id } = params;
     let listParams = {
