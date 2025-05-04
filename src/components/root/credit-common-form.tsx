@@ -30,6 +30,7 @@ import { useForm } from "react-hook-form"
 import { toast } from 'sonner'
 import { useLoading } from '../loading-context'
 import { addCreditNote, updateCreditNote } from '@/actions/credit-notes'
+import { FileUploader } from '../extension/file-upload'
 
 interface InvoiceItems {
     id: number,
@@ -50,6 +51,7 @@ interface InvoiceItems {
 
 interface Invoice {
     id: number,
+    fileData: any,
     address: {
         id?: number,
         address1: string,
@@ -136,7 +138,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
     const [isPending, startTransition] = useTransition();
     const [isLoading, setIsLoading] = useState(false)
     const [selectedTableRows, setSelectedTableRows] = useState<any[]>([])
-
+    const uploadedFile = invoice && invoice?.fileData ? [invoice?.fileData] : [];
     const router = useRouter();
 
     const pageSize = 10
@@ -149,7 +151,6 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             const combinedArray: any = invoiceLists?.map((item: any) => {
                 const gstVal = item.taxrate.includes('%') ? item.taxrate.replaceAll('%', '') : item.taxrate
                 const calculateRpuwg = ((item.total * parseFloat(gstVal)) / 100)
-                debugger
                 return {
                     ...item,
                     ...item.ledger,
@@ -190,6 +191,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             // invoiceType: invoice?.invoiceType,
             roundOff: invoice?.roundOffAmount,
             grandTotal: invoice?.grandTotal,
+            fileData: uploadedFile,
         },
     });
 
@@ -320,7 +322,10 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
         const newValues = {
             ...values
         };
+        const fileUrl = values?.fileData?.[0] ? (typeof values?.fileData[0] === 'string' ? null : values?.fileData[0]) : null 
+
         const payload = {
+            fileData: fileUrl,
             hospitalId: type === 1 ? parseInt(selectedHospital as string) : null,
             distributorId: type === 2 ? parseInt(selectedHospital as string) : null,
             // shipping: newValues.shippingFreight ?? 0,
@@ -393,7 +398,6 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                 setLoading(true)
                 const response: any = await addCreditNote(payload)
                 setLoading(false)
-                debugger
                 if (response && response.isSuccess) {
                     form.reset();
                     toast.success("Credit Note Added Successfully")
@@ -401,7 +405,6 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                 }
             }
         } catch (error: any) {
-            debugger
             setLoading(false)
             toast.error(error.message || 'An error occurred')
             console.log('Error uploading document:', error);
@@ -918,7 +921,22 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
 
                             <div className='w-3/4'>
 
-                                Upload a file
+                               <FormField
+                                                       control={form.control}
+                                                       name="fileData"
+                                                       render={({ field }: any) => (
+                                                           <FormItem>
+                                                               <FormLabel>Upload File</FormLabel>
+                                                               <FileUploader
+                                                                   value={field?.value || []}
+                                                                   onValueChange={field.onChange}
+                                                                   reSelect={true}
+                                                                   className="size-52 p-0"
+                                                                   hidePreview={true}
+                                                               />
+                                                           </FormItem>
+                                                       )}
+                                                   />
                             </div>
 
                             <div className='w-1/4'>

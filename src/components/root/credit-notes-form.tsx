@@ -22,6 +22,7 @@ interface InvoiceItems {
 
 interface Invoice {
     id: number,
+    fileData: any,
     address: {
         id?: number,
         address1: string,
