@@ -26,6 +26,14 @@ interface InvoiceItems {
 
 interface Invoice {
     id: number,
+    address: {
+        id?: number,
+        address1: string,
+        address2: string,
+        city: string,
+        state: string,
+        pinCode: string
+    },
     hospital?: {
         id: number,
         name: string,
@@ -80,7 +88,7 @@ interface InvoiceFormProps {
     invoiceId?: any;
     isEdit?: boolean
     invoiceList?: any
-    
+
 }
 
 export default function CreditNotesForm({ invoice, hospitals, distributors, invoiceId, isEdit = false, invoiceList }: InvoiceFormProps) {

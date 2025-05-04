@@ -1,7 +1,7 @@
 'use client'
 
 import { getAllCreditNotes } from '@/actions/credit-notes'
-import { columns } from '@/app/exon-admin/product-types/columns'
+import { columns } from '@/app/exon-admin/credit-notes/columns'
 import { useLoading } from '@/components/loading-context'
 import { DataTable } from '@/components/root/data-table'
 import { useEffect, useState } from 'react'

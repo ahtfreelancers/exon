@@ -1,10 +1,9 @@
 import { redirect } from "next/navigation";
 import { auth } from "../../../../../../auth";
-import { getProductType } from "@/actions/product-types";
-import { getInvoice } from "@/actions/invoice";
 import { getAllHospitals } from "@/actions/hospitals";
 import { getAllDistributors } from "@/actions/distributor";
 import CreditNotesForm from "@/components/root/credit-notes-form";
+import { getCreditNote } from "@/actions/credit-notes";
 
 interface CreditNotesEditPageProps {
     params: {
@@ -26,7 +25,7 @@ const CreditNotesEditPage = async ({ params }: CreditNotesEditPageProps) => {
            pageSize: 10
        }
    
-       const { data }: any = await getInvoice(id);
+       const { data }: any = await getCreditNote(id);
        const { data: hospitals }: any = await getAllHospitals(paramsQuery)
        const { data: distributors }: any = await getAllDistributors(paramsQuery)
        const { data: invoiceList }: any = await getAllHospitals(paramsQuery)

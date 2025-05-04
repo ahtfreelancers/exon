@@ -53,6 +53,14 @@ interface InvoiceItems {
 
 interface Invoice {
     id: number,
+    address: {
+        id?: number,
+        address1: string,
+        address2: string,
+        city: string,
+        state: string,
+        pinCode: string
+    },
     hospital?: {
         id: number,
         name: string,
@@ -162,16 +170,16 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
         defaultValues: {
             // title: invoice?.invoiceType?.toString(),
             creditNoteDate: invoice?.creditNoteDate || new Date(),
-            invoiceId: invoice?.invoiceId ,
+            invoiceId: invoice?.invoiceId ,// need invoice info from invoiceId
             originalInvoiceDate: invoice?.originalInvoiceDate || new Date(),
             partyName: type == 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString(),
             gstin: type == 1 ? invoice?.hospital?.gstNumber : invoice?.distributor?.gstNumber,
-            addressline1: type == 1 ? invoice?.hospital?.address?.address1 : invoice?.distributor?.address?.address1,
-            addressline2: type == 1 ? invoice?.hospital?.address?.address2 : invoice?.distributor?.address?.address2,
+            addressline1: invoice?.address?.address1,
+            addressline2: invoice?.address?.address2,
             country: "India",
-            state: type == 1 ? invoice?.hospital?.address?.state : invoice?.distributor?.address?.state,
-            city: type == 1 ? invoice?.hospital?.address?.city : invoice?.distributor?.address?.city,
-            pincode: type == 1 ? invoice?.hospital?.address?.pinCode : invoice?.distributor?.address?.pinCode,
+            state: invoice?.address?.state,
+            city: invoice?.address?.city,
+            pincode: invoice?.address?.pinCode,
             cess: invoice?.cess,
             cgst: invoice?.cgst,
             sgst: invoice?.sgst,
@@ -303,7 +311,6 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
         const newValues = {
             ...values
         };
-        debugger
         const payload = {
             hospitalId: type === 1 ? parseInt(selectedHospital as string) : null,
             distributorId: type === 2 ? parseInt(selectedHospital as string) : null,
