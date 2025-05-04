@@ -5,22 +5,18 @@ import CreditCommonForm from "./credit-common-form"
 
 interface InvoiceItems {
     id: number,
-    product: {
+    ledger: {
         id: number,
-        itemNo: string,
-        itemDescription: string,
-        serialNumber: string,
-        lotNumber: string,
-        manufactureDate: string,
-        expirationDate: string,
-        productStatus: number
+        name: string,
     },
     quantity: number,
     rpuwg: number,
     rpuwog: number,
+    // taxrate: number,
     discountType: number,
-    discount: number,
-    gst: string,
+    discountAmount: number,
+    taxrate: string,
+    ledgerId: number,
     total: number
 }
 
@@ -73,7 +69,7 @@ interface Invoice {
     roundOffAmount: number,
     grandTotal: number,
     invoiceType: number,
-    invoiceItems: InvoiceItems[]
+    items: InvoiceItems[]
     created: string
     modified: string
     creditNoteDate: string;
@@ -88,16 +84,17 @@ interface InvoiceFormProps {
     invoiceId?: any;
     isEdit?: boolean
     invoiceList?: any
+    ledgers?: any
 
 }
 
-export default function CreditNotesForm({ invoice, hospitals, distributors, invoiceId, isEdit = false, invoiceList }: InvoiceFormProps) {
+export default function CreditNotesForm({ invoice, hospitals, distributors, invoiceId, isEdit = false, invoiceList, ledgers }: InvoiceFormProps) {
     return (
         <section className=''>
             <div className='container'>
                 {
                     invoiceId ? (
-                        <CreditCommonForm type={invoice?.hospital?.id ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} isEdit={isEdit} invoiceList={invoiceList} />
+                        <CreditCommonForm type={invoice?.hospital?.id ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} isEdit={isEdit} invoiceList={invoiceList} ledgers={ledgers} />
                     ) : (
                         <Tabs defaultValue="hospitalmapping">
                             <TabsList>
@@ -105,10 +102,10 @@ export default function CreditNotesForm({ invoice, hospitals, distributors, invo
                                 <TabsTrigger value="distributormapping">Distributor</TabsTrigger>
                             </TabsList>
                             <TabsContent value="hospitalmapping" className='p-4'>
-                                <CreditCommonForm type={1} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} invoiceList={invoiceList}/>
+                                <CreditCommonForm type={1} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} invoiceList={invoiceList} ledgers={ledgers}/>
                             </TabsContent>
                             <TabsContent value="distributormapping" className='p-4'>
-                                <CreditCommonForm type={2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} invoiceList={invoiceList}/>
+                                <CreditCommonForm type={2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} invoiceList={invoiceList} ledgers={ledgers}/>
                             </TabsContent>
                         </Tabs>
                     )

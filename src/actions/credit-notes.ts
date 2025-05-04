@@ -13,15 +13,27 @@ export async function getAllCreditNotes(params: any) {
         };
     }
 }
+export async function getAllLedgers(params: any) {
+    try {
+        const response = await agent.CreditNotes.getAllLedgers(params)
+        return handleResponse(response)
+    } catch (error) {
+        return {
+            error,
+        };
+    }
+}
 
 export async function addCreditNote(data: any) {
     try {
         const response = await agent.CreditNotes.createCreditNote(data)
         return handleResponse(response)
     } catch (error) {
-        return {
-            error,
-        };
+        console.log("Add Credit Notes error", error);
+        throw error;
+        // return {
+        //     error,
+        // };
     }
 }
 

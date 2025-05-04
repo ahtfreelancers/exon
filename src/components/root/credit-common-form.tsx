@@ -3,7 +3,7 @@
 import { addInvoice, updateInvoice } from '@/actions/invoice'
 import { getProductBySerialNumber } from '@/actions/products'
 import { HospitalScannerButton } from '@/app/exon-admin/__components/hospital-scanner-modal'
-import { columns } from '@/app/exon-admin/mapping/columns'
+import { columns } from '@/app/exon-admin/credit-notes/creditNotesInvoiceColumns'
 import { DataTable } from '@/components/root/data-table'
 import { Button } from '@/components/ui/button'
 import { Calendar } from "@/components/ui/calendar"
@@ -29,25 +29,22 @@ import { useEffect, useState, useTransition } from 'react'
 import { useForm } from "react-hook-form"
 import { toast } from 'sonner'
 import { useLoading } from '../loading-context'
+import { addCreditNote, updateCreditNote } from '@/actions/credit-notes'
 
 interface InvoiceItems {
     id: number,
-    product: {
+    ledgerId: number,
+    ledger: {
         id: number,
-        itemNo: string,
-        itemDescription: string,
-        serialNumber: string,
-        lotNumber: string,
-        manufactureDate: string,
-        expirationDate: string,
-        productStatus: number
+        name: string,
     },
     quantity: number,
     rpuwg: number,
     rpuwog: number,
+    // taxrate: number,
     discountType: number,
-    discount: number,
-    gst: string,
+    discountAmount: number,
+    taxrate: string,
     total: number
 }
 
@@ -100,7 +97,7 @@ interface Invoice {
     roundOffAmount: number,
     grandTotal: number,
     // invoiceType: number,
-    invoiceItems: InvoiceItems[]
+    items: InvoiceItems[]
     created: string
     modified: string
     creditNoteDate: string;
@@ -116,6 +113,7 @@ interface InvoiceFormProps {
     invoiceId?: any;
     isEdit?: boolean;
     invoiceList?: any;
+    ledgers?: any;
 }
 
 // const invoiceTypes = [
@@ -123,12 +121,12 @@ interface InvoiceFormProps {
 //     { id: '2', name: 'Tax Invoice' }
 // ]
 
-export default function CreditCommonForm({ type, invoice, hospitals, distributors, invoiceId, isEdit, invoiceList }: InvoiceFormProps) {
+export default function CreditCommonForm({ type, invoice, hospitals, distributors, invoiceId, isEdit, invoiceList, ledgers }: InvoiceFormProps) {
     const [search, setSearch] = useState('')
     const [selectedHospital, setSelectedHospital] = useState(type === 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString())
-    const [selectedInvoiceNo, setSelectedInvoiceNo] = useState(type === 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString())
-
-    const [productItems, setProductItems] = useState<any[]>([])
+    // const [selectedInvoiceNo, setSelectedInvoiceNo] = useState(type === 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString())
+    const [invoiceLists, setInvoiceList] = useState<any[]>([])
+    // const [productItems, setProductItems] = useState<any[]>([])
     // const [invoiceType, setInvoiceType] = useState<string>('')
 
     const [pageIndex, setPageIndex] = useState(1)
@@ -145,32 +143,37 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
     console.log("selectedTableRows", selectedTableRows);
     console.log("invoice", invoice);
 
+
     useEffect(() => {
-        if (invoice?.invoiceItems && invoice?.invoiceItems?.length > 0) {
-            const combinedArray: any = invoice?.invoiceItems?.map(item => {
-                const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
+        if (invoiceLists?.length > 0) {
+            const combinedArray: any = invoiceLists?.map((item: any) => {
+                const gstVal = item.taxrate.includes('%') ? item.taxrate.replaceAll('%', '') : item.taxrate
                 const calculateRpuwg = ((item.total * parseFloat(gstVal)) / 100)
+                debugger
                 return {
                     ...item,
-                    ...item.product,
-                    productId: item.product.id,
+                    ...item.ledger,
+                    // productId: item.product.id,
+                    ledgerId: item.ledger.id,
                     id: item.id,
                     product: undefined,
                     rpuwog: item.total,
+                    // taxrate: item.total,
                     rpuwg: (item.total + calculateRpuwg),
-                    gst: item.gst,
+                    taxrate: item.taxrate,
                     gstAmount: calculateRpuwg
                 }
             });
-            setProductItems(combinedArray)
+            setInvoiceList(combinedArray)
+            // setProductItems(combinedArray)
         }
-    }, [invoice])
+    }, [invoice,/*  invoiceLists */])
 
     const form = useForm({
         defaultValues: {
             // title: invoice?.invoiceType?.toString(),
             creditNoteDate: invoice?.creditNoteDate || new Date(),
-            invoiceId: invoice?.invoiceId ,// need invoice info from invoiceId
+            invoiceId: invoice?.invoiceId,// need invoice info from invoiceId
             originalInvoiceDate: invoice?.originalInvoiceDate || new Date(),
             partyName: type == 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString(),
             gstin: type == 1 ? invoice?.hospital?.gstNumber : invoice?.distributor?.gstNumber,
@@ -196,117 +199,123 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
         const totalBeforeRoundOff = items.reduce((acc: any, item: any) => acc + parseFloat(item?.rpuwg), 0)
         const roundedTotal = Math.round(totalBeforeRoundOff * 100) / 100;
         const roundOffAmount = roundedTotal - totalBeforeRoundOff;
+        const cess = form.getValues('cess') || 0;
+        const igst = form.getValues('igst') || 0;
 
         form.setValue('cgst', (parseFloat(calculateCgst) / 2))
         form.setValue('sgst', (parseFloat(calculateCgst) / 2))
         form.setValue('roundOff', roundOffAmount)
-        form.setValue('grandTotal', (parseFloat(calculateTotal) + parseFloat(calculateCgst)))
+        form.setValue('grandTotal', (parseFloat(calculateTotal) + parseFloat(calculateCgst)) + cess + igst)
     }
 
-    const onSuccessHospital = async (serialNumber: string) => {
-        setIsLoading(true);
-
-        const isProductExist = productItems && productItems.find((item: any) => item?.serialNumber === serialNumber)
-
-        if (isProductExist) {
-            toast.error(serialNumber + "alreay exist in the system.")
-            return
-        }
-        try {
-            setLoading(true)
-            const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
-            setLoading(false)
-            if (isSuccess) {
-                const gstVal = ((data?.price * 5) / 100)
-                const newStateProductItems: any = [
-                    ...productItems,
-                    {
-                        ...data,
-                        total: data?.price,
-                        quantity: 1,
-                        rpuwg: data?.price + gstVal,
-                        rpuwog: data?.price,
-                        gst: '5%',
-                        gstAmount: gstVal,
-                        productId: data.id,
-                    }
-                ];
-                const newProductItems: any = [
-                    ...productItems,
-                    {
-                        ...data,
-                        total: data?.price,
-                        quantity: 1,
-                        rpuwg: data?.price + gstVal,
-                        rpuwog: data?.price,
-                        gst: 5,
-                        gstAmount: gstVal,
-                        productId: data.id,
-                    }
-                ];
-                setProductItems(newStateProductItems)
-                calculateTotal(newProductItems)
-            }
-        } catch (error) {
-            setLoading(false)
-            console.log('Error uploading document:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    const onSuccessDistributor = async (serialNumber: string) => {
-        setIsLoading(true);
-
-        const isProductExist = productItems && productItems.find((item: any) => item?.serialNumber === serialNumber)
-
-        if (isProductExist) {
-            toast.error(serialNumber + "alreay exist in the system.")
-            return
-        }
-        try {
-            setLoading(true)
-            const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
-            setLoading(false)
-            if (isSuccess) {
-                const gstVal = ((data?.price * 5) / 100)
-                const newStateProductItems: any = [
-                    ...productItems,
-                    {
-                        ...data,
-                        total: data?.price,
-                        quantity: 1,
-                        rpuwg: data?.price + gstVal,
-                        rpuwog: data?.price,
-                        gst: '5%',
-                        gstAmount: gstVal,
-                        productId: data.id,
-                    }
-                ];
-                const newProductItems: any = [
-                    ...productItems,
-                    {
-                        ...data,
-                        total: data?.price,
-                        quantity: 1,
-                        rpuwg: data?.price + gstVal,
-                        rpuwog: data?.price,
-                        gst: 5,
-                        gstAmount: gstVal,
-                        productId: data.id,
-                    }
-                ];
-                setProductItems(newStateProductItems)
-                calculateTotal(newProductItems)
-            }
-        } catch (error) {
-            setLoading(false)
-            console.log('Error uploading document:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
+    /*    const onSuccessHospital = async (serialNumber: string) => {
+           setIsLoading(true);
+   
+           const isProductExist = productItems && productItems.find((item: any) => item?.serialNumber === serialNumber)
+   
+           if (isProductExist) {
+               toast.error(serialNumber + "alreay exist in the system.")
+               return
+           }
+           try {
+               setLoading(true)
+               const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
+               setLoading(false)
+               if (isSuccess) {
+                   const gstVal = ((data?.price * 5) / 100)
+                   const newStateProductItems: any = [
+                       ...productItems,
+                       {
+                           ...data,
+                           total: data?.price,
+                           quantity: 1,
+                           rpuwg: data?.price + gstVal,
+                           rpuwog: data?.price,
+                           taxrate: data?.price,
+                           gst: '5%',
+                           gstAmount: gstVal,
+                           productId: data.id,
+                       }
+                   ];
+                   const newProductItems: any = [
+                       ...productItems,
+                       {
+                           ...data,
+                           total: data?.price,
+                           quantity: 1,
+                           rpuwg: data?.price + gstVal,
+                           rpuwog: data?.price,
+                           taxrate: data?.price,
+                           gst: 5,
+                           gstAmount: gstVal,
+                           productId: data.id,
+                       }
+                   ];
+                   setProductItems(newStateProductItems)
+                   calculateTotal(newProductItems)
+               }
+           } catch (error) {
+               setLoading(false)
+               console.log('Error uploading document:', error);
+           } finally {
+               setIsLoading(false);
+           }
+       }
+   
+       const onSuccessDistributor = async (serialNumber: string) => {
+           setIsLoading(true);
+   
+           const isProductExist = productItems && productItems.find((item: any) => item?.serialNumber === serialNumber)
+   
+           if (isProductExist) {
+               toast.error(serialNumber + "alreay exist in the system.")
+               return
+           }
+           try {
+               setLoading(true)
+               const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
+               setLoading(false)
+               if (isSuccess) {
+                   const gstVal = ((data?.price * 5) / 100)
+                   const newStateProductItems: any = [
+                       ...productItems,
+                       {
+                           ...data,
+                           total: data?.price,
+                           quantity: 1,
+                           rpuwg: data?.price + gstVal,
+                           rpuwog: data?.price,
+                           taxrate: data?.price,
+                           gst: '5%',
+                           gstAmount: gstVal,
+                           productId: data.id,
+                       }
+                   ];
+                   const newProductItems: any = [
+                       ...productItems,
+                       {
+                           ...data,
+                           total: data?.price,
+                           quantity: 1,
+                           rpuwg: data?.price + gstVal,
+                           rpuwog: data?.price,
+                           taxrate: data?.price,
+                           gst: 5,
+                           gstAmount: gstVal,
+                           productId: data.id,
+                       }
+                   ];
+                   setProductItems(newStateProductItems)
+                   calculateTotal(newProductItems)
+               }
+           } catch (error) {
+               setLoading(false)
+               console.log('Error uploading document:', error);
+           } finally {
+               setIsLoading(false);
+           }
+       }
+    */
     const onSubmit = async (values: any) => {
         const newValues = {
             ...values
@@ -320,11 +329,12 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             cgst: newValues.cgst ?? 0,
             sgst: newValues.sgst ?? 0,
             igst: newValues.igst ?? 0,
+            gst: 0,
             roundOffAmount: newValues.roundOff ?? 0,
             grandTotal: newValues.grandTotal ?? 0,
             creditNoteDate: newValues?.creditNoteDate,
             originalInvoiceDate: newValues?.originalInvoiceDate,
-            invoiceId: newValues?.invoiceId,
+            invoiceId: +newValues?.invoiceId,
             ledgerId: null,
             address: {
                 address1: newValues.addressline1,
@@ -333,29 +343,32 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                 state: newValues.state,
                 country: newValues.country,
                 pinCode: newValues.pincode,
-                addressType: 1
+                addressType: 4
             },
             // invoiceType: newValues?.invoiceType ? newValues?.invoiceType : Number(invoiceType),
-            invoiceItems: (invoiceId && !isEdit)
+            items: (invoiceId && !isEdit)
                 ? selectedTableRows?.map((item: any) => ({
-                    productId: item.productId ?? 0,
+                    ledgerId: item.ledgerId ?? 0,
                     quantity: item.quantity,
                     rpuwg: item.rpuwg,
                     rpuwog: item.rpuwog,
+                    // taxrate: item.taxrate,
                     discountType: item.discountType ?? 0,
-                    discount: item.discount ?? 0,
-                    gst: item.gst,
+                    discountAmount: item.discountAmount ?? 0,
+                    taxrate: item.taxrate,
                     total: item.total,
                 }))
-                : productItems?.map((item: any) => {
+                : invoiceLists?.map((item: any) => {
                     const commonFields = {
-                        productId: item.productId ?? 0,
+                        // productId: item.productId ?? 0,
+                        ledgerId: item.ledgerId ?? 0,
                         quantity: item.quantity,
                         rpuwg: item.rpuwg,
                         rpuwog: item.rpuwog,
+                        taxrate: item.taxrate,
                         discountType: parseInt(item.discountType, 10) ?? 0,
-                        discount: parseInt(item.discount, 10) ?? 0,
-                        gst: item.gst,
+                        discountAmount: parseInt(item.discountAmount, 10) ?? 0,
+                        // taxrate: item.taxrate,
                         total: item.total,
                     };
 
@@ -365,32 +378,40 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                 }),
         };
         console.log('submitpayload:::', payload);
-        return
-        if (invoiceId) {
-            setLoading(true)
-            const response: any = await updateInvoice(invoiceId, payload)
-            setLoading(false)
-            if (response && response.isSuccess) {
-                form.reset();
-                toast.success("Invoice Updated Successfully")
-                router.push('/exon-admin/invoice')
+        try {
+            // return
+            if (invoiceId) {
+                setLoading(true)
+                const response: any = await updateCreditNote(invoiceId, payload)
+                setLoading(false)
+                if (response && response.isSuccess) {
+                    form.reset();
+                    toast.success("Credit Note Updated Successfully")
+                    router.push('/exon-admin/credit-notes')
+                }
+            } else {
+                setLoading(true)
+                const response: any = await addCreditNote(payload)
+                setLoading(false)
+                debugger
+                if (response && response.isSuccess) {
+                    form.reset();
+                    toast.success("Credit Note Added Successfully")
+                    router.push('/exon-admin/credit-notes')
+                }
             }
-        } else {
-            setLoading(true)
-            const response: any = await addInvoice(payload)
+        } catch (error: any) {
+            debugger
             setLoading(false)
-            if (response && response.isSuccess) {
-                form.reset();
-                toast.success("Invoice Added Successfully")
-                router.push('/exon-admin/invoice')
-            }
+            toast.error(error.message || 'An error occurred')
+            console.log('Error uploading document:', error);
         }
 
+
     };
-    console.log("productItems", productItems);
 
     const onHandleChange = (id: string, value: any, typeName: string) => {
-        const newProductItems = productItems?.map((item: any) => {
+        const newProductItems = invoiceLists?.map((item: any) => {
             if (item.id !== id) return item;
 
             let updatedItem = { ...item };
@@ -400,22 +421,52 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                 updatedItem.originalTotal = item.total;
             }
 
-            let total = parseFloat(updatedItem.originalTotal) || 0;
+            let total = parseFloat(updatedItem.amount) || 0;
+            if (typeName === 'ledgerId') {
+                updatedItem.ledgerId = value;
+            }
+            if (typeName === 'amount') {
+                updatedItem.amount = value;
+                total = parseFloat(updatedItem.amount) || 0;
+                const discountValue = parseFloat(updatedItem.discountAmount) || 0;
+                let calculatedDiscount = 0;
 
-            if (typeName === 'gst') {
+                if (updatedItem.discountType === 1) {
+                    calculatedDiscount = (total * discountValue) / 100;
+                } else if (updatedItem.discountType === 2) {
+                    calculatedDiscount = discountValue;
+                }
+                const newTotal = total - calculatedDiscount;
+                const gstVal = updatedItem.taxrate.includes('%') ? updatedItem.taxrate.replace('%', '') : updatedItem.taxrate;
+                const gstAmount = (newTotal * parseFloat(gstVal)) / 100;
+
+                updatedItem = {
+                    ...updatedItem,
+                    total: isNaN(newTotal) ? 0 : newTotal + gstAmount,
+                    gstAmount: isNaN(gstAmount) ? 0 : gstAmount,
+                    rpuwg: total + gstAmount, // total including gst
+                    rpuwog: total, // total without gst
+                    // taxrate: total, // total without gst
+                };
+            }
+
+
+            if (typeName === 'taxrate') {
                 const gstVal = value.includes('%') ? value.replace('%', '') : value;
                 const gstAmount = (total * parseFloat(gstVal)) / 100;
 
                 updatedItem = {
                     ...updatedItem,
-                    gst: value,
+                    taxrate: value,
                     gstAmount: isNaN(gstAmount) ? 0 : gstAmount,
                     rpuwg: total + gstAmount, // total including gst
                     rpuwog: total, // total without gst
+                    // taxrate: total, // total without gst
+                    total: total + gstAmount
                 };
             }
 
-            if (typeName === 'discount') {
+            if (typeName === 'discountAmount') {
                 const discountValue = parseFloat(value) || 0;
                 let calculatedDiscount = 0;
 
@@ -426,20 +477,21 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                 }
 
                 const newTotal = total - calculatedDiscount;
-                const gstVal = updatedItem.gst.includes('%') ? updatedItem.gst.replace('%', '') : updatedItem.gst;
+                const gstVal = updatedItem.taxrate.includes('%') ? updatedItem.taxrate.replace('%', '') : updatedItem.taxrate;
                 const gstAmount = (newTotal * parseFloat(gstVal)) / 100;
 
                 updatedItem = {
                     ...updatedItem,
-                    discount: value,
+                    discountAmount: value,
                     total: isNaN(newTotal) ? 0 : newTotal,
                     gstAmount: isNaN(gstAmount) ? 0 : gstAmount,
+
                 };
             }
 
             if (typeName === 'discount-type') {
                 let calculatedDiscount = 0;
-                const discountValue = parseFloat(updatedItem.discount) || 0;
+                const discountValue = parseFloat(updatedItem.discountAmount) || 0;
 
                 if (value === 1) {
                     calculatedDiscount = (total * discountValue) / 100;
@@ -448,7 +500,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                 }
 
                 const newTotal = total - calculatedDiscount;
-                const gstVal = updatedItem.gst.includes('%') ? updatedItem.gst.replace('%', '') : updatedItem.gst;
+                const gstVal = updatedItem.taxrate.includes('%') ? updatedItem.taxrate.replace('%', '') : updatedItem.taxrate;
                 const gstAmount = (newTotal * parseFloat(gstVal)) / 100;
 
                 updatedItem = {
@@ -462,18 +514,23 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             return updatedItem;
         });
 
-        setProductItems(newProductItems);
+        setInvoiceList(newProductItems);
         calculateTotal(newProductItems);
     };
 
 
     const handleDelete = (id: string) => {
-        const filteredProductItems = productItems.filter((item: any) => item.id !== Number(id));
-        setProductItems(filteredProductItems);
+        const filteredInvoiceItems = invoiceLists.filter((item: any) => item.id !== Number(id));
+        setInvoiceList(filteredInvoiceItems);
+        calculateTotal(filteredInvoiceItems);
     }
 
     const onSelectInvoiceDropdownChange = (value: any) => {
         form.setValue('invoiceId', value)
+        const selectInvoice = invoiceList.find((item: any) => item.id == Number(value))
+        form.setValue('igst', selectInvoice?.igst || 0)
+        form.setValue('cess', selectInvoice?.cess || 0)
+        calculateTotal(invoiceLists)
     }
     const onSelectDropdownChange = (value: any) => {
         setSelectedHospital && setSelectedHospital(value)
@@ -502,6 +559,29 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
         }
     }
 
+
+
+    const handleAddInvoice = () => {
+
+        const newInvoiceItem =
+        {
+            id: new Date().getTime(),
+            ledgerId: null,
+            ledger: {},
+            quantity: 1,
+            amount: 0,
+            rpuwg: 0,
+            rpuwog: 0,
+            // taxrate: 0,
+            discountType: 1,
+            gstAmount: 0,
+            discountAmount: 0,
+            taxrate: "0%",
+            total: 0
+        }
+        setInvoiceList([...invoiceLists, newInvoiceItem])
+    }
+
     return (
         <section className=''>
             <Form {...form}>
@@ -509,7 +589,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-6"
                 >
-                    <div className='mb-6 flex justify-between items-center'>
+                    {/*  <div className='mb-6 flex justify-between items-center'>
                         <div className='flex items-center gap-4'>
                             <div className='flex items-center gap-2'>
                                 <Select defaultValue={selectedHospital} disabled={invoiceId ? true : false} onValueChange={(value: any) => onSelectDropdownChange(value)}>
@@ -535,7 +615,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                                 </Select>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="border border-gray-300 rounded-lg p-4 mt-4">
                         <div className=''>
@@ -575,14 +655,16 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                                         </FormItem>
                                     )}
                                 />
+
+
                                 <FormField
                                     control={form.control}
                                     name="partyName"
-                                    render={({ field }) => (
+                                    render={() => (
                                         <FormItem className='w-1/2'>
                                             <FormLabel>Party Name:</FormLabel>
                                             <FormControl>
-                                                <Select defaultValue={field.value} disabled={invoiceId ? true : false}>
+                                                <Select /* defaultValue={field.value}  *//* disabled={invoiceId ? true : false}  */ defaultValue={selectedHospital} disabled={invoiceId ? true : false} onValueChange={(value: any) => onSelectDropdownChange(value)}>
                                                     <SelectTrigger className="font-normal text-black border-input">
                                                         <SelectValue placeholder="Select a party name" />
                                                     </SelectTrigger>
@@ -619,14 +701,14 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                                             <FormControl>
                                                 <Select defaultValue={field.value} disabled={invoiceId ? true : false} onValueChange={(value: any) => onSelectInvoiceDropdownChange(value)}>
                                                     <SelectTrigger className="font-normal text-black border-input">
-                                                        <SelectValue placeholder="Select a party name" />
+                                                        <SelectValue placeholder="Select a invoice number" />
                                                     </SelectTrigger>
                                                     <SelectContent className='bg-white'>
                                                         <SelectGroup>
                                                             {
                                                                 invoiceList?.length ? invoiceList?.map((item: any) => (
                                                                     <SelectItem key={`${item.id}`} value={`${item.id}`} className='cursor-pointer'>
-                                                                        {item.name}
+                                                                        {item.id}
                                                                     </SelectItem>
                                                                 )) : []
 
@@ -806,10 +888,11 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                             </div>
                         </div>
                     </div>
+                    <Button onClick={handleAddInvoice} type="button">Add Ladger</Button>
 
                     <DataTable
-                        columns={columns(onHandleChange, handleDelete)}
-                        data={productItems}
+                        columns={columns(onHandleChange, handleDelete, ledgers)}
+                        data={invoiceLists}
                         buttonTitle=""
                         buttonUrl={""}
                         onSearch={setSearch}

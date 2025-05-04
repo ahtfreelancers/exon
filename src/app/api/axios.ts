@@ -147,8 +147,9 @@ const ProductTypes = {
     updateProductType: (id: any, data: any) => requests.put(`${API_BASE_URL}/producttypes/${id}`, createFormData(data)),
 }
 const CreditNotes = {
+    getAllLedgers: (params: any) => requests.get(`${API_BASE_URL}/ledger`, params),
     getCreditNotes: (params: any) => requests.get(`${API_BASE_URL}/creditNote`, params),
-    createCreditNote: (data: any) => requests.post(`${API_BASE_URL}/creditNote`, createFormData(data)),
+    createCreditNote: (data: any) => requests.post(`${API_BASE_URL}/creditNote`, data/* createFormData(data) */),
     getCreditNoteById: (id: number) => requests.get(`${API_BASE_URL}/creditNote/${id}`),
     deleteCreditNote: (id: number) => requests.delete(`${API_BASE_URL}/creditNote/${id}`),
     updateCreditNote: (id: any, data: any) => requests.put(`${API_BASE_URL}/creditNote/${id}`, createFormData(data)),
