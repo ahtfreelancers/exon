@@ -159,8 +159,23 @@ const Role = {
     getPermissionsByRoleId: (params: any) => requests.get(`${API_BASE_URL}/permissions`, params),
     updatePermissions: (data: any) => requests.put(`${API_BASE_URL}/permissions`, data),
 }
+const Challan = {
+    getChallan: (params: any) => requests.get(`${API_BASE_URL}/deliveryChallan`, params),
+    getChallanPdf: (id: any) => requests.get(`${API_BASE_URL}/deliveryChallan/getChallanPDF/${id}`),
+    createChallan: (data: any) => requests.post(`${API_BASE_URL}/deliveryChallan`, createFormData(data)),
+    updateChallan: (id: any, data: any) => requests.put(`${API_BASE_URL}/deliveryChallan/${id}`, createFormData(data)),
+    getChallanById: (id: number) => requests.get(`${API_BASE_URL}/deliveryChallan/${id}`),
+    deleteChallan: (id: number) => requests.delete(`${API_BASE_URL}/deliveryChallan/${id}`),
+}
 const SharePdf = {
     sharePdf: (data: any) => requests.post(`${API_BASE_URL}/emails`, data),
+}
+const Ledger = {
+    getLedger: (params: any) => requests.get(`${API_BASE_URL}/ledger`, params),
+    createLedger: (data: any) => requests.postForm(`${API_BASE_URL}/ledger`, data),
+    updateLedger: (id: any, data: any) => requests.putForm(`${API_BASE_URL}/ledger/${id}`, data),
+    deleteLedger: (id: number) => requests.delete(`${API_BASE_URL}/ledger/${id}`),
+    getLedgerById: (id: number) => requests.get(`${API_BASE_URL}/ledger/${id}`),
 }
 
 const agent = {
@@ -171,9 +186,11 @@ const agent = {
     Dashboard,
     ProductTypes,
     Invoice,
+    Challan,
     SharePdf,
     Transport,
-    Role
+    Role,
+    Ledger,
 }
 
 export default agent
