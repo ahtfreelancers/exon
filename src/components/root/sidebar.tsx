@@ -32,6 +32,7 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
         { href: "/exon-admin/transport", label: "Transport", icon: Hospital },
         { href: "/exon-admin/hospitals", label: "Hospitals", icon: Hospital },
         { href: "/exon-admin/distributors", label: "Distributors", icon: Contact },
+        { href: "/exon-admin/ledger", label: "Ledger", icon: Contact },
         // { href: "/exon-admin/mapping", label: "Mapping", icon: Contact },
         { href: "/exon-admin/product-types", label: "Product Types", icon: Contact },
         { href: "/exon-admin/contact", label: "Contact", icon: Contact },

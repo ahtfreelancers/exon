@@ -76,6 +76,10 @@ export default function ListInvoice() {
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
                     pageCount={pageCount}
+                    filterOption={[
+                        { label: "Proforma", value: "1" },
+                        { label: "Tax", value: "2" },
+                    ]}
                     onSelectDropdownChange={onSelectDropdownChange}
                     isInvoiceFilterEnable={true}
                     currentPage={pageIndex}

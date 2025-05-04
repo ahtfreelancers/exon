@@ -1,9 +1,7 @@
 'use client'
 
-import { addChallan, updateChallan } from '@/actions/challan'
-import { getProductBySerialNumber } from '@/actions/products'
-import { HospitalScannerButton } from '@/app/exon-admin/__components/hospital-scanner-modal'
-import { columns } from '@/app/exon-admin/mapping/columns'
+import agent from '@/app/api/axios'
+import { columns } from '@/app/exon-admin/challan/__components/columns'
 import { DataTable } from '@/components/root/data-table'
 import { Button } from '@/components/ui/button'
 import { Calendar } from "@/components/ui/calendar"
@@ -22,6 +20,9 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+    InvoiceFormProps
+} from '@/lib/types'
 import { Calendar as CalendarIcon } from "lucide-react"
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -29,90 +30,11 @@ import { useEffect, useState, useTransition } from 'react'
 import { useForm } from "react-hook-form"
 import { toast } from 'sonner'
 
-interface InvoiceItems {
-    id: number,
-    product: {
-        id: number,
-        itemNo: string,
-        itemDescription: string,
-        serialNumber: string,
-        lotNumber: string,
-        manufactureDate: string,
-        expirationDate: string,
-        productStatus: number
-    },
-    quantity: number,
-    rpuwg: number,
-    rpuwog: number,
-    discountType: number,
-    discount: number,
-    gst: string,
-    total: number
-}
-
-interface Invoice {
-    id: number,
-    hospital?: {
-        id: number,
-        name: string,
-        gstNumber: string,
-        phoneNumber: string,
-        panNumber: string,
-        address: {
-            id?: number,
-            address1: string,
-            address2: string,
-            city: string,
-            state: string,
-            pinCode: string
-        }
-    },
-    distributor?: {
-        id: number,
-        name: string,
-        gstNumber: string,
-        phoneNumber: string,
-        panNumber: string,
-        address: {
-            id?: number,
-            address1: string,
-            address2: string,
-            city: string,
-            state: string,
-            pinCode: string
-        }
-    },
-    shipping: number,
-    packingCharge: number,
-    cess: number,
-    cgst: number,
-    sgst: number,
-    igst: number,
-    roundOffAmount: number,
-    grandTotal: number,
-    invoiceType: number,
-    invoiceItems: InvoiceItems[]
-    created: string
-    modified: string
-}
-
-interface InvoiceFormProps {
-    type: number;
-    invoice?: Invoice;
-    hospitals?: any;
-    distributors?: any;
-    invoiceId?: any;
-    isEdit?: boolean;
-}
-
-const invoiceTypes = [
-    { id: '1', name: 'Pro-forma Invoice' },
-    { id: '2', name: 'Tax Invoice' }
-]
-
-export default function CommonForm({ type, invoice, hospitals, distributors, invoiceId, isEdit }: InvoiceFormProps) {
+export default function ChallanCommonForm({ type, challan, hospitals, distributors, invoiceId, isEdit, transport, productTypes }: InvoiceFormProps) {
     const [search, setSearch] = useState('')
-    const [selectedHospital, setSelectedHospital] = useState(type === 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString())
+    console.log("productTypes", productTypes);
+
+    const [selectedHospital, setSelectedHospital] = useState(type === 1 ? challan?.hospital?.id?.toString() : challan?.distributor?.id?.toString())
 
     const [productItems, setProductItems] = useState<any[]>([])
     const [invoiceType, setInvoiceType] = useState<string>('')
@@ -125,223 +47,134 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
     const [selectedTableRows, setSelectedTableRows] = useState<any[]>([])
 
     const router = useRouter();
+    console.log("productItems", productItems);
 
     const pageSize = 10
-    console.log("selectedTableRows", selectedTableRows);
-    console.log("invoice", invoice);
 
     useEffect(() => {
-        if (invoice?.invoiceItems && invoice?.invoiceItems?.length > 0) {
-            const combinedArray: any = invoice?.invoiceItems?.map(item => {
-                const gstVal = item.gst.includes('%') ? item.gst.replaceAll('%', '') : item.gst
-                const calculateRpuwg = ((item.total * parseFloat(gstVal)) / 100)
+        if (productTypes && productTypes.length > 0) {
+            const combinedArray = productTypes.map((product: any) => {
+                // Always try to find the matching challan item by productTypeId
+                const matchedChallanItem = challan?.items?.find(
+                    (item: any) => item.productTypeId === product.id
+                );
+
                 return {
-                    ...item,
-                    ...item.product,
-                    productId: item.product.id,
-                    id: item.id,
-                    product: undefined,
-                    rpuwog: item.total,
-                    rpuwg: (item.total + calculateRpuwg),
-                    gst: item.gst,
-                    gstAmount: calculateRpuwg
-                }
+                    productId: product.id,
+                    id: product.id,
+                    name: product.name,
+                    quantity: invoiceId && matchedChallanItem ? matchedChallanItem.quantity : undefined,
+                    uomType: invoiceId && matchedChallanItem ? matchedChallanItem.uomType : undefined,
+                };
             });
-            setProductItems(combinedArray)
+
+            console.log("Merged Product Items:", type);
+            setProductItems(combinedArray);
         }
-    }, [invoice])
+    }, [challan])
 
     const form = useForm({
         defaultValues: {
-            challanNumber: invoice?.invoiceType?.toString(),
-            challanDate: invoice?.created,
-            partyName: type == 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString(),
-            gstin: type == 1 ? invoice?.hospital?.gstNumber : invoice?.distributor?.gstNumber,
-            addressline1: type == 1 ? invoice?.hospital?.address?.address1 : invoice?.distributor?.address?.address1,
-            addressline2: type == 1 ? invoice?.hospital?.address?.address2 : invoice?.distributor?.address?.address2,
+            challanDate: challan?.challanDate || "",
+
+            partyName:
+                type === 1
+                    ? challan?.hospital?.id?.toString() || ""
+                    : challan?.distributor?.id?.toString() || "",
+
+            transportId: challan?.transport?.id?.toString() || "1",
+            invoiceNumber: challan?.invoice?.id?.toString() || "1",
+
+            gstin:
+                type === 1
+                    ? challan?.hospital?.gstNumber || ""
+                    : challan?.distributor?.gstNumber || "",
+
+            addressline1:
+                type === 1
+                    ? challan?.hospital?.address?.address1 || ""
+                    : challan?.distributor?.address?.address1 || "",
+
+            billingAddressId:
+                type === 1
+                    ? challan?.billingAddress?.id || 0
+                    : challan?.billingAddress?.id || 0,
+
+            shippingAddressId:
+                type === 1
+                    ? challan?.shippingAddress?.id || 0
+                    : challan?.shippingAddress?.id || 0,
+
+            addressline2:
+                type === 1
+                    ? challan?.hospital?.address?.address2 || ""
+                    : challan?.distributor?.address?.address2 || "",
+
             country: "India",
-            state: type == 1 ? invoice?.hospital?.address?.state : invoice?.distributor?.address?.state,
-            city: type == 1 ? invoice?.hospital?.address?.city : invoice?.distributor?.address?.city,
-            pincode: type == 1 ? invoice?.hospital?.address?.pinCode : invoice?.distributor?.address?.pinCode,
-            shippingFreight: invoice?.shipping,
-            packingCharge: invoice?.packingCharge,
-            cess: invoice?.cess,
-            cgst: invoice?.cgst,
-            sgst: invoice?.sgst,
-            igst: invoice?.igst,
-            invoiceType: invoice?.invoiceType,
-            roundOff: invoice?.roundOffAmount,
-            grandTotal: invoice?.grandTotal
-        },
+
+            termsAndConditions: challan?.termsAndConditions || "",
+            note: challan?.note || "",
+
+            state:
+                type === 1
+                    ? challan?.hospital?.address?.state || ""
+                    : challan?.distributor?.address?.state || "",
+
+            city:
+                type === 1
+                    ? challan?.hospital?.address?.city || ""
+                    : challan?.distributor?.address?.city || "",
+
+            pincode:
+                type === 1
+                    ? challan?.hospital?.address?.pinCode || ""
+                    : challan?.distributor?.address?.pinCode || "",
+        }
     });
-
-    const calculateTotal = (items: any) => {
-        const calculateCgst = items.reduce((acc: any, item: any) => acc + parseFloat(item?.gstAmount), 0)
-        const calculateTotal = items.reduce((acc: any, item: any) => acc + parseFloat(item?.total), 0)
-        const totalBeforeRoundOff = items.reduce((acc: any, item: any) => acc + parseFloat(item?.rpuwg), 0)
-        const roundedTotal = Math.round(totalBeforeRoundOff * 100) / 100;
-        const roundOffAmount = roundedTotal - totalBeforeRoundOff;
-
-        form.setValue('cgst', (parseFloat(calculateCgst) / 2))
-        form.setValue('sgst', (parseFloat(calculateCgst) / 2))
-        form.setValue('roundOff', roundOffAmount)
-        form.setValue('grandTotal', (parseFloat(calculateTotal) + parseFloat(calculateCgst)))
-    }
-
-    const onSuccessHospital = async (serialNumber: string) => {
-        setIsLoading(true);
-
-        const isProductExist = productItems && productItems.find((item: any) => item?.serialNumber === serialNumber)
-
-        if (isProductExist) {
-            toast.error(serialNumber + "alreay exist in the system.")
-            return
-        }
-        try {
-            const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
-
-            if (isSuccess) {
-                const gstVal = ((data?.price * 5) / 100)
-                const newStateProductItems: any = [
-                    ...productItems,
-                    {
-                        ...data,
-                        total: data?.price,
-                        quantity: 1,
-                        rpuwg: data?.price + gstVal,
-                        rpuwog: data?.price,
-                        gst: '5%',
-                        gstAmount: gstVal,
-                        productId: data.id,
-                    }
-                ];
-                const newProductItems: any = [
-                    ...productItems,
-                    {
-                        ...data,
-                        total: data?.price,
-                        quantity: 1,
-                        rpuwg: data?.price + gstVal,
-                        rpuwog: data?.price,
-                        gst: 5,
-                        gstAmount: gstVal,
-                        productId: data.id,
-                    }
-                ];
-                setProductItems(newStateProductItems)
-                calculateTotal(newProductItems)
-            }
-        } catch (error) {
-            console.log('Error uploading document:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    const onSuccessDistributor = async (serialNumber: string) => {
-        setIsLoading(true);
-
-        const isProductExist = productItems && productItems.find((item: any) => item?.serialNumber === serialNumber)
-
-        if (isProductExist) {
-            toast.error(serialNumber + "alreay exist in the system.")
-            return
-        }
-        try {
-            const { data, isSuccess }: any = await getProductBySerialNumber(serialNumber);
-            if (isSuccess) {
-                const gstVal = ((data?.price * 5) / 100)
-                const newStateProductItems: any = [
-                    ...productItems,
-                    {
-                        ...data,
-                        total: data?.price,
-                        quantity: 1,
-                        rpuwg: data?.price + gstVal,
-                        rpuwog: data?.price,
-                        gst: '5%',
-                        gstAmount: gstVal,
-                        productId: data.id,
-                    }
-                ];
-                const newProductItems: any = [
-                    ...productItems,
-                    {
-                        ...data,
-                        total: data?.price,
-                        quantity: 1,
-                        rpuwg: data?.price + gstVal,
-                        rpuwog: data?.price,
-                        gst: 5,
-                        gstAmount: gstVal,
-                        productId: data.id,
-                    }
-                ];
-                setProductItems(newStateProductItems)
-                calculateTotal(newProductItems)
-            }
-        } catch (error) {
-            console.log('Error uploading document:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    }
+    console.log("challan", challan);
 
     const onSubmit = async (values: any) => {
         const newValues = {
             ...values
         };
+        const selectedItems = productItems.filter(item =>
+            selectedTableRows.some((selected) => selected.id === item.id)
+        );
 
         const payload = {
-            hospitalId: type === 1 ? parseInt(selectedHospital as string) : null,
-            distributorId: type === 2 ? parseInt(selectedHospital as string) : null,
-            shipping: newValues.shippingFreight ?? 0,
-            packingCharge: newValues.packingCharge ?? 0,
-            cess: newValues.cess ?? 0,
-            cgst: newValues.cgst ?? 0,
-            sgst: newValues.sgst ?? 0,
-            igst: newValues.igst ?? 0,
-            roundOffAmount: newValues.roundOff ?? 0,
-            grandTotal: newValues.grandTotal ?? 0,
-            invoiceType: newValues?.invoiceType ? newValues?.invoiceType : Number(invoiceType),
-            invoiceItems: (invoiceId && !isEdit)
-                ? selectedTableRows?.map((item: any) => ({
-                    productId: item.productId ?? 0,
-                    quantity: item.quantity,
-                    rpuwg: item.rpuwg,
-                    rpuwog: item.rpuwog,
-                    discountType: item.discountType ?? 0,
-                    discount: item.discount ?? 0,
-                    gst: item.gst,
-                    total: item.total,
-                }))
-                : productItems?.map((item: any) => {
-                    const commonFields = {
-                        productId: item.productId ?? 0,
-                        quantity: item.quantity,
-                        rpuwg: item.rpuwg,
-                        rpuwog: item.rpuwog,
-                        discountType: parseInt(item.discountType, 10) ?? 0,
-                        discount: parseInt(item.discount, 10) ?? 0,
-                        gst: item.gst,
-                        total: item.total,
-                    };
-
-                    return type === 1
-                        ? commonFields // Exclude invoiceId and id for type 1
-                        : { ...commonFields, invoiceId: parseInt(invoiceId, 10), id: item?.id };
-                }),
+            challanDate: newValues.challanDate,
+            ...(type === 1 && { hospitalId: parseInt(selectedHospital as string) }),
+            ...(type === 2 && { distributorId: parseInt(selectedHospital as string) }),
+            invoiceId: parseInt(newValues.invoiceNumber) ?? 0,
+            billingAddressId: newValues.billingAddressId ?? 0,
+            shippingAddressId: newValues.shippingAddressId ?? 0,
+            transportId: parseInt(newValues.transportId) ?? 0,
+            termsAndConditions: newValues.termsAndConditions ?? '',
+            note: newValues.note ?? '',
+            documentUrl: '', // Replace with actual file/document logic if needed
+            items: selectedItems.map((item) => ({
+                productTypeId: item.productId ?? 0,
+                quantity: item.quantity ?? 0,
+                uomType: item.uomType ?? 1,
+                id: item.id,
+            })),
+            ...(invoiceId && challan?.id && { id: challan.id }),
         };
 
+        console.log("payload", newValues, payload);
+        console.log("invoiceId", invoiceId);
+
         if (invoiceId) {
-            const response: any = await updateChallan(invoiceId, payload)
+            const response: any = await agent.Challan.updateChallan(invoiceId, payload)
             if (response && response.isSuccess) {
                 form.reset();
                 toast.success("challan Updated Successfully")
                 router.push('/exon-admin/challan')
             }
         } else {
-            const response: any = await addChallan(payload)
+            console.log("testttttttttttttttttttt");
+
+            const response: any = await agent.Challan.createChallan(payload)
             if (response && response.isSuccess) {
                 form.reset();
                 toast.success("challan Added Successfully")
@@ -350,89 +183,39 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
         }
 
     };
-    console.log("productItems", productItems);
 
     const onHandleChange = (id: string, value: any, typeName: string) => {
+        console.log("id: string, value: any, typeName: string", id, value, typeName);
+
         const newProductItems = productItems?.map((item: any) => {
             if (item.id !== id) return item;
 
             let updatedItem = { ...item };
-
-            // Ensure originalTotal exists to always refer back to the original amount
-            if (!updatedItem.originalTotal) {
-                updatedItem.originalTotal = item.total;
-            }
-
-            let total = parseFloat(updatedItem.originalTotal) || 0;
-
-            if (typeName === 'gst') {
-                const gstVal = value.includes('%') ? value.replace('%', '') : value;
-                const gstAmount = (total * parseFloat(gstVal)) / 100;
+            if (typeName === 'quantity') {
 
                 updatedItem = {
                     ...updatedItem,
-                    gst: value,
-                    gstAmount: isNaN(gstAmount) ? 0 : gstAmount,
-                    rpuwg: total + gstAmount, // total including gst
-                    rpuwog: total, // total without gst
+                    quantity: value,
                 };
             }
-
-            if (typeName === 'discount') {
-                const discountValue = parseFloat(value) || 0;
-                let calculatedDiscount = 0;
-
-                if (updatedItem.discountType === 1) {
-                    calculatedDiscount = (total * discountValue) / 100;
-                } else if (updatedItem.discountType === 2) {
-                    calculatedDiscount = discountValue;
-                }
-
-                const newTotal = total - calculatedDiscount;
-                const gstVal = updatedItem.gst.includes('%') ? updatedItem.gst.replace('%', '') : updatedItem.gst;
-                const gstAmount = (newTotal * parseFloat(gstVal)) / 100;
+            if (typeName === 'uomType') {
 
                 updatedItem = {
                     ...updatedItem,
-                    discount: value,
-                    total: isNaN(newTotal) ? 0 : newTotal,
-                    gstAmount: isNaN(gstAmount) ? 0 : gstAmount,
+                    uomType: value,
                 };
             }
-
-            if (typeName === 'discount-type') {
-                let calculatedDiscount = 0;
-                const discountValue = parseFloat(updatedItem.discount) || 0;
-
-                if (value === 1) {
-                    calculatedDiscount = (total * discountValue) / 100;
-                } else if (value === 2) {
-                    calculatedDiscount = discountValue;
-                }
-
-                const newTotal = total - calculatedDiscount;
-                const gstVal = updatedItem.gst.includes('%') ? updatedItem.gst.replace('%', '') : updatedItem.gst;
-                const gstAmount = (newTotal * parseFloat(gstVal)) / 100;
-
-                updatedItem = {
-                    ...updatedItem,
-                    discountType: value,
-                    total: isNaN(newTotal) ? 0 : newTotal,
-                    gstAmount: isNaN(gstAmount) ? 0 : gstAmount,
-                };
-            }
-
             return updatedItem;
         });
+        console.log("newProductItems", newProductItems);
 
         setProductItems(newProductItems);
-        calculateTotal(newProductItems);
     };
 
 
     const handleDelete = (id: string) => {
-        const filteredProductItems = productItems.filter((item: any) => item.id !== Number(id));
-        setProductItems(filteredProductItems);
+        // const filteredProductItems = productItems.filter((item: any) => item.id !== Number(id));
+        // setProductItems(filteredProductItems);
     }
 
     const onSelectDropdownChange = (value: any) => {
@@ -440,6 +223,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
 
         if (type === 1) {
             const filteredHospitals = hospitals.find((item: any) => item.id == Number(value))
+            console.log("filteredHospitals", filteredHospitals?.address?.id);
 
             form.setValue('gstin', filteredHospitals?.gstNumber)
             form.setValue('addressline1', filteredHospitals?.address?.address1)
@@ -448,6 +232,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             form.setValue('state', filteredHospitals?.address?.state)
             form.setValue('city', filteredHospitals?.address?.city)
             form.setValue('pincode', filteredHospitals?.address?.pinCode)
+            form.setValue('shippingAddressId', filteredHospitals?.address?.id)
+            form.setValue('billingAddressId', filteredHospitals?.address?.id)
         }
         if (type === 2) {
             const filteredDistributors = distributors.find((item: any) => item.id == Number(value))
@@ -459,6 +245,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
             form.setValue('state', filteredDistributors?.address?.state)
             form.setValue('city', filteredDistributors?.address?.city)
             form.setValue('pincode', filteredDistributors?.address?.pinCode)
+            form.setValue('shippingAddressId', filteredDistributors?.address?.id)
+            form.setValue('billingAddressId', filteredDistributors?.address?.id)
         }
     }
 
@@ -469,18 +257,6 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-6"
                 >
-                    <div className='mb-6 flex justify-end items-center'>
-                        <div className='flex items-center gap-4'>
-                            <HospitalScannerButton asChild onSuccess={(value: string) => type == 1 ? onSuccessHospital(value) : onSuccessDistributor(value)}>
-                                {/* <Button type='button' onClick={() => type == 1 ? onSuccessHospital('150101030924002') : onSuccessDistributor('150101030924002')} disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
-                                <Button type='button' disabled={selectedHospital && !invoiceId ? false : isEdit ? false : true} className='disabled:pointer-events-none disabled:opacity-50'>
-                                    Scan barcode
-                                    {/* </Button> */}
-                                </Button>
-                            </HospitalScannerButton>
-                        </div>
-                    </div>
-
                     <div className="">
                         <div className="relative border border-gray-300 rounded-lg p-4 pt-6 mt-4">
                             <div className="absolute -top-3 left-10 bg-white px-2 text-primary font-semibold text-sm">
@@ -488,19 +264,6 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                             </div>
 
                             <div className="w-full flex gap-2">
-                                <FormField
-                                    control={form.control}
-                                    name="challanNumber"
-                                    render={({ field }) => (
-                                        <FormItem className="w-1/2">
-                                            <FormLabel>Challan Number:</FormLabel>
-                                            <FormControl>
-                                                <Input {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
                                 <FormField
                                     control={form.control}
                                     name="challanDate"
@@ -600,7 +363,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                 />
                                 <FormField
                                     control={form.control}
-                                    name="challanNumber"
+                                    name="invoiceNumber"
                                     render={({ field }) => (
                                         <FormItem className="w-1/4">
                                             <FormLabel>Invoice Number:</FormLabel>
@@ -611,23 +374,8 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="challanNumber"
-                                    render={({ field }) => (
-                                        <FormItem className="w-1/4">
-                                            <FormLabel>Invoice Date:</FormLabel>
-                                            <FormControl>
-                                                <Input {...field} disabled={true} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
                             </div>
                         </div>
-
-
                         <div className="relative mt-4">
                             <div className="absolute -top-3 left-10 bg-white px-2 text-sm font-semibold text-primary">
                                 Billing Address
@@ -726,28 +474,22 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                 <div className='w-full flex gap-2'>
                                     <FormField
                                         control={form.control}
-                                        name="challanNumber"
+                                        name="transportId"
                                         render={({ field }) => (
                                             <FormItem className='w-1/4'>
                                                 <FormLabel>Transporter Name:</FormLabel>
                                                 <FormControl>
-                                                    <Select defaultValue={field.value} disabled={invoiceId ? true : false} onValueChange={field.onChange}>
+                                                    <Select defaultValue={field.value} onValueChange={field.onChange}>
                                                         <SelectTrigger className="font-normal text-black border-input">
                                                             <SelectValue placeholder="Select a party name" />
                                                         </SelectTrigger>
                                                         <SelectContent className='bg-white'>
                                                             <SelectGroup>
-                                                                {type === 1
-                                                                    ? hospitals?.map((item: any) => (
-                                                                        <SelectItem key={item.id} value={`${item.id}`} className='cursor-pointer'>
-                                                                            {item.name}
-                                                                        </SelectItem>
-                                                                    ))
-                                                                    : distributors?.map((item: any) => (
-                                                                        <SelectItem key={item.id} value={`${item.id}`} className='cursor-pointer'>
-                                                                            {item.name}
-                                                                        </SelectItem>
-                                                                    ))}
+                                                                {transport?.map((item: any) => (
+                                                                    <SelectItem key={item.id} value={`${item.id}`} className='cursor-pointer'>
+                                                                        {item.transportName}
+                                                                    </SelectItem>
+                                                                ))}
                                                             </SelectGroup>
                                                         </SelectContent>
                                                     </Select>
@@ -756,43 +498,36 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                             </FormItem>
                                         )}
                                     />
-
+                                </div>
+                            </div>
+                        </div>
+                        <div className="relative mt-4">
+                            <div className="absolute -top-3 left-10 bg-white px-2 text-sm font-semibold text-primary">
+                                Billing Address
+                            </div>
+                            <div className="border border-gray-300 rounded-lg p-4 pt-6">
+                                <div className="w-full grid grid-cols-2 gap-2">
                                     <FormField
                                         control={form.control}
-                                        name="challanNumber"
+                                        name="termsAndConditions"
                                         render={({ field }) => (
-                                            <FormItem className='w-1/4'>
-                                                <FormLabel>Document Date:</FormLabel>
+                                            <FormItem >
+                                                <FormLabel>Terms & Conditions:</FormLabel>
                                                 <FormControl>
-                                                    <Input {...field} disabled />
+                                                    <Input className="!mt-0" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
                                     />
-
                                     <FormField
                                         control={form.control}
-                                        name="challanNumber"
+                                        name="note"
                                         render={({ field }) => (
-                                            <FormItem className='w-1/4'>
-                                                <FormLabel>Document Number:</FormLabel>
+                                            <FormItem >
+                                                <FormLabel>Note:</FormLabel>
                                                 <FormControl>
-                                                    <Input {...field} disabled />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    <FormField
-                                        control={form.control}
-                                        name="challanNumber"
-                                        render={({ field }) => (
-                                            <FormItem className='w-1/4'>
-                                                <FormLabel>Vehicle Number:</FormLabel>
-                                                <FormControl>
-                                                    <Input {...field} disabled />
+                                                    <Input className="!mt-0" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -801,7 +536,6 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <DataTable
@@ -822,164 +556,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         isDisableTable={(invoiceId && !isEdit) ? true : false}
                     />
 
-                    <div className="border border-gray-300 rounded-lg p-4 mt-4">
-                        {/* <Form {...form}>
-                                <form
-                                    onSubmit={form.handleSubmit(onSubmit)}
-                                    className="space-y-6"
-                                > */}
-                        <div className="flex justify-between gap-6">
-
-                            <div className='w-3/4'>
-                                <FormField
-                                    control={form.control}
-                                    name="shippingFreight"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Shipping:/Freight:</FormLabel>
-                                            <FormControl className='w-1/4'>
-                                                <Input
-                                                    className='!mt-0'
-                                                    {...field}
-                                                    disabled={true}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="packingCharge"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Packing Charge:</FormLabel>
-                                            <FormControl className='w-1/4'>
-                                                <Input
-                                                    className='!mt-0'
-                                                    {...field}
-                                                    disabled={true}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="cess"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>CESS:</FormLabel>
-                                            <FormControl className='w-1/4'>
-                                                <Input
-                                                    className='!mt-0'
-                                                    {...field}
-                                                    disabled={true}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-
-                            <div className='w-1/4'>
-                                <FormField
-                                    control={form.control}
-                                    name="cgst"
-                                    render={({ field }) => (
-                                        <FormItem className='w-full flex items-center justify-between mb-2'>
-                                            <FormLabel>CGST:</FormLabel>
-                                            <FormControl className='w-1/2'>
-                                                <Input
-                                                    className='!mt-0'
-                                                    {...field}
-                                                    disabled={invoiceId && !isEdit ? true : false}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="sgst"
-                                    render={({ field }) => (
-                                        <FormItem className='w-full flex items-center justify-between mb-2'>
-                                            <FormLabel>SGST:</FormLabel>
-                                            <FormControl className='w-1/2'>
-                                                <Input
-                                                    className='!mt-0'
-                                                    {...field}
-                                                    disabled={invoiceId && !isEdit ? true : false}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="igst"
-                                    render={({ field }) => (
-                                        <FormItem className='w-full flex items-center justify-between mb-2'>
-                                            <FormLabel>IGST:</FormLabel>
-                                            <FormControl className='w-1/2'>
-                                                <Input
-                                                    className='!mt-0'
-                                                    {...field}
-                                                    disabled={true}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="roundOff"
-                                    render={({ field }) => (
-                                        <FormItem className='w-full flex items-center justify-between mb-2'>
-                                            <FormLabel>Round Off:</FormLabel>
-                                            <FormControl className='w-1/2'>
-                                                <Input
-                                                    className='!mt-0'
-                                                    {...field}
-                                                    disabled={invoiceId && !isEdit ? true : false}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="grandTotal"
-                                    render={({ field }) => (
-                                        <FormItem className='w-full flex items-center justify-between mb-2'>
-                                            <FormLabel>Grand Total:</FormLabel>
-                                            <FormControl className='w-1/2'>
-                                                <Input
-                                                    className='!mt-0'
-                                                    {...field}
-                                                    disabled={invoiceId && !isEdit ? true : false}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-
-                            </div>
-
-                        </div>
-                        {/* </form>
-                            </Form> */}
-                    </div>
-
                     <div className='mt-4 flex justify-end'>
-                        {/* <Button onClick={onSaveHospital} disabled={hospitalProducts.length > 0 ? false : true} className='disabled:pointer-events-none disabled:opacity-50'> */}
                         <Link href={'/exon-admin/challan'}>
                             <Button
                                 disabled={isPending}

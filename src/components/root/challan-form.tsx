@@ -71,20 +71,24 @@ interface Invoice {
 }
 
 interface InvoiceFormProps {
-    invoice?: Invoice;
+    challan?: any;
     hospitals?: any;
     distributors?: any;
     invoiceId?: any;
     isEdit?: boolean
+    transport?: any
+    productTypes?: any
+    type?: any
 }
 
-export default function ChallanForm({ invoice, hospitals, distributors, invoiceId, isEdit = false }: InvoiceFormProps) {
+export default function ChallanForm({ challan, hospitals, distributors, type, invoiceId, isEdit = false, transport, productTypes }: InvoiceFormProps) {
+
     return (
         <section className=''>
             <div className='container'>
                 {
                     invoiceId ? (
-                        <ChallanCommonForm type={invoice?.hospital?.id ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} isEdit={isEdit} />
+                        <ChallanCommonForm type={challan?.hospital?.id ? 1 : 2} challan={challan} hospitals={hospitals} distributors={distributors} transport={transport} productTypes={productTypes} invoiceId={invoiceId} isEdit={isEdit} />
                     ) : (
                         <Tabs defaultValue="hospitalmapping">
                             <TabsList>
@@ -92,10 +96,10 @@ export default function ChallanForm({ invoice, hospitals, distributors, invoiceI
                                 <TabsTrigger value="distributormapping">Distributor Mapping</TabsTrigger>
                             </TabsList>
                             <TabsContent value="hospitalmapping" className='p-4'>
-                                <ChallanCommonForm type={1} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} />
+                                <ChallanCommonForm type={1} challan={challan} hospitals={hospitals} distributors={distributors} transport={transport} productTypes={productTypes} invoiceId={invoiceId} />
                             </TabsContent>
                             <TabsContent value="distributormapping" className='p-4'>
-                                <ChallanCommonForm type={2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} />
+                                <ChallanCommonForm type={2} challan={challan} hospitals={hospitals} distributors={distributors} transport={transport} productTypes={productTypes} invoiceId={invoiceId} />
                             </TabsContent>
                         </Tabs>
                     )

@@ -3,27 +3,24 @@ import { deleteDistributor } from '@/actions/distributor';
 import { ArrowUpDown, ReceiptText, Eye, FilePenLine, Trash } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import {
-  BookType
-} from "lucide-react";
-
-const productTypeEnum: Record<string, string> = {
-  "1": 'Hospital',
-  "2": 'Distributor',
-};
+import { deleteChallan } from '@/actions/challan';
+import { Dialog, DialogClose, DialogContent, DialogOverlay, DialogTrigger } from '@radix-ui/react-dialog';
+import { useState } from 'react';
 
 const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceType: number, id: number, fetchInvoices: () => void, viewInvoice: any }) => {
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const handleDelete = async () => {
     try {
-      const result: any = await deleteDistributor(id);
+      const result: any = await deleteChallan(id);
       if (result.error) {
-        toast.error(result.error)
+        toast.error(result.error);
       } else {
-        toast.success("Product deleted successfully")
+        toast.success("Delivery Challan data deleted successfully");
         fetchInvoices();
+        setDeleteDialogOpen(false);
       }
     } catch (error) {
-      console.error("Error deleting product", error);
+      console.error("Error deleting Delivery Challan data", error);
     }
   };
 
@@ -37,96 +34,114 @@ const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceT
         />
       </div>
       {/* {invoiceType === 1 && ( */}
-      <Link href={`/exon-admin/invoice/edit/${id}`}>
+      <Link href={`/exon-admin/challan/edit/${id}`}>
         <FilePenLine size={22} />
       </Link>
       {/* )} */}
-      <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
-      <Link href={`/exon-admin/invoice/add?convertId=${id}`}>
-        <BookType size={22} />
-      </Link>
+      <Trash size={22} color="red" className="cursor-pointer" onClick={() => setDeleteDialogOpen(true)}
+      />
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogOverlay className="fixed inset-0 bg-black/60 z-[9999]" />
+        <DialogContent className="fixed z-[9999] inset-0 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 className="text-lg font-semibold mb-4">Are you sure?</h2>
+            <p className="text-lg mb-6">Do you really want to delete this item? This process cannot be undone.</p>
+            <div className="flex justify-end gap-3">
+              <button
+                className="px-4 py-2 text-lg bg-gray-300 rounded-md"
+                onClick={() => setDeleteDialogOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 text-lg bg-red-500 text-white rounded-md"
+                onClick={handleDelete}
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
 export const columns = (
   fetchInvoices: () => void,
   viewInvoice: (id: number) => void,
-  productTypeFilter: string,
-  setProductTypeFilter: (value: string) => void,
-  setPageIndex: (value: number) => void
 ): ColumnDef<any>[] => [
     {
-      accessorKey: 'name',
+      accessorKey: 'partyName',
       header: ({ column }) => (
         <div
           className='flex items-center'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Title
+          Party Name
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </div>
       ),
-      cell: ({ row }) => `${row.original.invoiceType == 1 ? "Pro-forma Invoice" : "Tax Invoice"}`,
     },
     {
-      accessorKey: 'hospital',
+      accessorKey: 'gstNumber',
       header: ({ column }) => (
         <div
-          className="flex items-center"
+          className='flex items-center'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Party Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          GST Number
+          <ArrowUpDown className='ml-2 h-4 w-4' />
         </div>
       ),
       cell: ({ row }) => {
-        const hospital = row.original.hospital;
-        const distributor = row.original.distributor;
-
-        if (hospital && hospital.name) {
-          return hospital.name; // Safely access hospital.name
-        } else if (distributor && distributor.name) {
-          return distributor.name; // Safely access distributor.name
-        }
-        return 'No Party'; // Fallback if both are null
+        const gstNumber = row.original.gstNumber;
+        return (
+          <>
+            <div className='text-center'>  {gstNumber ? gstNumber : "-"}</div>
+          </>
+        )
+      }
+    },
+    {
+      accessorKey: 'challanDate',
+      header: ({ column }) => (
+        <div
+          className='flex items-center'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Challan Date
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </div>
+      ),
+      cell: ({ row }) => {
+        const date = new Date(row.original.challanDate);
+        const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+        return (
+          <>
+            {formattedDate}
+          </>
+        )
       },
     },
     {
-      accessorKey: 'hospital',
+      accessorKey: 'invoiceDate',
       header: ({ column }) => (
         <div
-          className="flex items-center"
+          className='flex items-center'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Party Type
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-          <select
-            className="ml-2 p-1 border rounded-md"
-            value={productTypeFilter}
-            onChange={(e) => {
-              setPageIndex(1)
-              setProductTypeFilter(e.target.value)
-            }}
-          >
-            <option value="">All</option>
-            {Object.entries(productTypeEnum).map(([key, value]) => (
-              <option key={key} value={key}>
-                {value}
-              </option>
-            ))}
-          </select>
+          Invoice Date
+          <ArrowUpDown className='ml-2 h-4 w-4' />
         </div>
       ),
       cell: ({ row }) => {
-        const hospital = row.original.hospital;
-        const distributor = row.original.distributor;
-
-        if (hospital && hospital.name) {
-          return "Hospital"; // Safely access hospital.name
-        } else if (distributor && distributor.name) {
-          return "Distributor"; // Safely access distributor.name
-        }
-        return 'No Party'; // Fallback if both are null
+        const date = new Date(row.original.invoiceDate);
+        const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+        return (
+          <>
+            {formattedDate}
+          </>
+        )
       },
     },
     {
@@ -183,138 +198,8 @@ export const columns = (
         </div>
       ),
       cell: ({ row }) => {
-        const hospital = row.original.hospital;
-        const distributor = row.original.distributor;
-
-        if (hospital && hospital.address) {
-          return `${row.original.hospital.address.address1}, ${row.original.hospital.address.address2}, ${row.original.hospital.address.city}, ${row.original.hospital.address.state} - ${row.original.hospital.address.pinCode}`
-        } else if (distributor && distributor.address) {
-          return `${row.original.distributor.address.address1}, ${row.original.distributor.address.address2}, ${row.original.distributor.address.city}, ${row.original.distributor.address.state} - ${row.original.distributor.address.pinCode}`
-        }
-        return '';
+        return `${row.original.shippingAddress.address1}, ${row.original.shippingAddress.address2}, ${row.original.shippingAddress.city}, ${row.original.shippingAddress.state} - ${row.original.shippingAddress.pinCode}`
       }
-    },
-    {
-      accessorKey: 'hospital.address',
-      header: ({ column }) => (
-        <div
-          className="flex items-center"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Shipping Address
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </div>
-      ),
-      cell: ({ row }) => {
-        const hospital = row.original.hospital;
-        const distributor = row.original.distributor;
-
-        if (hospital && hospital.address) {
-          return `${row.original.hospital.address.address1}, ${row.original.hospital.address.address2}, ${row.original.hospital.address.city}, ${row.original.hospital.address.state} - ${row.original.hospital.address.pinCode}`
-        } else if (distributor && distributor.address) {
-          return `${row.original.distributor.address.address1}, ${row.original.distributor.address.address2}, ${row.original.distributor.address.city}, ${row.original.distributor.address.state} - ${row.original.distributor.address.pinCode}`
-        }
-        return '';
-      }
-    },
-    // {
-    //   accessorKey: 'invoiceItems',
-    //   header: ({ column }) => (
-    //     <div
-    //       className='flex items-center'
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-    //     >
-    //       Taxable Value
-    //       <ArrowUpDown className='ml-2 h-4 w-4' />
-    //     </div>
-    //   ),
-    //   cell: ({ row }) => `₹${row.original.grandTotal}`,
-    // },
-    // {
-    //   accessorKey: 'invoiceItems',
-    //   header: ({ column }) => (
-    //     <div
-    //       className='flex items-center'
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-    //     >
-    //       GST
-    //       <ArrowUpDown className='ml-2 h-4 w-4' />
-    //     </div>
-    //   ),
-    //   cell: ({ row }) => (row.original.cgst + row.original.sgst),
-    // },
-    // {
-    //   accessorKey: 'cgst',
-    //   header: ({ column }) => (
-    //     <div
-    //       className='flex items-center'
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-    //     >
-    //       CGST
-    //       <ArrowUpDown className='ml-2 h-4 w-4' />
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   accessorKey: 'sgst',
-    //   header: ({ column }) => (
-    //     <div
-    //       className='flex items-center'
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-    //     >
-    //       SGST
-    //       <ArrowUpDown className='ml-2 h-4 w-4' />
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   accessorKey: 'igst',
-    //   header: ({ column }) => (
-    //     <div
-    //       className='flex items-center'
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-    //     >
-    //       IGST
-    //       <ArrowUpDown className='ml-2 h-4 w-4' />
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   accessorKey: 'cess',
-    //   header: ({ column }) => (
-    //     <div
-    //       className='flex items-center'
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-    //     >
-    //       CESS
-    //       <ArrowUpDown className='ml-2 h-4 w-4' />
-    //     </div>
-    //   ),
-    // },
-    // {
-    //   accessorKey: 'roundOffAmount',
-    //   header: ({ column }) => (
-    //     <div
-    //       className='flex items-center'
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-    //     >
-    //       Round Off
-    //       <ArrowUpDown className='ml-2 h-4 w-4' />
-    //     </div>
-    //   ),
-    // },
-    {
-      accessorKey: 'grandTotal',
-      header: ({ column }) => (
-        <div
-          className="flex items-center"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Total Amount
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </div>
-      ),
-      cell: ({ row }) => `₹${row.original.grandTotal}`,
     },
     {
       id: 'actions',

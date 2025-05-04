@@ -1,11 +1,10 @@
 'use client'
 
-import { getAllInvoices, getAllInvoicesPdf } from '@/actions/invoice'
-import { columns } from '@/app/exon-admin/invoice/columns'
 import { DataTable } from '@/components/root/data-table'
 import { useCallback, useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { getAllChallan, getAllChallanPdf } from '@/actions/challan'
+import { columns } from '../../columns'
 
 export default function ListChallan() {
     const [data, setData] = useState([])
@@ -23,8 +22,8 @@ export default function ListChallan() {
             PageNumber: pageIndex,
             pageSize: pageSize,
             searchParam: search,
-            InvoiceRequestType: Number(productTypeFilter) ?? null,
-            InvoiceType: Number(invoiceType) ?? null,
+            // InvoiceRequestType: Number(productTypeFilter) ?? null,
+            ResponseType: Number(invoiceType) ?? null,
         }
 
         try {
@@ -64,7 +63,7 @@ export default function ListChallan() {
                 <h1 className='mb-2 text-2xl font-bold'>Delivery Challan</h1>
 
                 <DataTable
-                    columns={columns(fetchInvoice, viewInvoice, productTypeFilter, setProductTypeFilter, setPageIndex)}
+                    columns={columns(fetchInvoice, viewInvoice)}
                     data={data}
                     buttonTitle={"Add Challan"}
                     buttonUrl={"/exon-admin/challan/add"}
@@ -72,6 +71,10 @@ export default function ListChallan() {
                     onPageChange={setPageIndex}
                     pageCount={pageCount}
                     onSelectDropdownChange={onSelectDropdownChange}
+                    filterOption={[
+                        { label: "Hospital", value: "1" },
+                        { label: "Distributor", value: "2" },
+                    ]}
                     isInvoiceFilterEnable={true}
                     currentPage={pageIndex}
                     search={search}

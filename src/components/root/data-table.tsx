@@ -53,6 +53,7 @@ interface DataTableProps<TData, TValue> {
   isDisableTable?: boolean;
   isStatusFilterEnable?: boolean;
   setStatusFilter?: (status: string) => void; // <-- Add this
+  filterOption?: any;
 }
 
 export function DataTable<TData, TValue>({
@@ -61,6 +62,7 @@ export function DataTable<TData, TValue>({
   buttonTitle,
   buttonUrl,
   search,
+  filterOption,
   onSearch,
   onPageChange,
   onSelectDropdownChange,
@@ -246,21 +248,11 @@ export function DataTable<TData, TValue>({
                     </SelectTrigger>
                     <SelectContent className="bg-white">
                       <SelectGroup>
-                        <SelectItem
-                          key={`1`}
-                          value={`1`}
-                          className="cursor-pointer"
-                        >
-                          Proforma
-                        </SelectItem>
-
-                        <SelectItem
-                          key={`2`}
-                          value={`2`}
-                          className="cursor-pointer"
-                        >
-                          Tax
-                        </SelectItem>
+                        {filterOption.map((option: any) => (
+                          <SelectItem key={option.value} value={option.value} className="cursor-pointer">
+                            {option.label}
+                          </SelectItem>
+                        ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -296,9 +288,9 @@ export function DataTable<TData, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </TableHead>
                 ))}
               </TableRow>
