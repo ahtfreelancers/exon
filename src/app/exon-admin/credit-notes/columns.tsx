@@ -207,6 +207,29 @@ export const columns = (fetchCreditNotes: () => void): ColumnDef<CreditNotes>[] 
     //   },
     // },
     {
+        accessorKey: 'hospital',
+        header: ({ column }) => (
+            <div
+                className="flex items-center"
+                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+            >
+                Party Name
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </div>
+        ),
+        cell: ({ row }) => {
+            const hospital = row.original.hospital;
+            const distributor = row.original.distributor;
+
+            if (hospital && hospital.name) {
+                return hospital.name; // Safely access hospital.name
+            } else if (distributor && distributor.name) {
+                return distributor.name; // Safely access distributor.name
+            }
+            return 'No Party'; // Fallback if both are null
+        },
+    },
+    {
         accessorKey: 'creditNoteDate',
         header: ({ column }) => (
             <div

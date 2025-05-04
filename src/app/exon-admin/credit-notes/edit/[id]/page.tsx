@@ -31,6 +31,8 @@ const CreditNotesEditPage = async ({ params }: CreditNotesEditPageProps) => {
        const { data: invoiceList }: any = await getAllHospitals(paramsQuery)
    
        const { data: ledgers }: any = await getAllLedgers(params)
+
+       console.log("ledgers::::::", data)
        
        return (
            <CreditNotesForm invoice={data} invoiceId={id ?? null} hospitals={hospitals?.items} distributors={distributors?.items} invoiceList={invoiceList?.items} ledgers={ledgers}/>
