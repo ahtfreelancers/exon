@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Dialog, DialogClose, DialogContent, DialogOverlay, DialogTrigger } from '@radix-ui/react-dialog';
+import { isPermissionExists } from '@/lib/auth';
+import { useSession } from 'next-auth/react';
 
 export type Distributor = {
   id: number
@@ -19,7 +21,8 @@ export type Distributor = {
 }
 const ActionsCell = ({ id, fetchDistributors }: { id: number; fetchDistributors: () => void }) => {
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
+  const { data: session }: any = useSession();
+  const permissions = session?.user?.role_permissions;
   const handleDelete = async () => {
     try {
       const result: any = await deleteDistributor(id);
@@ -43,12 +46,15 @@ const ActionsCell = ({ id, fetchDistributors }: { id: number; fetchDistributors:
       <Link href={`/exon-admin/distributors/edit/${id}`}>
         <FilePenLine size={22} />
       </Link>
-      <Trash
-        size={22}
-        color="red"
-        className="cursor-pointer"
-        onClick={() => setDeleteDialogOpen(true)}
-      />
+
+      {isPermissionExists(permissions, "Distributors:Delete") && (
+        <Trash
+          size={22}
+          color="red"
+          className="cursor-pointer"
+          onClick={() => setDeleteDialogOpen(true)}
+        />
+      )}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogOverlay className="fixed inset-0 bg-black/60 z-[9999]" />
         <DialogContent className="fixed z-[9999] inset-0 flex items-center justify-center">

@@ -8,6 +8,8 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { Dialog, DialogClose, DialogContent, DialogOverlay, DialogTrigger } from '@radix-ui/react-dialog';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import { isPermissionExists } from '@/lib/auth';
 
 export type ProductType = {
     id: number;
@@ -59,7 +61,8 @@ const ImageCell = ({ pictureUrl }: { pictureUrl: string }) => {
 
 const ActionsCell = ({ id, fetchProductTypes }: { id: number; fetchProductTypes: () => void }) => {
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
+    const { data: session }: any = useSession();
+    const permissions = session?.user?.role_permissions;
     const handleDelete = async () => {
         try {
             const result: any = await deleteProductType(id);
@@ -77,15 +80,19 @@ const ActionsCell = ({ id, fetchProductTypes }: { id: number; fetchProductTypes:
 
     return (
         <div className="flex gap-3">
-            <Link href={`/exon-admin/product-types/edit/${id}`}>
-                <FilePenLine size={22} />
-            </Link>
-            <Trash
-                size={22}
-                color="red"
-                className="cursor-pointer"
-                onClick={() => setDeleteDialogOpen(true)}
-            />
+            {isPermissionExists(permissions, "ProductTypes:Edit") && (
+                <Link href={`/exon-admin/product-types/edit/${id}`}>
+                    <FilePenLine size={22} />
+                </Link>
+            )}
+            {isPermissionExists(permissions, "ProductTypes:Delete") && (
+                <Trash
+                    size={22}
+                    color="red"
+                    className="cursor-pointer"
+                    onClick={() => setDeleteDialogOpen(true)}
+                />
+            )}
             <Dialog open={isDeleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
                 <DialogOverlay className="fixed inset-0 bg-black/60 z-[9999]" />
                 <DialogContent className="fixed z-[9999] inset-0 flex items-center justify-center">

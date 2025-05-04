@@ -154,6 +154,11 @@ const Invoice = {
     getInvoiceById: (id: number) => requests.get(`${API_BASE_URL}/invoices/${id}`),
     deleteInvoice: (id: number) => requests.delete(`${API_BASE_URL}/invoices/${id}`),
 }
+const Role = {
+    getRole: (params: any) => requests.get(`${API_BASE_URL}/roles`, params),
+    getPermissionsByRoleId: (params: any) => requests.get(`${API_BASE_URL}/permissions`, params),
+    updatePermissions: (data: any) => requests.put(`${API_BASE_URL}/permissions`, data),
+}
 const Challan = {
     getChallan: (params: any) => requests.get(`${API_BASE_URL}/deliveryChallan`, params),
     getChallanPdf: (id: any) => requests.get(`${API_BASE_URL}/deliveryChallan/getChallanPDF/${id}`),
@@ -183,8 +188,9 @@ const agent = {
     Invoice,
     Challan,
     SharePdf,
+    Transport,
+    Role,
     Ledger,
-    Transport
 }
 
 export default agent

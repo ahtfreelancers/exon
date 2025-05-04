@@ -2,6 +2,8 @@ import { getProduct } from "@/actions/products";
 import { auth } from "../../../../../../auth";
 import { ProductForm } from "@/components/root/product-form";
 import { redirect } from "next/navigation";
+import { isPermissionExists } from "@/lib/auth";
+import NoAccess from "@/components/no-access";
 
 interface ProductEditPageProps {
     params: {
@@ -10,10 +12,15 @@ interface ProductEditPageProps {
 }
 
 const ProductEditPage = async ({ params }: ProductEditPageProps) => {
-    const session = await auth()
+    const session: any = await auth()
+    const permissions = session?.user?.role_permissions
 
     if (!session) {
         return redirect('/exon-admin')
+    }
+
+    if (!isPermissionExists(permissions, "Product:Edit")) {
+        return <NoAccess />
     }
     const { id } = params;
 

@@ -7,6 +7,8 @@ import { toast } from 'sonner';
 import { Dialog, DialogClose, DialogContent, DialogOverlay, DialogTrigger } from '@radix-ui/react-dialog';
 import { useState } from 'react';
 import { deleteLedger } from '@/actions/ledger';
+import { isPermissionExists } from '@/lib/auth';
+import { useSession } from 'next-auth/react';
 
 export type Mapping = {
   id: number
@@ -16,7 +18,8 @@ export type Mapping = {
 }
 const ActionsCell = ({ id, fetchLedger }: { id: number; fetchLedger: () => void }) => {
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
+  const { data: session }: any = useSession();
+  const permissions = session?.user?.role_permissions;
   const handleDelete = async () => {
     try {
       const result: any = await deleteLedger(id);
@@ -37,15 +40,17 @@ const ActionsCell = ({ id, fetchLedger }: { id: number; fetchLedger: () => void 
       {/* <Link href={`/exon-admin/Transport/${id}`}>
         <Eye size={22} className="cursor-pointer" />
       </Link> */}
-      <Link href={`/exon-admin/ledger/edit/${id}`}>
-        <FilePenLine size={22} />
-      </Link>
-      <Trash
-        size={22}
-        color="red"
-        className="cursor-pointer"
-        onClick={() => setDeleteDialogOpen(true)}
-      />
+      {isPermissionExists(permissions, "Ledger:Edit") && (
+        <Link href={`/exon-admin/ledger/edit/${id}`}>
+          <FilePenLine size={22} />
+        </Link>)}
+      {isPermissionExists(permissions, "Ledger:Delete") && (
+        <Trash
+          size={22}
+          color="red"
+          className="cursor-pointer"
+          onClick={() => setDeleteDialogOpen(true)}
+        />)}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogOverlay className="fixed inset-0 bg-black/60 z-[9999]" />
         <DialogContent className="fixed z-[9999] inset-0 flex items-center justify-center">

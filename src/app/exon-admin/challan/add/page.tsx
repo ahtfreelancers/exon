@@ -7,13 +7,20 @@ import ChallanForm from "@/components/root/challan-form";
 import { getAllTransport } from "@/actions/transport";
 import { getAllProductTypes } from "@/actions/product-types";
 import { getChallan } from "@/actions/challan";
+import { isPermissionExists } from "@/lib/auth";
+import NoAccess from "@/components/no-access";
 
 const ChallanAddPage = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
-    const session = await auth()
     const { convertId } = searchParams;
+    const session: any = await auth()
+    const permissions = session?.user?.role_permissions
 
     if (!session) {
         return redirect('/exon-admin')
+    }
+
+    if (!isPermissionExists(permissions, "Delivery:Create")) {
+        return <NoAccess />
     }
 
     let params = {

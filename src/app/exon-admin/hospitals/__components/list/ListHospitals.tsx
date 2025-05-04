@@ -6,7 +6,7 @@ import { useLoading } from '@/components/loading-context'
 import { DataTable } from '@/components/root/data-table'
 import { useEffect, useState } from 'react'
 
-export default function ListHospitals() {
+export default function ListHospitals(props: any) {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
 
@@ -59,6 +59,7 @@ export default function ListHospitals() {
                     isStatusFilterEnable={false}
                     currentPage={pageIndex}
                     search={search}
+                    isAddVisible={props.createVisible}
                     pageSize={pageSize}
                 />
             </div>

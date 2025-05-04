@@ -6,7 +6,7 @@ import { useLoading } from '@/components/loading-context'
 import { DataTable } from '@/components/root/data-table'
 import { useEffect, useState } from 'react'
 
-export default function ListTransport() {
+export default function ListTransport(props: any) {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
 
@@ -27,7 +27,7 @@ export default function ListTransport() {
             const { data, isSuccess }: any = await getAllTransport(params)
             setLoading(false)
             console.log("data", data);
-            
+
             if (isSuccess) {
                 setData(data.items)
                 setPageCount(data.totalCount)
@@ -62,6 +62,7 @@ export default function ListTransport() {
                     isStatusFilterEnable={false}
                     currentPage={pageIndex}
                     search={search}
+                    isAddVisible={props.createVisible}
                     pageSize={pageSize}
                 />
             </div>

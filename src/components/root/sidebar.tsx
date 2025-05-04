@@ -11,10 +11,10 @@ import {
     Hospital,
     ReceiptIndianRupee
 } from "lucide-react";
-import { FaTasks } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { isPermissionExists } from "@/lib/auth";
 interface SidebarProps {
     className?: string;
     Setopen: (open: boolean) => void;
@@ -23,19 +23,21 @@ interface SidebarProps {
 export default function Sidebar({ className, Setopen }: SidebarProps) {
     const [isOpen, setIsOpen] = useState(true);
     const [status, setStatus] = useState(false);
+    const { data: session }: any = useSession();
+    const permissions = session?.user?.role_permissions
 
     const sidebarItems = [
-        { href: "/exon-admin/dashboard", label: "Dashboard", icon: HomeIcon },
-        { href: "/exon-admin/products", label: "Products", icon: Folder },
-        { href: "/exon-admin/invoice", label: "Invoice", icon: ReceiptIndianRupee },
-        { href: "/exon-admin/challan", label: "Challan", icon: ReceiptIndianRupee },
-        { href: "/exon-admin/transport", label: "Transport", icon: Hospital },
-        { href: "/exon-admin/hospitals", label: "Hospitals", icon: Hospital },
-        { href: "/exon-admin/distributors", label: "Distributors", icon: Contact },
-        { href: "/exon-admin/ledger", label: "Ledger", icon: Contact },
-        // { href: "/exon-admin/mapping", label: "Mapping", icon: Contact },
-        { href: "/exon-admin/product-types", label: "Product Types", icon: Contact },
-        { href: "/exon-admin/contact", label: "Contact", icon: Contact },
+        { href: "/exon-admin/dashboard", label: "Dashboard", icon: HomeIcon, isAccessible: isPermissionExists(permissions, "Dashboard:View") },
+        { href: "/exon-admin/products", label: "Products", icon: Folder, isAccessible: isPermissionExists(permissions, "Product:View") },
+        { href: "/exon-admin/invoice", label: "Invoice", icon: ReceiptIndianRupee, isAccessible: isPermissionExists(permissions, "Invoices:View") },
+        { href: "/exon-admin/transport", label: "Transport", icon: Hospital, isAccessible: isPermissionExists(permissions, "Transport:View") },
+        { href: "/exon-admin/hospitals", label: "Hospitals", icon: Hospital, isAccessible: isPermissionExists(permissions, "Hospitals:View") },
+        { href: "/exon-admin/distributors", label: "Distributors", icon: Contact, isAccessible: isPermissionExists(permissions, "Distributors:View") },
+        { href: "/exon-admin/product-types", label: "Product Types", icon: Contact, isAccessible: isPermissionExists(permissions, "ProductTypes:View") },
+        { href: "/exon-admin/user-role", label: "User Role", icon: Contact, isAccessible: isPermissionExists(permissions, "Permission:View") },
+        { href: "/exon-admin/contact", label: "Contact", icon: Contact, isAccessible: isPermissionExists(permissions, "ContactUs:View") },
+        { href: "/exon-admin/ledger", label: "Ledger", icon: Contact, isAccessible: isPermissionExists(permissions, "Ledger:View") },
+        { href: "/exon-admin/challan", label: "Challan", icon: ReceiptIndianRupee, isAccessible: isPermissionExists(permissions, "Delivery:View") },
     ];
 
     const handleToggle = () => {

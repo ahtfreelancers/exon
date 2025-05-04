@@ -6,9 +6,13 @@ import { toast } from 'sonner';
 import { deleteChallan } from '@/actions/challan';
 import { Dialog, DialogClose, DialogContent, DialogOverlay, DialogTrigger } from '@radix-ui/react-dialog';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { isPermissionExists } from '@/lib/auth';
 
 const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceType: number, id: number, fetchInvoices: () => void, viewInvoice: any }) => {
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const { data: session }: any = useSession();
+  const permissions = session?.user?.role_permissions;
   const handleDelete = async () => {
     try {
       const result: any = await deleteChallan(id);
@@ -33,13 +37,14 @@ const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceT
           onClick={() => viewInvoice(id)}
         />
       </div>
-      {/* {invoiceType === 1 && ( */}
-      <Link href={`/exon-admin/challan/edit/${id}`}>
-        <FilePenLine size={22} />
-      </Link>
-      {/* )} */}
-      <Trash size={22} color="red" className="cursor-pointer" onClick={() => setDeleteDialogOpen(true)}
-      />
+      {isPermissionExists(permissions, "Delivery:Edit") && (
+        <Link href={`/exon-admin/challan/edit/${id}`}>
+          <FilePenLine size={22} />
+        </Link>)}
+      {isPermissionExists(permissions, "Delivery:Delete") && (
+        <Trash size={22} color="red" className="cursor-pointer" onClick={() => setDeleteDialogOpen(true)}
+        />
+      )}
       <Dialog open={isDeleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogOverlay className="fixed inset-0 bg-black/60 z-[9999]" />
         <DialogContent className="fixed z-[9999] inset-0 flex items-center justify-center">

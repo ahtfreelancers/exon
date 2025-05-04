@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { getAllChallan, getAllChallanPdf } from '@/actions/challan'
 import { columns } from '../../columns'
 
-export default function ListChallan() {
+export default function ListChallan(props: any) {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
     const [pageIndex, setPageIndex] = useState(1)
@@ -68,6 +68,7 @@ export default function ListChallan() {
                     buttonTitle={"Add Challan"}
                     buttonUrl={"/exon-admin/challan/add"}
                     onSearch={setSearch}
+                    isAddVisible={props.createVisible}
                     onPageChange={setPageIndex}
                     pageCount={pageCount}
                     onSelectDropdownChange={onSelectDropdownChange}
