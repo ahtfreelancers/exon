@@ -1,13 +1,12 @@
 'use client'
 
-import { getAllInvoices, getAllInvoicesPdf } from '@/actions/invoice'
-import { columns } from '@/app/exon-admin/invoice/columns'
 import { DataTable } from '@/components/root/data-table'
 import { useCallback, useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { useLoading } from '@/components/loading-context'
+import { getAllChallan, getAllChallanPdf } from '@/actions/challan'
+import { columns } from '../../columns'
 
-export default function ListInvoice() {
+export default function ListChallan() {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
     const [pageIndex, setPageIndex] = useState(1)
@@ -17,27 +16,25 @@ export default function ListInvoice() {
     const pageSize = 10
     const [productTypeFilter, setProductTypeFilter] = useState('1')
     const [invoiceType, setInvoiceType] = useState('1')
-    const { setLoading } = useLoading();
+
     const fetchInvoice = useCallback(async () => {
         let params = {
             PageNumber: pageIndex,
             pageSize: pageSize,
             searchParam: search,
-            InvoiceRequestType: Number(productTypeFilter) ?? null,
-            InvoiceType: Number(invoiceType) ?? null,
+            // InvoiceRequestType: Number(productTypeFilter) ?? null,
+            ResponseType: Number(invoiceType) ?? null,
         }
 
         try {
-            setLoading(true)
-            const { data, isSuccess }: any = await getAllInvoices(params)
+            const { data, isSuccess }: any = await getAllChallan(params)
             console.log("data", data);
-            setLoading(false)
+
             if (isSuccess) {
                 setData(data.items)
                 setPageCount(data.totalCount)
             }
         } catch (err) {
-            setLoading(false)
             console.log(`Error fetching invoices`, err)
         }
     }, [search, pageIndex, productTypeFilter, invoiceType]);
@@ -52,13 +49,10 @@ export default function ListInvoice() {
     }
     const viewInvoice = async (id: number) => {
         try {
-            setLoading(true)
-            const { data }: any = await getAllInvoicesPdf(id)
-            setLoading(false)
+            const { data }: any = await getAllChallanPdf(id)
             setInvoicePdf(data.pdf)
             setModalOpen(true)
         } catch (err) {
-            setLoading(false)
             console.log(`Error fetching invoice PDF`, err)
         }
     }
@@ -66,21 +60,21 @@ export default function ListInvoice() {
     return (
         <section>
             <div className='container'>
-                <h1 className='mb-2 text-2xl font-bold'>Invoice</h1>
+                <h1 className='mb-2 text-2xl font-bold'>Delivery Challan</h1>
 
                 <DataTable
-                    columns={columns(fetchInvoice, viewInvoice, productTypeFilter, setProductTypeFilter, setPageIndex)}
+                    columns={columns(fetchInvoice, viewInvoice)}
                     data={data}
-                    buttonTitle={"Add Invoice"}
-                    buttonUrl={"/exon-admin/invoice/add"}
+                    buttonTitle={"Add Challan"}
+                    buttonUrl={"/exon-admin/challan/add"}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
                     pageCount={pageCount}
-                    filterOption={[
-                        { label: "Proforma", value: "1" },
-                        { label: "Tax", value: "2" },
-                    ]}
                     onSelectDropdownChange={onSelectDropdownChange}
+                    filterOption={[
+                        { label: "Hospital", value: "1" },
+                        { label: "Distributor", value: "2" },
+                    ]}
                     isInvoiceFilterEnable={true}
                     currentPage={pageIndex}
                     search={search}
