@@ -22,7 +22,7 @@ interface InvoiceItems {
 
 interface Invoice {
     id: number,
-    fileData: any,
+    documentUrl: any,
     address: {
         id?: number,
         address1: string,
@@ -74,7 +74,7 @@ interface Invoice {
     created: string
     modified: string
     creditNoteDate: string;
-    originalInvoiceDate: string
+    // originalInvoiceDate: string
     invoiceId: string
 }
 

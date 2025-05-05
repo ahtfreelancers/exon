@@ -25,6 +25,25 @@ export const ProductTypeSchema = z.object({
     description: z.string().min(1, { message: "Description is required" }),
     price: z.string().min(1, { message: "Price is required" })
 })
+export const CreditNotesSchema = z.object({
+    partyName: z.string().min(1, { message: "Party Name is required" }),
+    creditNoteDate: z.string().min(1, { message: "Credit Note Date is required" }),
+    invoiceId: z.string().min(1, { message: "Invoice No is required" }),
+    gstin: z.string().optional(),
+    addressline1: z.string().optional(),
+    addressline2: z.string().optional(),
+    country: z.string().optional(),
+    state: z.string().optional(),
+    city: z.string().optional(),
+    pincode: z.string().optional(),
+    cess: z.number().optional(),
+    cgst: z.number().optional(),
+    sgst: z.number().optional(),
+    igst: z.number().optional(),
+    roundOff: z.number().optional(),
+    grandTotal: z.number().optional(),
+    documentUrl: z.any().optional(),
+})
 
 export const HospitalSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),

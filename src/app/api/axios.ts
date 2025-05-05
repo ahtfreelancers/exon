@@ -68,11 +68,37 @@ axios.interceptors.response.use(
     }
 )
 
-function createFormData(item: any) {
-    const formData = new FormData()
-    for (const key in item) {
-        formData.append(key, item[key])
+function objectToFormData(data: any, formData = new FormData(), parentKey = "") {
+    if (data === null || data === undefined) return formData;
+  
+    if (typeof data === "object" && !(data instanceof File)) {
+      if (Array.isArray(data)) {
+        data.forEach((value, index) => {
+          const key = `${parentKey}[${index}]`;
+          objectToFormData(value, formData, key);
+        });
+      } else {
+        Object.entries(data).forEach(([key, value]) => {
+          const fullKey = parentKey ? `${parentKey}[${key}]` : key;
+          objectToFormData(value, formData, fullKey);
+        });
+      }
+    } else {
+      formData.append(parentKey, data);
     }
+  
+    return formData;
+  }
+
+function createFormData(item: any) {
+    const formData = objectToFormData(item)
+    // for (const key in item) {
+    //     if (typeof item[key] === 'object' && item[key] !== null) {
+        
+    //     }
+    //     formData.append(key, item[key])
+    // }
+    // console.log("formData::::", formData);
     return formData
 }
 

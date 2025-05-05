@@ -31,6 +31,10 @@ import { toast } from 'sonner'
 import { useLoading } from '../loading-context'
 import { addCreditNote, updateCreditNote } from '@/actions/credit-notes'
 import { FileUploader } from '../extension/file-upload'
+import agent from '@/app/api/axios'
+import { CreditNotesSchema } from '@/schemas'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 interface InvoiceItems {
     id: number,
@@ -51,7 +55,7 @@ interface InvoiceItems {
 
 interface Invoice {
     id: number,
-    fileData: any,
+    documentUrl: any,
     address: {
         id?: number,
         address1: string,
@@ -104,7 +108,7 @@ interface Invoice {
     modified: string
     creditNoteDate: string;
     invoiceId: string
-    originalInvoiceDate: string
+    // originalInvoiceDate: string
 }
 
 interface InvoiceFormProps {
@@ -136,9 +140,9 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
     const { setLoading } = useLoading()
 
     const [isPending, startTransition] = useTransition();
-    const [isLoading, setIsLoading] = useState(false)
+    // const [isLoading, setIsLoading] = useState(false)
     const [selectedTableRows, setSelectedTableRows] = useState<any[]>([])
-    const uploadedFile = invoice && invoice?.fileData ? [invoice?.fileData] : [];
+    const uploadedFile = invoice && invoice?.documentUrl ? [invoice?.documentUrl] : [];
     const router = useRouter();
 
     const pageSize = 10
@@ -170,14 +174,15 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
         }
     }, [invoice,/*  invoiceLists */])
 
-    const form = useForm({
+    const form = useForm<z.infer<typeof CreditNotesSchema>>({
+        resolver: zodResolver(CreditNotesSchema),
         defaultValues: {
             // title: invoice?.invoiceType?.toString(),
-            creditNoteDate: invoice?.creditNoteDate || new Date(),
-            invoiceId: invoice?.invoiceId,// need invoice info from invoiceId
-            originalInvoiceDate: invoice?.originalInvoiceDate || new Date(),
-            partyName: type == 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString(),
-            gstin: type == 1 ? invoice?.hospital?.gstNumber : invoice?.distributor?.gstNumber,
+            creditNoteDate: invoice?.creditNoteDate || new Date().toISOString(),
+            invoiceId: invoice?.invoiceId || '',// need invoice info from invoiceId
+            // originalInvoiceDate: invoice?.originalInvoiceDate || new Date(),
+            partyName: type == 1 ? invoice?.hospital?.id?.toString() || '' : invoice?.distributor?.id?.toString() || '',
+            gstin: type == 1 ? invoice?.hospital?.gstNumber || '' : invoice?.distributor?.gstNumber || '',
             addressline1: invoice?.address?.address1,
             addressline2: invoice?.address?.address2,
             country: "India",
@@ -191,8 +196,9 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             // invoiceType: invoice?.invoiceType,
             roundOff: invoice?.roundOffAmount,
             grandTotal: invoice?.grandTotal,
-            fileData: uploadedFile,
+            documentUrl: uploadedFile,
         },
+        
     });
 
     const calculateTotal = (items: any) => {
@@ -322,12 +328,13 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
         const newValues = {
             ...values
         };
-        const fileUrl = values?.fileData?.[0] ? (typeof values?.fileData[0] === 'string' ? null : values?.fileData[0]) : null 
+        const fileUrl = values?.documentUrl?.[0] ? (typeof values?.documentUrl[0] === 'string' ? null : values?.documentUrl[0]) : null
 
-        const payload = {
-            fileData: fileUrl,
+        const payload: any = {
+            documentUrl: fileUrl,
             hospitalId: type === 1 ? parseInt(selectedHospital as string) : null,
             distributorId: type === 2 ? parseInt(selectedHospital as string) : null,
+            // distributorId: type === 2 ? parseInt(selectedHospital as string) : null,
             // shipping: newValues.shippingFreight ?? 0,
             // packingCharge: newValues.packingCharge ?? 0,
             cess: newValues.cess ?? 0,
@@ -337,10 +344,11 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             gst: 0,
             roundOffAmount: newValues.roundOff ?? 0,
             grandTotal: newValues.grandTotal ?? 0,
-            creditNoteDate: newValues?.creditNoteDate,
-            originalInvoiceDate: newValues?.originalInvoiceDate,
+            creditNoteDate: typeof newValues?.creditNoteDate === 'string' ? newValues?.creditNoteDate : newValues?.creditNoteDate.toISOString(),
+            // creditNoteDate: newValues?.creditNoteDate,
+            // originalInvoiceDate: typeof newValues?.originalInvoiceDate === 'string' ? newValues?.originalInvoiceDate : newValues?.originalInvoiceDate.toISOString(),
             invoiceId: +newValues?.invoiceId,
-            ledgerId: null,
+            // ledgerId: null,
             address: {
                 address1: newValues.addressline1,
                 address2: newValues.addressline2,
@@ -360,7 +368,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                     // taxrate: item.taxrate,
                     discountType: item.discountType ?? 0,
                     discountAmount: item.discountAmount ?? 0,
-                    taxrate: item.taxrate,
+                    taxrate: item.taxrate.replace('%', ''),
                     total: item.total,
                 }))
                 : invoiceLists?.map((item: any) => {
@@ -370,7 +378,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                         quantity: item.quantity,
                         rpuwg: item.rpuwg,
                         rpuwog: item.rpuwog,
-                        taxrate: item.taxrate,
+                        taxrate: item.taxrate.replace('%', ''),
                         discountType: parseInt(item.discountType, 10) ?? 0,
                         discountAmount: parseInt(item.discountAmount, 10) ?? 0,
                         // taxrate: item.taxrate,
@@ -382,12 +390,17 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                         : { ...commonFields, invoiceId: parseInt(invoiceId, 10), id: item?.id };
                 }),
         };
+        if (type === 1) {
+            delete payload?.distributorId
+        } else {
+            delete payload?.hospitalId
+        }
         console.log('submitpayload:::', payload);
         try {
             // return
             if (invoiceId) {
                 setLoading(true)
-                const response: any = await updateCreditNote(invoiceId, payload)
+                const response: any = await agent.CreditNotes.updateCreditNote(invoiceId, payload)
                 setLoading(false)
                 if (response && response.isSuccess) {
                     form.reset();
@@ -396,7 +409,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                 }
             } else {
                 setLoading(true)
-                const response: any = await addCreditNote(payload)
+                const response: any = await agent.CreditNotes.createCreditNote(payload)
                 setLoading(false)
                 if (response && response.isSuccess) {
                     form.reset();
@@ -726,7 +739,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
+                                {/* <FormField
                                     control={form.control}
                                     name="originalInvoiceDate"
                                     render={({ field }) => (
@@ -759,7 +772,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                                             <FormMessage />
                                         </FormItem>
                                     )}
-                                />
+                                /> */}
                                 <FormField
                                     control={form.control}
                                     name="gstin"
@@ -921,22 +934,22 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
 
                             <div className='w-3/4'>
 
-                               <FormField
-                                                       control={form.control}
-                                                       name="fileData"
-                                                       render={({ field }: any) => (
-                                                           <FormItem>
-                                                               <FormLabel>Upload File</FormLabel>
-                                                               <FileUploader
-                                                                   value={field?.value || []}
-                                                                   onValueChange={field.onChange}
-                                                                   reSelect={true}
-                                                                   className="size-52 p-0"
-                                                                   hidePreview={true}
-                                                               />
-                                                           </FormItem>
-                                                       )}
-                                                   />
+                                <FormField
+                                    control={form.control}
+                                    name="documentUrl"
+                                    render={({ field }: any) => (
+                                        <FormItem>
+                                            <FormLabel>Upload File</FormLabel>
+                                            <FileUploader
+                                                value={field?.value || []}
+                                                onValueChange={field.onChange}
+                                                reSelect={true}
+                                                className="size-52 p-0"
+                                                hidePreview={true}
+                                            />
+                                        </FormItem>
+                                    )}
+                                />
                             </div>
 
                             <div className='w-1/4'>

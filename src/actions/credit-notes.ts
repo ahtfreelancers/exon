@@ -30,10 +30,10 @@ export async function addCreditNote(data: any) {
         return handleResponse(response)
     } catch (error) {
         console.log("Add Credit Notes error", error);
-        throw error;
-        // return {
-        //     error,
-        // };
+        // throw error;
+        return {
+            error,
+        };
     }
 }
 

@@ -82,7 +82,7 @@ export type CreditNotes = {
     created: string
     modified: string
     creditNoteDate: string;
-    originalInvoiceDate: string
+    // originalInvoiceDate: string
     invoiceId: string
 };
 
