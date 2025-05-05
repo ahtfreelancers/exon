@@ -14,7 +14,6 @@ export default function RolePermissions(props: any) {
     const [roles, setRoles] = useState([])
     const [selectedRole, setSelectedRole] = useState('')
     const [permissions, setPermissions] = useState([])
-    console.log("roles", roles);
 
     const fetchRoles = async () => {
         let params = {
@@ -41,13 +40,12 @@ export default function RolePermissions(props: any) {
 
     const fetchPermissions = async (value: any) => {
         const params = {
-            RoleId: 1,
+            RoleId: Number(selectedRole),
             // RoleId: Number(value),
         };
 
         try {
             const { data, isSuccess }: any = await getAllPermissions(params);
-            console.log("data ???????????", data);
 
             if (isSuccess) {
                 const convertedPermissions = data.map((module: any, moduleIndex: number) => ({
@@ -62,8 +60,6 @@ export default function RolePermissions(props: any) {
                         isChecked: operation.isChecked
                     }))
                 }));
-                console.log("convertedPermissions", convertedPermissions.length);
-
                 setPermissions(convertedPermissions)
             }
         } catch (err) {
@@ -79,8 +75,6 @@ export default function RolePermissions(props: any) {
     }
 
     const handleSubmit = async (updatedPermissions: any) => {
-        console.log('data', updatedPermissions);
-        console.log('selectedRole', selectedRole);
         try {
             const { data, isSuccess }: any = await updateRolePermissions(updatedPermissions)
             if (isSuccess) {
@@ -92,7 +86,6 @@ export default function RolePermissions(props: any) {
             // setError(err.message || 'An error occurred')
         }
     }
-    console.log("roles", roles);
 
     if (roles.length === 0) return null
 
