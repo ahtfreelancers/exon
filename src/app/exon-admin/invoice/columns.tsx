@@ -6,6 +6,8 @@ import { toast } from 'sonner';
 import {
   BookType
 } from "lucide-react";
+import { useSession } from 'next-auth/react';
+import { isPermissionExists } from '@/lib/auth';
 
 const productTypeEnum: Record<string, string> = {
   "1": 'Hospital',
@@ -13,6 +15,8 @@ const productTypeEnum: Record<string, string> = {
 };
 
 const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceType: number, id: number, fetchInvoices: () => void, viewInvoice: any }) => {
+  const { data: session }: any = useSession();
+  const permissions = session?.user?.role_permissions;
   const handleDelete = async () => {
     try {
       const result: any = await deleteDistributor(id);
@@ -37,11 +41,14 @@ const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceT
         />
       </div>
       {/* {invoiceType === 1 && ( */}
-      <Link href={`/exon-admin/invoice/edit/${id}`}>
-        <FilePenLine size={22} />
-      </Link>
-      {/* )} */}
-      <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
+      {isPermissionExists(permissions, "Invoices:Edit") && (
+        <Link href={`/exon-admin/invoice/edit/${id}`}>
+          <FilePenLine size={22} />
+        </Link>
+      )}
+      {isPermissionExists(permissions, "Invoices:Delete") && (
+        <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
+      )}
       <Link href={`/exon-admin/invoice/add?convertId=${id}`}>
         <BookType size={22} />
       </Link>

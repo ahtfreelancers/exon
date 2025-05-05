@@ -53,6 +53,8 @@ interface DataTableProps<TData, TValue> {
   isDisableTable?: boolean;
   isStatusFilterEnable?: boolean;
   setStatusFilter?: (status: string) => void; // <-- Add this
+  isAddVisible?: boolean
+  filterOption?: any;
 }
 
 export function DataTable<TData, TValue>({
@@ -61,6 +63,7 @@ export function DataTable<TData, TValue>({
   buttonTitle,
   buttonUrl,
   search,
+  filterOption,
   onSearch,
   onPageChange,
   onSelectDropdownChange,
@@ -73,6 +76,7 @@ export function DataTable<TData, TValue>({
   isMultiSelectEnabled = false,
   onSelectedRowsChange,
   isDisableTable = false,
+  isAddVisible = true,
   isStatusFilterEnable = false,
   setStatusFilter, // <-- Add this
 }: DataTableProps<TData, TValue>) {
@@ -246,32 +250,20 @@ export function DataTable<TData, TValue>({
                     </SelectTrigger>
                     <SelectContent className="bg-white">
                       <SelectGroup>
-                        <SelectItem
-                          key={`1`}
-                          value={`1`}
-                          className="cursor-pointer"
-                        >
-                          Proforma
-                        </SelectItem>
-
-                        <SelectItem
-                          key={`2`}
-                          value={`2`}
-                          className="cursor-pointer"
-                        >
-                          Tax
-                        </SelectItem>
+                        {filterOption.map((option: any) => (
+                          <SelectItem key={option.value} value={option.value} className="cursor-pointer">
+                            {option.label}
+                          </SelectItem>
+                        ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
             )}
-            {buttonTitle && (
-              <Link href={buttonUrl}>
-                <Button className="ml-auto">{buttonTitle}</Button>
-              </Link>
-            )}
+            {buttonTitle && isAddVisible && <Link href={buttonUrl}>
+              <Button className="ml-auto">{buttonTitle}</Button>
+            </Link>}
           </div>
         </div>
       )}
@@ -296,9 +288,9 @@ export function DataTable<TData, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </TableHead>
                 ))}
               </TableRow>

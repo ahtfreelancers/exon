@@ -6,7 +6,7 @@ import { useLoading } from '@/components/loading-context'
 import { DataTable } from '@/components/root/data-table'
 import { useEffect, useState } from 'react'
 
-export default function ListProductTypes() {
+export default function ListProductTypes(props: any) {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
 
@@ -61,6 +61,7 @@ export default function ListProductTypes() {
                     currentPage={pageIndex}
                     search={search}
                     pageSize={pageSize}
+                    isAddVisible={props.createVisible}
                 />
             </div>
         </section>

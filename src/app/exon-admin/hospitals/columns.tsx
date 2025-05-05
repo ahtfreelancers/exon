@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 import { Dialog, DialogClose, DialogContent, DialogOverlay, DialogTrigger } from '@radix-ui/react-dialog';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { isPermissionExists } from '@/lib/auth';
 
 export type Hospital = {
   id: number
@@ -19,7 +21,8 @@ export type Hospital = {
 }
 const ActionsCell = ({ id, fetchHospitals }: { id: number; fetchHospitals: () => void }) => {
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
+  const { data: session }: any = useSession();
+  const permissions = session?.user?.role_permissions;
   const handleDelete = async () => {
     try {
       const result: any = await deleteHospital(id);
@@ -37,18 +40,23 @@ const ActionsCell = ({ id, fetchHospitals }: { id: number; fetchHospitals: () =>
 
   return (
     <div className="flex gap-3">
-      <Link href={`/exon-admin/hospitals/${id}`}>
-        <Eye size={22} className="cursor-pointer" />
-      </Link>
+      {isPermissionExists(permissions, "Hospitals:Edit") && (
+        <Link href={`/exon-admin/hospitals/${id}`}>
+          <Eye size={22} className="cursor-pointer" />
+        </Link>
+      )}
       <Link href={`/exon-admin/hospitals/edit/${id}`}>
         <FilePenLine size={22} />
       </Link>
-      <Trash
-        size={22}
-        color="red"
-        className="cursor-pointer"
-        onClick={() => setDeleteDialogOpen(true)}
-      />
+      {isPermissionExists(permissions, "Hospitals:Delete") && (
+        <Trash
+          size={22}
+          color="red"
+          className="cursor-pointer"
+          onClick={() => setDeleteDialogOpen(true)}
+        />
+      )}
+
       <Dialog open={isDeleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogOverlay className="fixed inset-0 bg-black/60 z-[9999]" />
         <DialogContent className="fixed z-[9999] inset-0 flex items-center justify-center">

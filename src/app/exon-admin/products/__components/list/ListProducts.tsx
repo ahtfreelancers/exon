@@ -10,7 +10,7 @@ import { DataTable } from '@/components/root/data-table'
 import { Button } from '@/components/ui/button'
 import { useCallback, useEffect, useState } from 'react'
 
-export default function ListProducts() {
+export default function ListProducts(props: any) {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
     const [statusFilter, setStatusFilter] = useState('')
@@ -25,7 +25,7 @@ export default function ListProducts() {
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
     const { setLoading } = useLoading()
-    
+
     const pageSize = 10
 
     const fetchProducts = useCallback(async () => {
@@ -98,6 +98,7 @@ export default function ListProducts() {
                     buttonUrl={"/exon-admin/products/add"}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
+                    isAddVisible={props.createVisible}
                     pageCount={pageCount}
                     currentPage={pageIndex}
                     search={search}

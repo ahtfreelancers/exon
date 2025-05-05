@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useLoading } from '@/components/loading-context'
 
-export default function ListInvoice() {
+export default function ListInvoice(props: any) {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
     const [pageIndex, setPageIndex] = useState(1)
@@ -76,10 +76,15 @@ export default function ListInvoice() {
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
                     pageCount={pageCount}
+                    filterOption={[
+                        { label: "Proforma", value: "1" },
+                        { label: "Tax", value: "2" },
+                    ]}
                     onSelectDropdownChange={onSelectDropdownChange}
                     isInvoiceFilterEnable={true}
                     currentPage={pageIndex}
                     search={search}
+                    isAddVisible={props.createVisible}
                     pageSize={pageSize}
                 />
 
