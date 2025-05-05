@@ -68,11 +68,37 @@ axios.interceptors.response.use(
     }
 )
 
-function createFormData(item: any) {
-    const formData = new FormData()
-    for (const key in item) {
-        formData.append(key, item[key])
+function objectToFormData(data: any, formData = new FormData(), parentKey = "") {
+    if (data === null || data === undefined) return formData;
+  
+    if (typeof data === "object" && !(data instanceof File)) {
+      if (Array.isArray(data)) {
+        data.forEach((value, index) => {
+          const key = `${parentKey}[${index}]`;
+          objectToFormData(value, formData, key);
+        });
+      } else {
+        Object.entries(data).forEach(([key, value]) => {
+          const fullKey = parentKey ? `${parentKey}[${key}]` : key;
+          objectToFormData(value, formData, fullKey);
+        });
+      }
+    } else {
+      formData.append(parentKey, data);
     }
+  
+    return formData;
+  }
+
+function createFormData(item: any) {
+    const formData = objectToFormData(item)
+    // for (const key in item) {
+    //     if (typeof item[key] === 'object' && item[key] !== null) {
+        
+    //     }
+    //     formData.append(key, item[key])
+    // }
+    // console.log("formData::::", formData);
     return formData
 }
 
@@ -146,6 +172,14 @@ const ProductTypes = {
     deleteProductType: (id: number) => requests.delete(`${API_BASE_URL}/producttypes/${id}`),
     updateProductType: (id: any, data: any) => requests.put(`${API_BASE_URL}/producttypes/${id}`, createFormData(data)),
 }
+const CreditNotes = {
+    getAllLedgers: (params: any) => requests.get(`${API_BASE_URL}/ledger`, params),
+    getCreditNotes: (params: any) => requests.get(`${API_BASE_URL}/creditNote`, params),
+    createCreditNote: (data: any) => requests.post(`${API_BASE_URL}/creditNote`, createFormData(data)),
+    getCreditNoteById: (id: number) => requests.get(`${API_BASE_URL}/creditNote/${id}`),
+    deleteCreditNote: (id: number) => requests.delete(`${API_BASE_URL}/creditNote/${id}`),
+    updateCreditNote: (id: any, data: any) => requests.put(`${API_BASE_URL}/creditNote/${id}`, createFormData(data)),
+}
 const Invoice = {
     getInvoice: (params: any) => requests.get(`${API_BASE_URL}/invoices`, params),
     getInvoicePdf: (id: any) => requests.get(`${API_BASE_URL}/invoices/getInvoicePDF/${id}`),
@@ -189,6 +223,7 @@ const agent = {
     Challan,
     SharePdf,
     Transport,
+    CreditNotes,
     Role,
     Ledger,
 }

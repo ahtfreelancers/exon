@@ -12,6 +12,7 @@ export interface FileUploaderProps {
   value?: File[] | string | (() => File[] | string); // value can be a string (URL) or an array of File objects
   onValueChange?: (files: File[]) => void;
   reSelect?: boolean;
+  hidePreview?: boolean; // Optional prop to hide the preview
 }
 
 export const FileUploader: FC<FileUploaderProps> = ({
@@ -20,6 +21,7 @@ export const FileUploader: FC<FileUploaderProps> = ({
   value = [],
   onValueChange,
   reSelect = false,
+  hidePreview = false,
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -69,7 +71,8 @@ console.log('value::::', value)
           <p className="pl-2">{selectedFiles[0]?.name}</p>
         )}
       </div>
-
+      {!hidePreview && (
+        <>
       {/* Handle displaying either images (URLs or uploaded files) */}
       {selectedFiles.length > 0 && typeof selectedFiles[0] === 'string' ? (
         <AspectRatio className="size-36 mt-2">
@@ -101,6 +104,8 @@ console.log('value::::', value)
                 </AspectRatio>
               </FileUploaderItem>
             ))}
+        </>
+      )}
         </>
       )}
     </div>
