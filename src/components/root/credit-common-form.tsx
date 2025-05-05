@@ -549,6 +549,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
         calculateTotal(invoiceLists)
     }
     const onSelectDropdownChange = (value: any) => {
+        form.setValue('partyName', value)
         setSelectedHospital && setSelectedHospital(value)
 
         if (type === 1) {

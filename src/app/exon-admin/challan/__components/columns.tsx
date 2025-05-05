@@ -56,8 +56,8 @@ export const columns = (
           <Input
             type="number"
             className="w-24"
-            value={item.quantity || ''}
-            onChange={(e) => onHandleChange(item.id, parseInt(e.target.value), 'quantity')}
+            defaultValue={item.quantity || ''}
+            onBlur={(e) => onHandleChange(item.id, parseInt(e.target.value), 'quantity')}
           />
         );
       }
