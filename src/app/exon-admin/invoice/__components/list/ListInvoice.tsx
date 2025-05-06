@@ -69,10 +69,10 @@ export default function ListInvoice(props: any) {
                 <h1 className='mb-2 text-2xl font-bold'>Invoice</h1>
 
                 <DataTable
-                    columns={columns(fetchInvoice, viewInvoice, productTypeFilter, setProductTypeFilter, setPageIndex)}
+                    columns={columns(fetchInvoice, viewInvoice, productTypeFilter, setProductTypeFilter, setPageIndex, props.listType)}
                     data={data}
                     buttonTitle={"Add Invoice"}
-                    buttonUrl={"/exon-admin/invoice/add"}
+                    buttonUrl={`/exon-admin/invoice/add?listType=${props.listType}`}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
                     pageCount={pageCount}

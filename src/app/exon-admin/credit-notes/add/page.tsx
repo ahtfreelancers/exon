@@ -14,7 +14,7 @@ const ProductTypeAddPage = async ({ searchParams }: { searchParams: Record<strin
     }
 
 
-    const { convertId } = searchParams;
+    const { convertId, listType='hospital' } = searchParams;
 
     if (!session) {
         return redirect('/exon-admin')
@@ -37,7 +37,7 @@ const ProductTypeAddPage = async ({ searchParams }: { searchParams: Record<strin
 
 
     return (
-        <CreditNotesForm invoice={data} invoiceId={convertId ?? null} hospitals={hospitals?.items} distributors={distributors?.items} invoiceList={invoiceList?.items} ledgers={ledgers?.items} />
+        <CreditNotesForm invoice={data} invoiceId={convertId ?? null} hospitals={hospitals?.items} distributors={distributors?.items} invoiceList={invoiceList?.items} ledgers={ledgers?.items} listType={listType} />
     );
 }
 

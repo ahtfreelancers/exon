@@ -79,16 +79,17 @@ interface InvoiceFormProps {
     transport?: any
     productTypes?: any
     type?: any
+    listType?: string
 }
 
-export default function ChallanForm({ challan, hospitals, distributors, type, invoiceId, isEdit = false, transport, productTypes }: InvoiceFormProps) {
+export default function ChallanForm({ listType, challan, hospitals, distributors, type, invoiceId, isEdit = false, transport, productTypes }: InvoiceFormProps) {
 
     return (
         <section className=''>
             <div className='container'>
                 {
-                    invoiceId ? (
-                        <ChallanCommonForm type={challan?.hospital?.id ? 1 : 2} challan={challan} hospitals={hospitals} distributors={distributors} transport={transport} productTypes={productTypes} invoiceId={invoiceId} isEdit={isEdit} />
+                    listType ? (
+                        <ChallanCommonForm type={listType === 'hospital' ? 1 : 2} challan={challan} hospitals={hospitals} distributors={distributors} transport={transport} productTypes={productTypes} invoiceId={invoiceId} isEdit={isEdit} />
                     ) : (
                         <Tabs defaultValue="hospitalmapping">
                             <TabsList>

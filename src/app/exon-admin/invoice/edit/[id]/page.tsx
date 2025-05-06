@@ -9,15 +9,19 @@ interface InvoiceFormEditPageProps {
     params: {
         id: string;
     };
+    searchParams: {
+        listType?: string;
+    };
 }
 
-const InvoiceEditPage = async ({ params }: InvoiceFormEditPageProps) => {
+const InvoiceEditPage = async ({ params, searchParams }: InvoiceFormEditPageProps) => {
     const session = await auth()
 
     if (!session) {
         return redirect('/exon-admin')
     }
     const { id } = params;
+    const { listType } = searchParams;
     let listParams = {
         PageNumber: 1,
         pageSize: 10
@@ -28,7 +32,7 @@ const InvoiceEditPage = async ({ params }: InvoiceFormEditPageProps) => {
     const { data: distributors }: any = await getAllDistributors(listParams)
 
     return (
-        <InvoiceForm invoice={data} hospitals={hospitals?.items} distributors={distributors?.items} invoiceId={id} isEdit={true} />
+        <InvoiceForm listType={listType} invoice={data} hospitals={hospitals?.items} distributors={distributors?.items} invoiceId={id} isEdit={true} />
     );
 }
 

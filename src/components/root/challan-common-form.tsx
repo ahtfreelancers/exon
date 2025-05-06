@@ -169,7 +169,7 @@ export default function ChallanCommonForm({ type, challan, hospitals, distributo
             if (response && response.isSuccess) {
                 form.reset();
                 toast.success("challan Updated Successfully")
-                router.push('/exon-admin/challan')
+                router.push(`/exon-admin/challan/${type === 1 ? 'hospital' : 'distributor'}`)
             }
         } else {
             console.log("testttttttttttttttttttt");
@@ -178,7 +178,7 @@ export default function ChallanCommonForm({ type, challan, hospitals, distributo
             if (response && response.isSuccess) {
                 form.reset();
                 toast.success("challan Added Successfully")
-                router.push('/exon-admin/challan')
+                router.push(`/exon-admin/challan/${type === 1 ? 'hospital' : 'distributor'}`)
             }
         }
 
@@ -560,7 +560,8 @@ export default function ChallanCommonForm({ type, challan, hospitals, distributo
                         <Button className='disabled:pointer-events-none disabled:opacity-50'>
                             Save
                         </Button>
-                        <Link href={'/exon-admin/challan'}>
+                        <Link href={`/exon-admin/challan/${type === 1 ? 'hospital' : 'distributor'}`} >
+
                             <Button
                                 disabled={isPending}
                                 type="submit"

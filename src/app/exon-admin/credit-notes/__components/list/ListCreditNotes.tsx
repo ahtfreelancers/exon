@@ -6,7 +6,7 @@ import { useLoading } from '@/components/loading-context'
 import { DataTable } from '@/components/root/data-table'
 import { useEffect, useState } from 'react'
 
-export default function ListCreditNotes() {
+export default function ListCreditNotes({ listType }: { listType: string }) {
     const [data, setData] = useState([])
     const [search, setSearch] = useState('')
 
@@ -20,6 +20,7 @@ export default function ListCreditNotes() {
             PageNumber: pageIndex,
             pageSize: pageSize,
             searchParam: search,
+            creditType: listType === 'distributor' ? 'distributor' : 'hospital',
         }
 
         try {
@@ -49,10 +50,10 @@ export default function ListCreditNotes() {
                 </div>
 
                 <DataTable
-                    columns={columns(fetchCreditNotes)}
+                    columns={columns(fetchCreditNotes, listType)}
                     data={data}
                     buttonTitle={"Add Credit Note"}
-                    buttonUrl={"/exon-admin/credit-notes/add"}
+                    buttonUrl={`/exon-admin/credit-notes/add?listType=${listType}`}
                     onSearch={setSearch}
                     onPageChange={setPageIndex}
                     setStatusFilter={() => { }}

@@ -198,7 +198,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             grandTotal: invoice?.grandTotal,
             documentUrl: uploadedFile,
         },
-        
+
     });
 
     const calculateTotal = (items: any) => {
@@ -405,7 +405,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                 if (response && response.isSuccess) {
                     form.reset();
                     toast.success("Credit Note Updated Successfully")
-                    router.push('/exon-admin/credit-notes')
+                    router.push(`/exon-admin/credit-notes/${type === 1 ? 'hospital' : 'distributor'}`)
                 }
             } else {
                 setLoading(true)
@@ -414,7 +414,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                 if (response && response.isSuccess) {
                     form.reset();
                     toast.success("Credit Note Added Successfully")
-                    router.push('/exon-admin/credit-notes')
+                    router.push(`/exon-admin/credit-notes/${type === 1 ? 'hospital' : 'distributor'}`)
                 }
             }
         } catch (error: any) {
@@ -1069,7 +1069,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                         <Button className='disabled:pointer-events-none disabled:opacity-50'>
                             Save
                         </Button>
-                        <Link href={'/exon-admin/invoice'}>
+                        <Link href={`/exon-admin/credit-notes/${type == 1 ? 'hospital' : 'distributors'}`}>
                             <Button
                                 disabled={isPending}
                                 type="submit"

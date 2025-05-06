@@ -10,6 +10,6 @@ export default async function ListCreditNotesPage() {
   }
 
   return (
-    <ListCreditNotes />
+    <ListCreditNotes listType='all'/>
   )
 }

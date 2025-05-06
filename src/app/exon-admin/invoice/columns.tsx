@@ -14,7 +14,7 @@ const productTypeEnum: Record<string, string> = {
   "2": 'Distributor',
 };
 
-const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceType: number, id: number, fetchInvoices: () => void, viewInvoice: any }) => {
+const ActionsCell = ({ listType, invoiceType, id, fetchInvoices, viewInvoice }: { listType: string, invoiceType: number, id: number, fetchInvoices: () => void, viewInvoice: any }) => {
   const { data: session }: any = useSession();
   const permissions = session?.user?.role_permissions;
   const handleDelete = async () => {
@@ -42,14 +42,14 @@ const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceT
       </div>
       {/* {invoiceType === 1 && ( */}
       {isPermissionExists(permissions, "Invoices:Edit") && (
-        <Link href={`/exon-admin/invoice/edit/${id}`}>
+        <Link href={`/exon-admin/invoice/edit/${id}&listType=${listType}`}>
           <FilePenLine size={22} />
         </Link>
       )}
       {isPermissionExists(permissions, "Invoices:Delete") && (
         <Trash size={22} color="red" className="cursor-pointer" onClick={handleDelete} />
       )}
-      <Link href={`/exon-admin/invoice/add?convertId=${id}`}>
+      <Link href={`/exon-admin/invoice/add?convertId=${id}&listType=${listType}`}>
         <BookType size={22} />
       </Link>
     </div>
@@ -60,7 +60,8 @@ export const columns = (
   viewInvoice: (id: number) => void,
   productTypeFilter: string,
   setProductTypeFilter: (value: string) => void,
-  setPageIndex: (value: number) => void
+  setPageIndex: (value: number) => void,
+  listType: string
 ): ColumnDef<any>[] => [
     {
       accessorKey: 'name',
@@ -326,6 +327,6 @@ export const columns = (
     {
       id: 'actions',
       header: 'Actions',
-      cell: ({ row }) => <ActionsCell invoiceType={row.original.invoiceType} id={row.original.id} fetchInvoices={fetchInvoices} viewInvoice={viewInvoice} />,
+      cell: ({ row }) => <ActionsCell listType={listType} invoiceType={row.original.invoiceType} id={row.original.id} fetchInvoices={fetchInvoices} viewInvoice={viewInvoice} />,
     },
   ]

@@ -11,7 +11,7 @@ import { isPermissionExists } from "@/lib/auth";
 import NoAccess from "@/components/no-access";
 
 const ChallanAddPage = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
-    const { convertId } = searchParams;
+    const { convertId, listType='hospital' } = searchParams;
     const session: any = await auth()
     const permissions = session?.user?.role_permissions
 
@@ -35,7 +35,7 @@ const ChallanAddPage = async ({ searchParams }: { searchParams: Record<string, s
     const { data: productTypes }: any = await getAllProductTypes(params)
 
     return (
-        <ChallanForm challan={data} invoiceId={convertId ?? null} hospitals={hospitals?.items} transport={transport?.items} distributors={distributors?.items} productTypes={productTypes?.items} />
+        <ChallanForm listType={listType} challan={data} invoiceId={convertId ?? null} hospitals={hospitals?.items} transport={transport?.items} distributors={distributors?.items} productTypes={productTypes?.items} />
     );
 }
 

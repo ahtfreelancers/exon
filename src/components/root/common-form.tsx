@@ -927,7 +927,7 @@ export default function CommonForm({ type, invoice, hospitals, distributors, inv
                         <Button className='disabled:pointer-events-none disabled:opacity-50'>
                             Save
                         </Button>
-                        <Link href={'/exon-admin/invoice'}>
+                        <Link href={`/exon-admin/invoice/${type == 1 ? 'hospital' : 'distributor'}`}>
                             <Button
                                 disabled={isPending}
                                 type="submit"

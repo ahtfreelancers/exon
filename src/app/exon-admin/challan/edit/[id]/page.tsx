@@ -13,9 +13,12 @@ interface InvoiceFormEditPageProps {
     params: {
         id: string;
     };
+    searchParams: {
+        listType?: string;
+    };
 }
 
-const ChallanEditPage = async ({ params }: InvoiceFormEditPageProps) => {
+const ChallanEditPage = async ({ params, searchParams }: InvoiceFormEditPageProps) => {
     const session: any = await auth()
     const permissions = session?.user?.role_permissions
 
@@ -27,6 +30,8 @@ const ChallanEditPage = async ({ params }: InvoiceFormEditPageProps) => {
         return <NoAccess />
     }
     const { id } = params;
+    const { listType='hospital' } = searchParams;
+
     let listParams = {
         PageNumber: 1,
         pageSize: 10
@@ -38,7 +43,7 @@ const ChallanEditPage = async ({ params }: InvoiceFormEditPageProps) => {
     const { data: transport }: any = await getAllTransport(params)
     const { data: productTypes }: any = await getAllProductTypes(params)
     return (
-        <ChallanForm challan={data} hospitals={hospitals?.items} transport={transport?.items} distributors={distributors?.items} productTypes={productTypes?.items} invoiceId={id} isEdit={true} />
+        <ChallanForm listType={listType} challan={data} hospitals={hospitals?.items} transport={transport?.items} distributors={distributors?.items} productTypes={productTypes?.items} invoiceId={id} isEdit={true} />
     );
 }
 

@@ -63,10 +63,10 @@ export default function ListChallan(props: any) {
                 <h1 className='mb-2 text-2xl font-bold'>Delivery Challan</h1>
 
                 <DataTable
-                    columns={columns(fetchInvoice, viewInvoice)}
+                    columns={columns(fetchInvoice, viewInvoice, props.listType)}
                     data={data}
                     buttonTitle={"Add Challan"}
-                    buttonUrl={"/exon-admin/challan/add"}
+                    buttonUrl={`/exon-admin/challan/add?listType=${props.listType}`}
                     onSearch={setSearch}
                     isAddVisible={props.createVisible}
                     onPageChange={setPageIndex}
