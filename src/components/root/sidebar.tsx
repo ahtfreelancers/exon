@@ -32,8 +32,8 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
         {
             href: "/exon-admin/invoice", label: "Invoice",
             children: [
-                { href: "/exon-admin/invoice/hospital", label: "Hospital Mapping", icon: Hospital, isAccessible: isPermissionExists(permissions, "Invoices:View") },
-                { href: "/exon-admin/invoice/distributor", label: "Distributor Mapping", icon: Contact, isAccessible: isPermissionExists(permissions, "Invoices:View") },
+                { href: "/exon-admin/invoice/hospital", label: "Hospital", icon: Hospital, isAccessible: isPermissionExists(permissions, "Invoices:View") },
+                { href: "/exon-admin/invoice/distributor", label: "Distributor", icon: Contact, isAccessible: isPermissionExists(permissions, "Invoices:View") },
             ],
             icon: ReceiptIndianRupee, isAccessible: isPermissionExists(permissions, "Invoices:View")
         },
@@ -56,8 +56,8 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
         {
             href: "/exon-admin/challan", label: "Challan",
             children: [
-                { href: "/exon-admin/challan/hospital", label: "Hospital Mapping", icon: Hospital, isAccessible: isPermissionExists(permissions, "Delivery:View") },
-                { href: "/exon-admin/challan/distributor", label: "Distributor Mapping", icon: Contact, isAccessible: isPermissionExists(permissions, "Delivery:View") },
+                { href: "/exon-admin/challan/hospital", label: "Hospital", icon: Hospital, isAccessible: isPermissionExists(permissions, "Delivery:View") },
+                { href: "/exon-admin/challan/distributor", label: "Distributor", icon: Contact, isAccessible: isPermissionExists(permissions, "Delivery:View") },
             ], icon: ReceiptIndianRupee, isAccessible: isPermissionExists(permissions, "Delivery:View")
         },
     ];
