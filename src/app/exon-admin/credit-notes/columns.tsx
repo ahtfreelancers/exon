@@ -126,7 +126,7 @@ const ImageCell = ({ pictureUrl }: { pictureUrl: string }) => {
     );
 };
 
-const ActionsCell = ({ id, fetchCreditNotes }: { id: number; fetchCreditNotes: () => void }) => {
+const ActionsCell = ({ id, fetchCreditNotes, listType }: { id: number; fetchCreditNotes: () => void, listType: string }) => {
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     const handleDelete = async () => {
@@ -146,7 +146,7 @@ const ActionsCell = ({ id, fetchCreditNotes }: { id: number; fetchCreditNotes: (
 
     return (
         <div className="flex gap-3">
-            <Link href={`/exon-admin/credit-notes/edit/${id}`}>
+            <Link href={`/exon-admin/credit-notes/edit/${id}?listType=${listType}`}>
                 <FilePenLine size={22} />
             </Link>
             <Trash
@@ -182,7 +182,7 @@ const ActionsCell = ({ id, fetchCreditNotes }: { id: number; fetchCreditNotes: (
     );
 };
 
-export const columns = (fetchCreditNotes: () => void): ColumnDef<CreditNotes>[] => [
+export const columns = (fetchCreditNotes: () => void, listType: string): ColumnDef<CreditNotes>[] => [
     // {
     //   accessorKey: 'hospital',
     //   header: ({ column }) => (
@@ -329,6 +329,6 @@ export const columns = (fetchCreditNotes: () => void): ColumnDef<CreditNotes>[] 
     {
         id: 'actions',
         header: () => <div className="flex items-center">Action</div>,
-        cell: ({ row }) => <ActionsCell id={row.original.id} fetchCreditNotes={fetchCreditNotes} />,
+        cell: ({ row }) => <ActionsCell id={row.original.id} fetchCreditNotes={fetchCreditNotes} listType={listType} />,
     },
 ];

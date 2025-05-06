@@ -86,16 +86,17 @@ interface InvoiceFormProps {
     isEdit?: boolean
     invoiceList?: any
     ledgers?: any
+    listType?: string
 
 }
 
-export default function CreditNotesForm({ invoice, hospitals, distributors, invoiceId, isEdit = false, invoiceList, ledgers }: InvoiceFormProps) {
+export default function CreditNotesForm({ invoice, hospitals, distributors, invoiceId, isEdit = false, invoiceList, ledgers, listType }: InvoiceFormProps) {
     return (
         <section className=''>
             <div className='container'>
                 {
-                    invoiceId ? (
-                        <CreditCommonForm type={invoice?.hospital?.id ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} isEdit={isEdit} invoiceList={invoiceList} ledgers={ledgers} />
+                    listType ? (
+                        <CreditCommonForm type={listType === 'hostptal' ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} isEdit={isEdit} invoiceList={invoiceList} ledgers={ledgers} />
                     ) : (
                         <Tabs defaultValue="hospitalmapping">
                             <TabsList>

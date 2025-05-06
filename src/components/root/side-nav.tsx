@@ -44,7 +44,7 @@ export function SideNav({ items, setOpen, className, isOpen }: SideNavProps) {
                             <AccordionTrigger
                                 className={cn(
                                     buttonVariants({ variant: "ghost" }),
-                                    "w-full group relative flex h-10 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline",
+                                    "bg-white text-black w-full group relative flex h-10 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline",
                                     path.includes(item.href) && "bg-primary text-white font-semibold"
                                 )}
                             >
@@ -70,7 +70,7 @@ export function SideNav({ items, setOpen, className, isOpen }: SideNavProps) {
                                         }}
                                         className={cn(
                                             buttonVariants({ variant: "ghost" }),
-                                            "group relative flex h-10 justify-start gap-x-1",
+                                            "group relative flex h-10 justify-start gap-x-1  mt-2",
                                             path.includes(child.href) && "bg-primary text-white font-semibold"
                                         )}
                                     >

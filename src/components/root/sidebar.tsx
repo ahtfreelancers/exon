@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Children, useState } from "react";
 import { cn } from "@/lib/utils";
 import { SideNav } from "./side-nav";
 import {
@@ -35,7 +35,14 @@ export default function Sidebar({ className, Setopen }: SidebarProps) {
         { href: "/exon-admin/distributors", label: "Distributors", icon: Contact, isAccessible: isPermissionExists(permissions, "Distributors:View") },
         // { href: "/exon-admin/mapping", label: "Mapping", icon: Contact },
         { href: "/exon-admin/product-types", label: "Product Types", icon: Contact, isAccessible: isPermissionExists(permissions, "ProductTypes:View") },
-        { href: "/exon-admin/credit-notes", label: "Credit Notes", icon: Contact, isAccessible: isPermissionExists(permissions, "ProductTypes:View") },
+        {
+            href: "/exon-admin/credit-notes", label: "Credit Notes",
+            children: [
+                { href: "/exon-admin/credit-notes/hospital", label: "Hospital", icon: Hospital, isAccessible: isPermissionExists(permissions, "Permission:View") },
+                { href: "/exon-admin/credit-notes/distributors", label: "Distributors", icon: Contact, isAccessible: isPermissionExists(permissions, "Permission:View") },
+            ],
+            icon: Contact, isAccessible: isPermissionExists(permissions, "ProductTypes:View")
+        },
         { href: "/exon-admin/user-role", label: "User Role", icon: Contact, isAccessible: isPermissionExists(permissions, "Permission:View") },
         { href: "/exon-admin/contact", label: "Contact", icon: Contact, isAccessible: isPermissionExists(permissions, "ContactUs:View") },
         { href: "/exon-admin/ledger", label: "Ledger", icon: Contact, isAccessible: isPermissionExists(permissions, "Ledger:View") },
