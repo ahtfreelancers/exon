@@ -557,19 +557,19 @@ export default function ChallanCommonForm({ type, challan, hospitals, distributo
                     />
 
                     <div className='mt-4 flex justify-end'>
+                        <Button className='disabled:pointer-events-none disabled:opacity-50'>
+                            Save
+                        </Button>
                         <Link href={'/exon-admin/challan'}>
                             <Button
                                 disabled={isPending}
                                 type="submit"
                                 variant="secondary"
-                                className="mr-[20px]"
+                                className="ml-[20px]"
                             >
                                 Cancel
                             </Button>
                         </Link>
-                        <Button className='disabled:pointer-events-none disabled:opacity-50'>
-                            Save
-                        </Button>
                     </div>
                 </form>
             </Form>
