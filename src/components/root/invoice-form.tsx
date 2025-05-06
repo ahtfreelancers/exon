@@ -75,16 +75,17 @@ interface InvoiceFormProps {
     hospitals?: any;
     distributors?: any;
     invoiceId?: any;
-    isEdit?: boolean
+    isEdit?: boolean;
+    listType?: string;
 }
 
-export default function InvoiceForm({ invoice, hospitals, distributors, invoiceId, isEdit = false }: InvoiceFormProps) {
+export default function InvoiceForm({ listType, invoice, hospitals, distributors, invoiceId, isEdit = false }: InvoiceFormProps) {
     return (
         <section className=''>
             <div className='container'>
                 {
-                    invoiceId ? (
-                        <CommonForm type={invoice?.hospital?.id ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} isEdit={isEdit} />
+                    listType ? (
+                        <CommonForm type={listType === 'hospital' ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} isEdit={isEdit} />
                     ) : (
                         <Tabs defaultValue="hospitalmapping">
                             <TabsList>

@@ -26,7 +26,7 @@ const CreditNotesEditPage = async ({ params, searchParams }: CreditNotesEditPage
 
     let paramsQuery = {
         PageNumber: 1,
-        pageSize: 10
+        pageSize: 10,
     }
 
     const { data }: any = await getCreditNote(id);

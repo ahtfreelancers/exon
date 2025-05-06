@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { isPermissionExists } from '@/lib/auth';
 
-const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceType: number, id: number, fetchInvoices: () => void, viewInvoice: any }) => {
+const ActionsCell = ({listType, invoiceType, id, fetchInvoices, viewInvoice }: { listType: string, invoiceType: number, id: number, fetchInvoices: () => void, viewInvoice: any }) => {
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const { data: session }: any = useSession();
   const permissions = session?.user?.role_permissions;
@@ -38,7 +38,7 @@ const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceT
         />
       </div>
       {isPermissionExists(permissions, "Delivery:Edit") && (
-        <Link href={`/exon-admin/challan/edit/${id}`}>
+        <Link href={`/exon-admin/challan/edit/${id}?listType=${listType}`}>
           <FilePenLine size={22} />
         </Link>)}
       {isPermissionExists(permissions, "Delivery:Delete") && (
@@ -74,6 +74,7 @@ const ActionsCell = ({ invoiceType, id, fetchInvoices, viewInvoice }: { invoiceT
 export const columns = (
   fetchInvoices: () => void,
   viewInvoice: (id: number) => void,
+  listType: string
 ): ColumnDef<any>[] => [
     {
       accessorKey: 'partyName',
@@ -209,6 +210,6 @@ export const columns = (
     {
       id: 'actions',
       header: 'Actions',
-      cell: ({ row }) => <ActionsCell invoiceType={row.original.invoiceType} id={row.original.id} fetchInvoices={fetchInvoices} viewInvoice={viewInvoice} />,
+      cell: ({ row }) => <ActionsCell listType={listType} invoiceType={row.original.invoiceType} id={row.original.id} fetchInvoices={fetchInvoices} viewInvoice={viewInvoice} />,
     },
   ]

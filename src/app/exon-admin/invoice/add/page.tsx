@@ -7,7 +7,7 @@ import { getAllDistributors } from "@/actions/distributor";
 
 const InvoiceAddPage = async ({ searchParams }: { searchParams: Record<string, string | undefined> }) => {
     const session = await auth()
-    const { convertId } = searchParams;
+    const { convertId, listType = 'hospital' } = searchParams;
 
     if (!session) {
         return redirect('/exon-admin')
@@ -23,7 +23,7 @@ const InvoiceAddPage = async ({ searchParams }: { searchParams: Record<string, s
     const { data: distributors }: any = await getAllDistributors(params)
 
     return (
-        <InvoiceForm invoice={data} invoiceId={convertId ?? null} hospitals={hospitals?.items} distributors={distributors?.items} />
+        <InvoiceForm listType={listType} invoice={data} invoiceId={convertId ?? null} hospitals={hospitals?.items} distributors={distributors?.items} />
     );
 }
 
