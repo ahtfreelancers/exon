@@ -179,6 +179,7 @@ const CreditNotes = {
     getCreditNoteById: (id: number) => requests.get(`${API_BASE_URL}/creditNote/${id}`),
     deleteCreditNote: (id: number) => requests.delete(`${API_BASE_URL}/creditNote/${id}`),
     updateCreditNote: (id: any, data: any) => requests.put(`${API_BASE_URL}/creditNote/${id}`, createFormData(data)),
+    getCreditNotePDF: (id: any) => requests.get(`${API_BASE_URL}/creditNote/getCreditNotePDF/${id}`),
 }
 const Invoice = {
     getInvoice: (params: any) => requests.get(`${API_BASE_URL}/invoices`, params),
@@ -195,7 +196,7 @@ const Role = {
 }
 const Challan = {
     getChallan: (params: any) => requests.get(`${API_BASE_URL}/deliveryChallan`, params),
-    getChallanPdf: (id: any) => requests.get(`${API_BASE_URL}/deliveryChallan/getChallanPDF/${id}`),
+    getChallanPdf: (id: any) => requests.get(`${API_BASE_URL}/deliveryChallan/getDeliveryChallanPDF/${id}`),
     createChallan: (data: any) => requests.post(`${API_BASE_URL}/deliveryChallan`, createFormData(data)),
     updateChallan: (id: any, data: any) => requests.put(`${API_BASE_URL}/deliveryChallan/${id}`, createFormData(data)),
     getChallanById: (id: number) => requests.get(`${API_BASE_URL}/deliveryChallan/${id}`),

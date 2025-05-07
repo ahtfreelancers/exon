@@ -70,3 +70,13 @@ export async function deleteCreditNote(id: any) {
         };
     }
 }
+export async function getCreditNotePDFById(id: any) {
+    try {
+        const response = await agent.CreditNotes.getCreditNotePDF(id)
+        return handleResponse(response)
+    } catch (error) {
+        return {
+            error,
+        };
+    }
+}

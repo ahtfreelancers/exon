@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { getAllChallan, getAllChallanPdf } from '@/actions/challan'
 import { columns } from '../../columns'
+import { useLoading } from '@/components/loading-context'
 
 export default function ListChallan(props: any) {
     const [data, setData] = useState([])
@@ -16,6 +17,7 @@ export default function ListChallan(props: any) {
     const pageSize = 10
     const [productTypeFilter, setProductTypeFilter] = useState('1')
     const [invoiceType, setInvoiceType] = useState('1')
+    const { setLoading } = useLoading();
 
     const fetchInvoice = useCallback(async () => {
         let params = {
@@ -49,10 +51,13 @@ export default function ListChallan(props: any) {
     }
     const viewInvoice = async (id: number) => {
         try {
+            setLoading(true)
             const { data }: any = await getAllChallanPdf(id)
+            setLoading(false)
             setInvoicePdf(data.pdf)
             setModalOpen(true)
         } catch (err) {
+            setLoading(false)
             console.log(`Error fetching invoice PDF`, err)
         }
     }
@@ -61,7 +66,6 @@ export default function ListChallan(props: any) {
         <section>
             <div className='container'>
                 <h1 className='mb-2 text-2xl font-bold'>Delivery Challan</h1>
-
                 <DataTable
                     columns={columns(fetchInvoice, viewInvoice, props.listType)}
                     data={data}
@@ -85,7 +89,7 @@ export default function ListChallan(props: any) {
                 <Dialog open={modalOpen} onOpenChange={setModalOpen}>
                     <DialogContent className="max-w-xl lg:max-w-2x spbp:max-w-4xl xl:max-w-7xl">
                         <DialogHeader>
-                            <DialogTitle>Invoice PDF</DialogTitle>
+                            <DialogTitle>Delivery Challan PDF</DialogTitle>
                         </DialogHeader>
                         {invoicePdf ? (
                             <iframe
