@@ -2,7 +2,7 @@
 
 import { deleteCreditNote } from '@/actions/credit-notes';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, FilePenLine, Trash, X } from 'lucide-react';
+import { ArrowUpDown, FilePenLine, ReceiptText, Trash, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -125,8 +125,7 @@ const ImageCell = ({ pictureUrl }: { pictureUrl: string }) => {
         </>
     );
 };
-
-const ActionsCell = ({ id, fetchCreditNotes, listType }: { id: number; fetchCreditNotes: () => void, listType: string }) => {
+const ActionsCell = ({ listType, id, fetchCreditNotes, viewInvoice }: { id: number; fetchCreditNotes: () => void, listType: string, viewInvoice: any }) => {
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     const handleDelete = async () => {
@@ -146,6 +145,11 @@ const ActionsCell = ({ id, fetchCreditNotes, listType }: { id: number; fetchCred
 
     return (
         <div className="flex gap-3">
+            <ReceiptText
+                size={22}
+                className="cursor-pointer"
+                onClick={() => viewInvoice(id)}
+            />
             <Link href={`/exon-admin/credit-notes/edit/${id}?listType=${listType}`}>
                 <FilePenLine size={22} />
             </Link>
@@ -182,153 +186,155 @@ const ActionsCell = ({ id, fetchCreditNotes, listType }: { id: number; fetchCred
     );
 };
 
-export const columns = (fetchCreditNotes: () => void, listType: string): ColumnDef<CreditNotes>[] => [
-    // {
-    //   accessorKey: 'hospital',
-    //   header: ({ column }) => (
-    //     <div
-    //       className="flex items-center"
-    //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-    //     >
-    //       Party Name
-    //       <ArrowUpDown className="ml-2 h-4 w-4" />
-    //     </div>
-    //   ),
-    //   cell: ({ row }) => {
-    //     const hospital = row.original.hospital;
-    //     const distributor = row.original.distributor;
-    //     // console.log('data::::', row.original)
-    //     if (hospital && hospital.name) {
-    //       return hospital.name; // Safely access hospital.name
-    //     } else if (distributor && distributor.name) {
-    //       return distributor.name; // Safely access distributor.name
-    //     }
-    //     return 'No Party'; // Fallback if both are null
-    //   },
-    // },
-    {
-        accessorKey: 'hospital',
-        header: ({ column }) => (
-            <div
-                className="flex items-center"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            >
-                Party Name
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </div>
-        ),
-        cell: ({ row }) => {
-            const hospital = row.original.hospital;
-            const distributor = row.original.distributor;
+export const columns = (fetchCreditNotes: () => void, viewInvoice: (id: number) => void,
+    listType: string): ColumnDef<CreditNotes>[] => [
+        // {
+        //   accessorKey: 'hospital',
+        //   header: ({ column }) => (
+        //     <div
+        //       className="flex items-center"
+        //       onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        //     >
+        //       Party Name
+        //       <ArrowUpDown className="ml-2 h-4 w-4" />
+        //     </div>
+        //   ),
+        //   cell: ({ row }) => {
+        //     const hospital = row.original.hospital;
+        //     const distributor = row.original.distributor;
+        //     // console.log('data::::', row.original)
+        //     if (hospital && hospital.name) {
+        //       return hospital.name; // Safely access hospital.name
+        //     } else if (distributor && distributor.name) {
+        //       return distributor.name; // Safely access distributor.name
+        //     }
+        //     return 'No Party'; // Fallback if both are null
+        //   },
+        // },
+        {
+            accessorKey: 'hospital',
+            header: ({ column }) => (
+                <div
+                    className="flex items-center"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    Party Name
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </div>
+            ),
+            cell: ({ row }) => {
+                const hospital = row.original.hospital;
+                const distributor = row.original.distributor;
 
-            if (hospital && hospital.name) {
-                return hospital.name; // Safely access hospital.name
-            } else if (distributor && distributor.name) {
-                return distributor.name; // Safely access distributor.name
+                if (hospital && hospital.name) {
+                    return hospital.name; // Safely access hospital.name
+                } else if (distributor && distributor.name) {
+                    return distributor.name; // Safely access distributor.name
+                }
+                return 'No Party'; // Fallback if both are null
+            },
+        },
+        {
+            accessorKey: 'creditNoteDate',
+            header: ({ column }) => (
+                <div
+                    className='flex items-center'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    Credit Note Date
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </div>
+            ),
+            cell: ({ row }) => {
+                const date = new Date(row.original.creditNoteDate);
+                const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+                return (
+                    <>
+                        {formattedDate}
+                    </>
+                )
+            },
+        },
+        {
+            accessorKey: 'created',
+            header: ({ column }) => (
+                <div
+                    className='flex items-center'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    Create Date
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </div>
+            ),
+            cell: ({ row }) => {
+                const date = new Date(row.original.created);
+                const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+                return (
+                    <>
+                        {formattedDate}
+                    </>
+                )
+            },
+        },
+        {
+            accessorKey: 'modified',
+            header: ({ column }) => (
+                <div
+                    className='flex items-center'
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    Modified Date
+                    <ArrowUpDown className='ml-2 h-4 w-4' />
+                </div>
+            ),
+            cell: ({ row }) => {
+                const date = new Date(row.original.modified);
+                const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+                return (
+                    <>
+                        {formattedDate}
+                    </>
+                )
+            },
+        },
+        {
+            accessorKey: 'address',
+            header: ({ column }) => (
+                <div
+                    className="flex items-center"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    Billing Address
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </div>
+            ),
+            cell: ({ row }) => {
+                const address = row.original.address;
+                if (row.original.address) {
+                    return `${address.address1}, ${address.address2}, ${address.city}, ${address.state} - ${address.pinCode}`
+                }
+
+                return '';
             }
-            return 'No Party'; // Fallback if both are null
         },
-    },
-    {
-        accessorKey: 'creditNoteDate',
-        header: ({ column }) => (
-            <div
-                className='flex items-center'
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            >
-                Credit Note Date
-                <ArrowUpDown className='ml-2 h-4 w-4' />
-            </div>
-        ),
-        cell: ({ row }) => {
-            const date = new Date(row.original.creditNoteDate);
-            const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
-            return (
-                <>
-                    {formattedDate}
-                </>
-            )
-        },
-    },
-    {
-        accessorKey: 'created',
-        header: ({ column }) => (
-            <div
-                className='flex items-center'
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            >
-                Create Date
-                <ArrowUpDown className='ml-2 h-4 w-4' />
-            </div>
-        ),
-        cell: ({ row }) => {
-            const date = new Date(row.original.created);
-            const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
-            return (
-                <>
-                    {formattedDate}
-                </>
-            )
-        },
-    },
-    {
-        accessorKey: 'modified',
-        header: ({ column }) => (
-            <div
-                className='flex items-center'
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            >
-                Modified Date
-                <ArrowUpDown className='ml-2 h-4 w-4' />
-            </div>
-        ),
-        cell: ({ row }) => {
-            const date = new Date(row.original.modified);
-            const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
-            return (
-                <>
-                    {formattedDate}
-                </>
-            )
-        },
-    },
-    {
-        accessorKey: 'address',
-        header: ({ column }) => (
-            <div
-                className="flex items-center"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            >
-                Billing Address
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </div>
-        ),
-        cell: ({ row }) => {
-            const address = row.original.address;
-            if (row.original.address) {
-                return `${address.address1}, ${address.address2}, ${address.city}, ${address.state} - ${address.pinCode}`
-            }
 
-            return '';
-        }
-    },
+        /* {
+            accessorKey: 'grandTotal',
+            header: ({ column }) => (
+                <div
+                    className="flex items-center"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                >
+                    Total Amount
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </div>
+            ),
+            cell: ({ row }) => `₹${row.original.grandTotal}`,
+        }, */
+        {
+            id: 'actions',
+            header: () => <div className="flex items-center">Action</div>,
+            cell: ({ row }) => <ActionsCell listType={listType} id={row.original.id} fetchCreditNotes={fetchCreditNotes} viewInvoice={viewInvoice} />,
+        },
+    ];
 
-    /* {
-        accessorKey: 'grandTotal',
-        header: ({ column }) => (
-            <div
-                className="flex items-center"
-                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-            >
-                Total Amount
-                <ArrowUpDown className="ml-2 h-4 w-4" />
-            </div>
-        ),
-        cell: ({ row }) => `₹${row.original.grandTotal}`,
-    }, */
-    {
-        id: 'actions',
-        header: () => <div className="flex items-center">Action</div>,
-        cell: ({ row }) => <ActionsCell id={row.original.id} fetchCreditNotes={fetchCreditNotes} listType={listType} />,
-    },
-];
