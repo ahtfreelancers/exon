@@ -102,12 +102,14 @@ interface Invoice {
     igst: number,
     roundOffAmount: number,
     grandTotal: number,
+    total: number,
     // invoiceType: number,
     items: InvoiceItems[]
     created: string
     modified: string
     creditNoteDate: string;
-    invoiceId: string
+    invoiceId: string;
+    creditNoteItem?: InvoiceItems[]
     // originalInvoiceDate: string
 }
 
@@ -127,14 +129,27 @@ interface InvoiceFormProps {
 //     { id: '2', name: 'Tax Invoice' }
 // ]
 
-export default function CreditCommonForm({ type, invoice, hospitals, distributors, invoiceId, isEdit, invoiceList, ledgers }: InvoiceFormProps) {
+export default function CreditCommonForm({ type, invoice, hospitals, distributors, invoiceId, isEdit, invoiceList, ledgers=[] }: InvoiceFormProps) {
     const [search, setSearch] = useState('')
     const [selectedHospital, setSelectedHospital] = useState(type === 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString())
     // const [selectedInvoiceNo, setSelectedInvoiceNo] = useState(type === 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString())
-    const [invoiceLists, setInvoiceList] = useState<any[]>([])
+    const [invoiceLists, setInvoiceList] = useState<any[]>(invoice?.creditNoteItem ? invoice.creditNoteItem.map((ele: any)=>{
+        return {
+            ...ele,
+            ledger: ele.ledger,
+            id: ele.id,
+            ledgerId: ele.ledger.id,
+            rpuwg: ele.rpuwg,
+            rpuwog: ele.rpuwog,
+            taxrate: ele.taxrate + '%',
+            discountType: ele.discountType,
+            discountAmount: ele.discountAmount,
+            total: ele.total
+        }
+    }) : []);
     // const [productItems, setProductItems] = useState<any[]>([])
     // const [invoiceType, setInvoiceType] = useState<string>('')
-
+    console.log('type:::', type, invoiceList)
     const [pageIndex, setPageIndex] = useState(1)
     const [pageCount, setPageCount] = useState(0)
     const { setLoading } = useLoading()
@@ -161,7 +176,6 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                     // productId: item.product.id,
                     ledgerId: item.ledger.id,
                     id: item.id,
-                    product: undefined,
                     rpuwog: item.total,
                     // taxrate: item.total,
                     rpuwg: (item.total + calculateRpuwg),
@@ -179,7 +193,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
         defaultValues: {
             // title: invoice?.invoiceType?.toString(),
             creditNoteDate: invoice?.creditNoteDate || new Date().toISOString(),
-            invoiceId: invoice?.invoiceId || '',// need invoice info from invoiceId
+            invoiceId: invoice?.invoiceId.toString() || '',// need invoice info from invoiceId
             // originalInvoiceDate: invoice?.originalInvoiceDate || new Date(),
             partyName: type == 1 ? invoice?.hospital?.id?.toString() || '' : invoice?.distributor?.id?.toString() || '',
             gstin: type == 1 ? invoice?.hospital?.gstNumber || '' : invoice?.distributor?.gstNumber || '',
@@ -195,7 +209,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             igst: invoice?.igst,
             // invoiceType: invoice?.invoiceType,
             roundOff: invoice?.roundOffAmount,
-            grandTotal: invoice?.grandTotal,
+            grandTotal: invoice?.total,
             documentUrl: uploadedFile,
         },
 
@@ -343,7 +357,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             igst: newValues.igst ?? 0,
             gst: 0,
             roundOffAmount: newValues.roundOff ?? 0,
-            grandTotal: newValues.grandTotal ?? 0,
+            total: newValues.grandTotal ?? 0,
             creditNoteDate: typeof newValues?.creditNoteDate === 'string' ? newValues?.creditNoteDate : newValues?.creditNoteDate.toISOString(),
             // creditNoteDate: newValues?.creditNoteDate,
             // originalInvoiceDate: typeof newValues?.originalInvoiceDate === 'string' ? newValues?.originalInvoiceDate : newValues?.originalInvoiceDate.toISOString(),
@@ -362,6 +376,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             items: (invoiceId && !isEdit)
                 ? selectedTableRows?.map((item: any) => ({
                     ledgerId: item.ledgerId ?? 0,
+                    amount: item.amount,
                     quantity: item.quantity,
                     rpuwg: item.rpuwg,
                     rpuwog: item.rpuwog,
@@ -376,6 +391,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                         // productId: item.productId ?? 0,
                         ledgerId: item.ledgerId ?? 0,
                         quantity: item.quantity,
+                        amount: item.amount,
                         rpuwg: item.rpuwg,
                         rpuwog: item.rpuwog,
                         taxrate: item.taxrate.replace('%', ''),

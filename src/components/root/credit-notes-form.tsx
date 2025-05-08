@@ -74,8 +74,10 @@ interface Invoice {
     created: string
     modified: string
     creditNoteDate: string;
+    invoiceId: string;
     // originalInvoiceDate: string
-    invoiceId: string
+    creditNoteItem?: InvoiceItems[],
+    total: number,
 }
 
 interface InvoiceFormProps {

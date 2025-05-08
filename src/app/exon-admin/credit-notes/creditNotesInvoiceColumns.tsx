@@ -229,18 +229,18 @@ export const columns = (
                 )
             },
         },
-        {
-            accessorKey: 'quantity',
-            header: ({ column }) => (
-                <div
-                    className='flex items-center'
-                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                >
-                    Quantity
-                    <ArrowUpDown className='ml-2 h-4 w-4' />
-                </div>
-            ),
-        },
+        // {
+        //     accessorKey: 'quantity',
+        //     header: ({ column }) => (
+        //         <div
+        //             className='flex items-center'
+        //             onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        //         >
+        //             Quantity
+        //             <ArrowUpDown className='ml-2 h-4 w-4' />
+        //         </div>
+        //     ),
+        // },
         // {
         //     accessorKey: 'taxrate',
         //     header: ({ column }) => (
