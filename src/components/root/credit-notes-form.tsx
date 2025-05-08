@@ -96,7 +96,7 @@ export default function CreditNotesForm({ invoice, hospitals, distributors, invo
             <div className='container'>
                 {
                     listType ? (
-                        <CreditCommonForm type={listType === 'hostptal' ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} isEdit={isEdit} invoiceList={invoiceList} ledgers={ledgers} />
+                        <CreditCommonForm type={listType === 'hospital' ? 1 : 2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} isEdit={isEdit} invoiceList={invoiceList} ledgers={ledgers} />
                     ) : (
                         <Tabs defaultValue="hospitalmapping">
                             <TabsList>
@@ -104,10 +104,10 @@ export default function CreditNotesForm({ invoice, hospitals, distributors, invo
                                 <TabsTrigger value="distributormapping">Distributor</TabsTrigger>
                             </TabsList>
                             <TabsContent value="hospitalmapping" className='p-4'>
-                                <CreditCommonForm type={1} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} invoiceList={invoiceList} ledgers={ledgers}/>
+                                <CreditCommonForm type={1} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} invoiceList={invoiceList} ledgers={ledgers} />
                             </TabsContent>
                             <TabsContent value="distributormapping" className='p-4'>
-                                <CreditCommonForm type={2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} invoiceList={invoiceList} ledgers={ledgers}/>
+                                <CreditCommonForm type={2} invoice={invoice} hospitals={hospitals} distributors={distributors} invoiceId={invoiceId} invoiceList={invoiceList} ledgers={ledgers} />
                             </TabsContent>
                         </Tabs>
                     )
