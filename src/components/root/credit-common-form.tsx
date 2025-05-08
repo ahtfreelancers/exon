@@ -677,28 +677,39 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                                 <FormField
                                     control={form.control}
                                     name="partyName"
-                                    render={() => (
-                                        <FormItem className='w-1/2'>
+                                    render={({ field }) => (
+                                        <FormItem className="w-1/2">
                                             <FormLabel>Party Name:</FormLabel>
                                             <FormControl>
-                                                <Select /* defaultValue={field.value}  *//* disabled={invoiceId ? true : false}  */ defaultValue={selectedHospital} disabled={invoiceId ? true : false} onValueChange={(value: any) => onSelectDropdownChange(value)}>
+                                                <Select
+                                                    defaultValue={field.value}
+                                                    disabled={invoiceId ? true : false}
+                                                    onValueChange={(value: any) => onSelectDropdownChange(value)}
+                                                >
                                                     <SelectTrigger className="font-normal text-black border-input">
                                                         <SelectValue placeholder="Select a party name" />
                                                     </SelectTrigger>
-                                                    <SelectContent className='bg-white'>
+                                                    <SelectContent className="bg-white">
                                                         <SelectGroup>
-                                                            {type == 1
-                                                                ?
-                                                                hospitals?.map((item: any) => (
-                                                                    <SelectItem key={`${item.id}`} value={`${item.id}`} className='cursor-pointer'>
+                                                            {type === 1
+                                                                ? hospitals?.map((item: any) => (
+                                                                    <SelectItem
+                                                                        key={`${item.id}`}
+                                                                        value={`${item.id}`}
+                                                                        className="cursor-pointer"
+                                                                    >
                                                                         {item.name}
                                                                     </SelectItem>
-                                                                )) :
-                                                                distributors?.map((item: any) => (
-                                                                    <SelectItem key={`${item.id}`} value={`${item.id}`} className='cursor-pointer'>
+                                                                ))
+                                                                : distributors?.map((item: any) => (
+                                                                    <SelectItem
+                                                                        key={`${item.id}`}
+                                                                        value={`${item.id}`}
+                                                                        className="cursor-pointer"
+                                                                    >
                                                                         {item.name}
-                                                                    </SelectItem>))
-                                                            }
+                                                                    </SelectItem>
+                                                                ))}
                                                         </SelectGroup>
                                                     </SelectContent>
                                                 </Select>
