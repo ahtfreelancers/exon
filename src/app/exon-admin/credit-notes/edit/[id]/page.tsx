@@ -4,6 +4,7 @@ import { getAllHospitals } from "@/actions/hospitals";
 import { getAllDistributors } from "@/actions/distributor";
 import CreditNotesForm from "@/components/root/credit-notes-form";
 import { getAllLedgers, getCreditNote } from "@/actions/credit-notes";
+import { getAllInvoices } from "@/actions/invoice";
 
 interface CreditNotesEditPageProps {
     params: {
@@ -32,14 +33,14 @@ const CreditNotesEditPage = async ({ params, searchParams }: CreditNotesEditPage
     const { data }: any = await getCreditNote(id);
     const { data: hospitals }: any = await getAllHospitals(paramsQuery)
     const { data: distributors }: any = await getAllDistributors(paramsQuery)
-    const { data: invoiceList }: any = await getAllHospitals(paramsQuery)
+    const { data: invoiceList }: any = await getAllInvoices(paramsQuery)
 
     const { data: ledgers }: any = await getAllLedgers(params)
 
     console.log("ledgers::::::", data)
 
     return (
-        <CreditNotesForm invoice={data} invoiceId={id ?? null} hospitals={hospitals?.items} distributors={distributors?.items} invoiceList={invoiceList?.items} ledgers={ledgers} listType={listType} />
+        <CreditNotesForm invoice={data} invoiceId={id ?? null} hospitals={hospitals?.items} distributors={distributors?.items} invoiceList={invoiceList?.items} ledgers={ledgers?.items} listType={listType} />
     );
 }
 
