@@ -358,7 +358,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             cgst: newValues.cgst ?? 0,
             sgst: newValues.sgst ?? 0,
             igst: newValues.igst ?? 0,
-            gst: 0,
+            gst: newValues.gst ?? 0,
             roundOffAmount: newValues.roundOff ?? 0,
             total: newValues.grandTotal ?? 0,
             creditNoteDate: typeof newValues?.creditNoteDate === 'string' ? newValues?.creditNoteDate : newValues?.creditNoteDate.toISOString(),
@@ -372,44 +372,33 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                 address2: newValues.addressline2,
                 city: newValues.city,
                 state: newValues.state,
-                country: newValues.country,
+                // country: newValues.country,
                 pinCode: newValues.pincode,
                 addressType: 4
             },
             // invoiceType: newValues?.invoiceType ? newValues?.invoiceType : Number(invoiceType),
-            items: (invoiceId && !isEdit)
-                ? selectedTableRows?.map((item: any) => ({
+            items: invoiceLists?.map((item: any) => {
+                const commonFields: any = {
+                    // productId: item.productId ?? 0,
                     ledgerId: item.ledgerId ?? 0,
-                    amount: item.amount,
                     quantity: item.quantity,
-                    rpuwg: item.rpuwg,
-                    rpuwog: item.rpuwog,
-                    // taxrate: item.taxrate,
-                    discountType: item.discountType ?? 0,
-                    discountAmount: item.discountAmount ?? 0,
+                    amount: item.amount,
+                    // rpuwg: item.rpuwg,
+                    // rpuwog: item.rpuwog,
                     taxrate: item.taxrate.replace('%', ''),
+                    discountType: parseInt(item.discountType, 10) ?? 0,
+                    discountAmount: parseInt(item.discountAmount, 10) ?? 0,
+                    // taxrate: item.taxrate,
                     total: item.total,
-                }))
-                : invoiceLists?.map((item: any) => {
-                    const commonFields = {
-                        // productId: item.productId ?? 0,
-                        ledgerId: item.ledgerId ?? 0,
-                        quantity: item.quantity,
-                        amount: item.amount,
-                        rpuwg: item.rpuwg,
-                        rpuwog: item.rpuwog,
-                        taxrate: item.taxrate.replace('%', ''),
-                        discountType: parseInt(item.discountType, 10) ?? 0,
-                        discountAmount: parseInt(item.discountAmount, 10) ?? 0,
-                        // taxrate: item.taxrate,
-                        total: item.total,
-                    };
+                };
+                if (item.id) {
+                    commonFields.id = item?.id
+                }
 
-                    return type === 1
-                        ? commonFields // Exclude invoiceId and id for type 1
-                        : { ...commonFields, invoiceId: parseInt(invoiceId, 10), id: item?.id };
-                }),
+                return commonFields
+            }),
         };
+        debugger
         if (type === 1) {
             delete payload?.distributorId
         } else {
