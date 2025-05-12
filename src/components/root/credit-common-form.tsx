@@ -99,6 +99,7 @@ interface Invoice {
     cess: number,
     cgst: number,
     sgst: number,
+    gst: number,
     igst: number,
     roundOffAmount: number,
     grandTotal: number,
@@ -129,11 +130,11 @@ interface InvoiceFormProps {
 //     { id: '2', name: 'Tax Invoice' }
 // ]
 
-export default function CreditCommonForm({ type, invoice, hospitals, distributors, invoiceId, isEdit, invoiceList, ledgers=[] }: InvoiceFormProps) {
+export default function CreditCommonForm({ type, invoice, hospitals, distributors, invoiceId, isEdit, invoiceList, ledgers = [] }: InvoiceFormProps) {
     const [search, setSearch] = useState('')
     const [selectedHospital, setSelectedHospital] = useState(type === 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString())
     // const [selectedInvoiceNo, setSelectedInvoiceNo] = useState(type === 1 ? invoice?.hospital?.id?.toString() : invoice?.distributor?.id?.toString())
-    const [invoiceLists, setInvoiceList] = useState<any[]>(invoice?.creditNoteItem ? invoice.creditNoteItem.map((ele: any)=>{
+    const [invoiceLists, setInvoiceList] = useState<any[]>(invoice?.creditNoteItem ? invoice.creditNoteItem.map((ele: any) => {
         return {
             ...ele,
             ledger: ele.ledger,
@@ -206,6 +207,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             cess: invoice?.cess,
             cgst: invoice?.cgst,
             sgst: invoice?.sgst,
+            gst: invoice?.gst,
             igst: invoice?.igst,
             // invoiceType: invoice?.invoiceType,
             roundOff: invoice?.roundOffAmount,
@@ -226,6 +228,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
 
         form.setValue('cgst', (parseFloat(calculateCgst) / 2))
         form.setValue('sgst', (parseFloat(calculateCgst) / 2))
+        form.setValue('gst', (parseFloat(calculateCgst)))
         form.setValue('roundOff', roundOffAmount)
         form.setValue('grandTotal', (parseFloat(calculateTotal) + parseFloat(calculateCgst)) + cess + igst)
     }
@@ -364,6 +367,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
             invoiceId: +newValues?.invoiceId,
             // ledgerId: null,
             address: {
+                id: invoice?.address?.id,
                 address1: newValues.addressline1,
                 address2: newValues.addressline2,
                 city: newValues.city,
@@ -415,6 +419,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
         try {
             // return
             if (invoiceId) {
+                payload.id = invoiceId;
                 setLoading(true)
                 const response: any = await agent.CreditNotes.updateCreditNote(invoiceId, payload)
                 setLoading(false)
@@ -1017,6 +1022,23 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                                 />
                                 <FormField
                                     control={form.control}
+                                    name="gst"
+                                    render={({ field }) => (
+                                        <FormItem className='w-full flex items-center justify-between mb-2'>
+                                            <FormLabel>GST:</FormLabel>
+                                            <FormControl className='w-1/2'>
+                                                <Input
+                                                    className='!mt-0'
+                                                    {...field}
+                                                    disabled={true}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
                                     name="igst"
                                     render={({ field }) => (
                                         <FormItem className='w-full flex items-center justify-between mb-2'>
@@ -1059,7 +1081,8 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={invoiceId && !isEdit ? true : false}
+                                                    // disabled={invoiceId && !isEdit ? true : false}
+                                                    disabled={true}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -1076,7 +1099,7 @@ export default function CreditCommonForm({ type, invoice, hospitals, distributor
                                                 <Input
                                                     className='!mt-0'
                                                     {...field}
-                                                    disabled={invoiceId && !isEdit ? true : false}
+                                                    disabled={true}
                                                 />
                                             </FormControl>
                                             <FormMessage />

@@ -65,6 +65,7 @@ interface Invoice {
     // packingCharge: number,
     cess: number,
     cgst: number,
+    gst: number,
     sgst: number,
     igst: number,
     roundOffAmount: number,

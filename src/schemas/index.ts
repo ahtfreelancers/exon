@@ -38,6 +38,7 @@ export const CreditNotesSchema = z.object({
     pincode: z.string().optional(),
     cess: z.number().optional(),
     cgst: z.number().optional(),
+    gst: z.number().optional(),
     sgst: z.number().optional(),
     igst: z.number().optional(),
     roundOff: z.number().optional(),
