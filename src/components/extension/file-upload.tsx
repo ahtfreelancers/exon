@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { Paperclip } from 'lucide-react';
 import Image from 'next/image';
-import React, { ChangeEvent, FC, ReactNode, useRef, useState, useEffect } from 'react';
+import React, { ChangeEvent, FC, ReactNode, useRef, useState, useEffect, useMemo } from 'react';
 import { AspectRatio } from '../ui/aspect-ratio';
 import { buttonVariants } from '../ui/button';
 
@@ -33,8 +33,9 @@ export const FileUploader: FC<FileUploaderProps> = ({
       setSelectedFiles([new File([], value)]); // Treat the URL as a "file" for display
     } else if (Array.isArray(value)) {
       // If the value is an array of files, use it directly
-      if (typeof value[0] === 'string') {
+      if (typeof value[0] === 'string' && hidePreview) {
         setSelectedFiles([new File([], value[0])]);
+        // setSelectedFiles(value);
       } else {
         setSelectedFiles(value);
       }
@@ -54,7 +55,13 @@ export const FileUploader: FC<FileUploaderProps> = ({
   const handleIconClick = () => {
     fileInputRef.current?.click();
   };
-
+  const fileUrlName = useMemo(() => {
+    if (selectedFiles.length > 0 && typeof selectedFiles[0] !== 'string') {
+      const fileName: any = selectedFiles[0]?.name.split('/');
+      return fileName.pop();
+    }
+    return '';
+  }, [selectedFiles]);
   console.log('selectedFiles::::', selectedFiles);
   return (
     <div className={`file-uploader ${className}`}>
@@ -73,8 +80,8 @@ export const FileUploader: FC<FileUploaderProps> = ({
         </FileInput>
         <span className="sr-only">Select your files</span>
         {selectedFiles.length > 0 && typeof selectedFiles[0] !== 'string' ? (
-          <p className="pl-2">{selectedFiles[0]?.name}</p>
-        ) : <p className="pl-2">{selectedFiles[0]?.name}</p>}
+          <p className="pl-2 text-xs">{fileUrlName}</p>
+        ) : <p className="pl-2 text-xs">{fileUrlName}</p>}
       </div>
       {!hidePreview && (
         <>
