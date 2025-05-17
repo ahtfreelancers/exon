@@ -25,7 +25,7 @@ export const FileUploader: FC<FileUploaderProps> = ({
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-console.log('value::::', value)
+  console.log('value::::', value)
   // Handle value changes when the component first loads (for edit mode)
   useEffect(() => {
     if (typeof value === 'string') {
@@ -33,7 +33,11 @@ console.log('value::::', value)
       setSelectedFiles([new File([], value)]); // Treat the URL as a "file" for display
     } else if (Array.isArray(value)) {
       // If the value is an array of files, use it directly
-      setSelectedFiles(value);
+      if (typeof value[0] === 'string') {
+        setSelectedFiles([new File([], value[0])]);
+      } else {
+        setSelectedFiles(value);
+      }
     }
   }, [value]);
 
@@ -51,6 +55,7 @@ console.log('value::::', value)
     fileInputRef.current?.click();
   };
 
+  console.log('selectedFiles::::', selectedFiles);
   return (
     <div className={`file-uploader ${className}`}>
       <div className="flex items-center">
@@ -67,45 +72,45 @@ console.log('value::::', value)
           <Paperclip className="size-4 cursor-pointer" onClick={handleIconClick} />
         </FileInput>
         <span className="sr-only">Select your files</span>
-        {selectedFiles.length > 0 && typeof selectedFiles[0] !== 'string' && (
+        {selectedFiles.length > 0 && typeof selectedFiles[0] !== 'string' ? (
           <p className="pl-2">{selectedFiles[0]?.name}</p>
-        )}
+        ) : <p className="pl-2">{selectedFiles[0]?.name}</p>}
       </div>
       {!hidePreview && (
         <>
-      {/* Handle displaying either images (URLs or uploaded files) */}
-      {selectedFiles.length > 0 && typeof selectedFiles[0] === 'string' ? (
-        <AspectRatio className="size-36 mt-2">
-          <Image
-            src={selectedFiles[0]}
-            alt="Existing image"
-            className="object-cover rounded-md"
-            fill
-          />
-        </AspectRatio>
-      ) : (
-        <>
-          {selectedFiles.length > 0 &&
-            selectedFiles.map((file, index) => (
-              <FileUploaderItem
-                key={index}
-                file={file}
-                index={index}
-                aria-roledescription={`file ${index + 1} containing ${file?.name}`}
-                className="p-0 size-20 mt-2"
-              >
-                <AspectRatio className="size-full">
-                  <Image
-                    src={URL.createObjectURL(file)}
-                    alt={file.name}
-                    className="object-cover rounded-md"
-                    fill
-                  />
-                </AspectRatio>
-              </FileUploaderItem>
-            ))}
-        </>
-      )}
+          {/* Handle displaying either images (URLs or uploaded files) */}
+          {selectedFiles.length > 0 && typeof selectedFiles[0] === 'string' ? (
+            <AspectRatio className="size-36 mt-2">
+              <Image
+                src={selectedFiles[0]}
+                alt="Existing image"
+                className="object-cover rounded-md"
+                fill
+              />
+            </AspectRatio>
+          ) : (
+            <>
+              {selectedFiles.length > 0 &&
+                selectedFiles.map((file, index) => (
+                  <FileUploaderItem
+                    key={index}
+                    file={file}
+                    index={index}
+                    aria-roledescription={`file ${index + 1} containing ${file?.name}`}
+                    className="p-0 size-20 mt-2"
+                  >
+                    <AspectRatio className="size-full">
+                      <Image
+                        src={URL.createObjectURL(file)}
+                        alt={file.name}
+                        className="object-cover rounded-md"
+                        fill
+                      />
+                    </AspectRatio>
+                  </FileUploaderItem>
+                ))}
+            </>
+          )}
         </>
       )}
     </div>
